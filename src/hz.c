@@ -7,25 +7,25 @@
 
 void puthz(int x, int y,char *s,int flag,int part,int color)
 {
-	FILE *hzk_p=NULL;                                       //å®šä¹‰æ±‰å­—åº“æ–‡ä»¶æŒ‡é’ˆ
-	unsigned char quma,weima;                 //å®šä¹‰æ±‰å­—çš„åŒºç å’Œä½ç 
-	unsigned long offset;                          //å®šä¹‰æ±‰å­—åœ¨å­—åº“ä¸­çš„åç§»é‡
-	unsigned char mask[] = {0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};  //åŠŸèƒ½æ•°ç»„ï¼Œç”¨äºæ˜¾ç¤ºæ±‰å­—ç‚¹é˜µä¸­çš„äº®ç‚¹
+	FILE *hzk_p=NULL;                                       //¶¨Òåºº×Ö¿âÎÄ¼şÖ¸Õë
+	unsigned char quma,weima;                 //¶¨Òåºº×ÖµÄÇøÂëºÍÎ»Âë
+	unsigned long offset;                          //¶¨Òåºº×ÖÔÚ×Ö¿âÖĞµÄÆ«ÒÆÁ¿
+	unsigned char mask[] = {0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};  //¹¦ÄÜÊı×é£¬ÓÃÓÚÏÔÊ¾ºº×ÖµãÕóÖĞµÄÁÁµã
 	int i,j,pos;
 
 
-	switch(flag)    //ä¸åŒçš„flagå¯¹åº”ä¸åŒçš„æ±‰å­—åº“ï¼Œå®ç°äº†æ±‰å­—çš„å¤§å°å¯æ ¹æ®éœ€è¦æ”¹å˜
+	switch(flag)    //²»Í¬µÄflag¶ÔÓ¦²»Í¬µÄºº×Ö¿â£¬ÊµÏÖÁËºº×ÖµÄ´óĞ¡¿É¸ù¾İĞèÒª¸Ä±ä
 	{
 		case 16 :
 				  {
-					 char mat[32];   //16*16çš„æ±‰å­—éœ€è¦32ä¸ªå­—èŠ‚çš„æ•°ç»„æ¥å­˜å‚¨
+					 char mat[32];   //16*16µÄºº×ÖĞèÒª32¸ö×Ö½ÚµÄÊı×éÀ´´æ´¢
 					int y0=y;
 					int x0=x;
-					 hzk_p = fopen("HZK\\HZ16","rb");            //ä½¿ç”¨ç›¸å¯¹è·¯å¾„
+					 hzk_p = fopen("HZK\\HZ16","rb");            //Ê¹ÓÃÏà¶ÔÂ·¾¶
 					 if(hzk_p==NULL)
 					 {
-						settextjustify(LEFT_TEXT,TOP_TEXT);          //å·¦éƒ¨å¯¹é½ï¼Œé¡¶éƒ¨å¯¹é½
-						settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//é»‘ä½“ç¬”åˆ’è¾“å‡ºï¼Œæ°´å¹³è¾“å‡ºï¼Œ24*24ç‚¹é˜µ
+						settextjustify(LEFT_TEXT,TOP_TEXT);          //×ó²¿¶ÔÆë£¬¶¥²¿¶ÔÆë
+						settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//ºÚÌå±Ê»®Êä³ö£¬Ë®Æ½Êä³ö£¬24*24µãÕó
 						outtextxy(10,10,"Can't open hzk16 file!Press any key to quit...");
 						 getch();
 						 exit(1);
@@ -36,18 +36,18 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 						while (x<640-flag && (*s!=NULL))
 						{
 							y=y0;
-							quma=s[0]-0xa0;                      //æ±‚å‡ºåŒºç 
-							weima=s[1]-0xa0;                     //æ±‚å‡ºä½ç 
-							offset=(94*(quma-1)+(weima-1))*32L;   //æ±‚å‡ºè¦æ˜¾ç¤ºçš„æ±‰å­—åœ¨å­—åº“æ–‡ä»¶ä¸­çš„åç§»
-							fseek(hzk_p,offset,SEEK_SET);         //é‡å®šä½æ–‡ä»¶æŒ‡é’ˆ
-							fread (mat,32,1,hzk_p);            //è¯»å‡ºè¯¥æ±‰å­—çš„å…·ä½“ç‚¹é˜µæ•°æ®,1ä¸ºè¦è¯»å…¥çš„é¡¹æ•°
+							quma=s[0]-0xa0;                      //Çó³öÇøÂë
+							weima=s[1]-0xa0;                     //Çó³öÎ»Âë
+							offset=(94*(quma-1)+(weima-1))*32L;   //Çó³öÒªÏÔÊ¾µÄºº×ÖÔÚ×Ö¿âÎÄ¼şÖĞµÄÆ«ÒÆ
+							fseek(hzk_p,offset,SEEK_SET);         //ÖØ¶¨Î»ÎÄ¼şÖ¸Õë
+							fread (mat,32,1,hzk_p);            //¶Á³ö¸Ãºº×ÖµÄ¾ßÌåµãÕóÊı¾İ,1ÎªÒª¶ÁÈëµÄÏîÊı
 
 							for(i=0;i<16;i++)
 							{
-								pos=2*i;       //16*16çŸ©é˜µä¸­æœ‰æ¯ä¸€è¡Œæœ‰ä¸¤å¤–å­—èŠ‚
-								for(j=0;j<16;j++)    //ä¸€è¡Œä¸€è¡Œåœ°æ‰«æï¼Œå°†ä½ä¸Šä¸ºäº†1çš„ç‚¹æ˜¾ç¤ºå‡ºæ¥
+								pos=2*i;       //16*16¾ØÕóÖĞÓĞÃ¿Ò»ĞĞÓĞÁ½Íâ×Ö½Ú
+								for(j=0;j<16;j++)    //Ò»ĞĞÒ»ĞĞµØÉ¨Ãè£¬½«Î»ÉÏÎªÁË1µÄµãÏÔÊ¾³öÀ´
 								{
-									if((mask[j%8]&mat[pos+j/8])!=NULL)   //j%8åªèƒ½åœ¨0â€”8ä¹‹é—´å¾ªç¯ï¼Œj/8åœ¨0ï¼Œ1ä¹‹é—´å¾ªç¯
+									if((mask[j%8]&mat[pos+j/8])!=NULL)   //j%8Ö»ÄÜÔÚ0¡ª8Ö®¼äÑ­»·£¬j/8ÔÚ0£¬1Ö®¼äÑ­»·
 									{
 										putpixel(x+j,y,color);
 
@@ -59,13 +59,13 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 
 							}
 							/*====================================================
-								ä»¥ä¸Šæ˜¯ä¸€ä¸ªæ±‰å­—æ˜¾ç¤ºå®Œ
+								ÒÔÉÏÊÇÒ»¸öºº×ÖÏÔÊ¾Íê
 							====================================================*/
-							x+=part;        //ç»™x ä¸€ä¸ªåç§»é‡part
-							s+=2;           //æ±‰å­—é‡Œå­˜æ”¾çš„æ˜¯å†…ç ï¼Œ2ä¸ªå­—èŠ‚ï¼Œæ‰€ä»¥è¦åŠ 2
+							x+=part;        //¸øx Ò»¸öÆ«ÒÆÁ¿part
+							s+=2;           //ºº×ÖÀï´æ·ÅµÄÊÇÄÚÂë£¬2¸ö×Ö½Ú£¬ËùÒÔÒª¼Ó2
 
 						}
-						x=x0;y0+=flag+10; //ä¸€è¡Œæ±‰å­—æ˜¾ç¤ºå®Œå,é‡æ–°ä»å·¦ä¾§å¼€å§‹è¾“å‡ºæ±‰å­—ï¼Œç»™yä¸€ä¸ªåç§»é‡
+						x=x0;y0+=flag+10; //Ò»ĞĞºº×ÖÏÔÊ¾Íêºó,ÖØĞÂ´Ó×ó²à¿ªÊ¼Êä³öºº×Ö£¬¸øyÒ»¸öÆ«ÒÆÁ¿
 					}
 
 					break;
@@ -75,14 +75,14 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 
 		case 24 :
 				  {
-					char mat[72];   //24*24çŸ©é˜µè¦72ä¸ªå­—èŠ‚æ¥å­˜å‚¨
+					char mat[72];   //24*24¾ØÕóÒª72¸ö×Ö½ÚÀ´´æ´¢
 					 int y0=y;
 					 int x0=x;
 					hzk_p = fopen("HZK\\Hzk24k","rb");
 					if (hzk_p==NULL)
 					{
-						settextjustify(LEFT_TEXT,TOP_TEXT);          //å·¦éƒ¨å¯¹é½ï¼Œé¡¶éƒ¨å¯¹é½
-						settextstyle(GOTHIC_FONT,HORIZ_DIR,3);					//é»‘ä½“ç¬”åˆ’è¾“å‡ºï¼Œæ°´å¹³è¾“å‡ºï¼Œ24*24ç‚¹é˜µ
+						settextjustify(LEFT_TEXT,TOP_TEXT);          //×ó²¿¶ÔÆë£¬¶¥²¿¶ÔÆë
+						settextstyle(GOTHIC_FONT,HORIZ_DIR,3);					//ºÚÌå±Ê»®Êä³ö£¬Ë®Æ½Êä³ö£¬24*24µãÕó
 						outtextxy(10,10,"Can't open hzk24 file!Press any key to quit...");
 						getch();
 						exit(1);
@@ -93,15 +93,15 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 						while(x<640-flag && (*s!=NULL))
 						{
 							y=y0;
-							quma=s[0]-0xa0;                      //æ±‚å‡ºåŒºç 
-							weima=s[1]-0xa0;                     //æ±‚å‡ºä½ç 
+							quma=s[0]-0xa0;                      //Çó³öÇøÂë
+							weima=s[1]-0xa0;                     //Çó³öÎ»Âë
 							offset=(94*(quma-1)+(weima-1))*72L;
 							fseek(hzk_p,offset,SEEK_SET);
 							fread (mat,72,1,hzk_p);
 							for (i=0;i<24;i++)
 							{
-								pos=3*i;   //çŸ©é˜µä¸­æ¯ä¸€è¡Œæœ‰ä¸‰ä¸ªå­—èŠ‚
-								for (j=0;j<24;j++)   // æ¯ä¸€è¡Œæœ‰24ä½
+								pos=3*i;   //¾ØÕóÖĞÃ¿Ò»ĞĞÓĞÈı¸ö×Ö½Ú
+								for (j=0;j<24;j++)   // Ã¿Ò»ĞĞÓĞ24Î»
 								{
 									if ((mask[j%8]&mat[pos+j/8])!=NULL)
 										putpixel(x+j,y,color);
@@ -120,14 +120,14 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 
 		case 32 :
 				  {
-					 char mat[128];   //32*32çš„æ±‰å­—éœ€è¦128ä¸ªå­—èŠ‚çš„æ•°ç»„æ¥å­˜å‚¨
+					 char mat[128];   //32*32µÄºº×ÖĞèÒª128¸ö×Ö½ÚµÄÊı×éÀ´´æ´¢
 					int y0=y;
 					int x0=x;
 					 hzk_p = fopen("HZK\\HZK32S","rb");
 					 if(hzk_p==NULL)
 					 {
-						settextjustify(LEFT_TEXT,TOP_TEXT);          //å·¦éƒ¨å¯¹é½ï¼Œé¡¶éƒ¨å¯¹é½
-						settextstyle(GOTHIC_FONT,HORIZ_DIR,3);					//é»‘ä½“ç¬”åˆ’è¾“å‡ºï¼Œæ°´å¹³è¾“å‡ºï¼Œ24*24ç‚¹é˜µ						
+						settextjustify(LEFT_TEXT,TOP_TEXT);          //×ó²¿¶ÔÆë£¬¶¥²¿¶ÔÆë
+						settextstyle(GOTHIC_FONT,HORIZ_DIR,3);					//ºÚÌå±Ê»®Êä³ö£¬Ë®Æ½Êä³ö£¬24*24µãÕó						
 						outtextxy(10,10,"Can't open hzk32 file!Press any key to quit...");
 						 getch();
 						 exit(1);
@@ -138,14 +138,14 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 						while (x<640-flag && (*s!=NULL))
 						{
 							y=y0;
-							quma=s[0]-0xa0;                      //æ±‚å‡ºåŒºç 
-							weima=s[1]-0xa0;                     //æ±‚å‡ºä½ç 
+							quma=s[0]-0xa0;                      //Çó³öÇøÂë
+							weima=s[1]-0xa0;                     //Çó³öÎ»Âë
 							offset=(94*(quma-1)+(weima-1))*128L;
 							fseek(hzk_p,offset,SEEK_SET);
 							fread (mat,128,1,hzk_p);
 							for(i=0;i<32;i++)
 							{
-								pos=4*i;       //32*32çŸ©é˜µä¸­æœ‰æ¯ä¸€è¡Œæœ‰ä¸¤å¤–å­—èŠ‚
+								pos=4*i;       //32*32¾ØÕóÖĞÓĞÃ¿Ò»ĞĞÓĞÁ½Íâ×Ö½Ú
 								for(j=0;j<32;j++)
 								{
 									if((mask[j%8]&mat[pos+j/8])!=NULL)
@@ -159,12 +159,12 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 
 
 							}
-								//ä»¥ä¸Šæ˜¯ä¸€ä¸ªæ±‰å­—æ˜¾ç¤ºå®Œ
-							x+=part;    //ç»™x ä¸€ä¸ªåç§»é‡part
-							s+=2;          //æ±‰å­—é‡Œå­˜æ”¾çš„æ˜¯å†…ç ï¼Œ2ä¸ªå­—èŠ‚ï¼Œæ‰€ä»¥è¦åŠ 2
+								//ÒÔÉÏÊÇÒ»¸öºº×ÖÏÔÊ¾Íê
+							x+=part;    //¸øx Ò»¸öÆ«ÒÆÁ¿part
+							s+=2;          //ºº×ÖÀï´æ·ÅµÄÊÇÄÚÂë£¬2¸ö×Ö½Ú£¬ËùÒÔÒª¼Ó2
 
 						}
-						x=x0;y0+=flag+10;   //ä¸€è¡Œæ±‰å­—æ˜¾ç¤ºå®Œåï¼Œç»™yä¸€ä¸ªåç§»é‡
+						x=x0;y0+=flag+10;   //Ò»ĞĞºº×ÖÏÔÊ¾Íêºó£¬¸øyÒ»¸öÆ«ÒÆÁ¿
 					}
 						break;
 
@@ -173,14 +173,14 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 
 		case 48:
 				  {
-					char mat[288];   //48*48çš„æ±‰å­—éœ€è¦288ä¸ªå­—èŠ‚çš„æ•°ç»„æ¥å­˜å‚¨
+					char mat[288];   //48*48µÄºº×ÖĞèÒª288¸ö×Ö½ÚµÄÊı×éÀ´´æ´¢
 					int y0=y;
 					int x0=x;
 					 hzk_p = fopen("HZK\\Hzk48k","rb");
 					 if(hzk_p==NULL)
 					 {
-						settextjustify(LEFT_TEXT,TOP_TEXT);          //å·¦éƒ¨å¯¹é½ï¼Œé¡¶éƒ¨å¯¹é½
-						settextstyle(GOTHIC_FONT,HORIZ_DIR,3);					//é»‘ä½“ç¬”åˆ’è¾“å‡ºï¼Œæ°´å¹³è¾“å‡ºï¼Œ24*24ç‚¹é˜µ
+						settextjustify(LEFT_TEXT,TOP_TEXT);          //×ó²¿¶ÔÆë£¬¶¥²¿¶ÔÆë
+						settextstyle(GOTHIC_FONT,HORIZ_DIR,3);					//ºÚÌå±Ê»®Êä³ö£¬Ë®Æ½Êä³ö£¬24*24µãÕó
 						outtextxy(10,10,"Can't open hzk48 file!Press any key to quit...");
 						 getch();
 						 exit(1);
@@ -191,18 +191,18 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 						while (x<640-flag && (*s!=NULL))
 						{
 							y=y0;
-							quma=s[0]-0xa0;                      //æ±‚å‡ºåŒºç 
-							weima=s[1]-0xa0;                     //æ±‚å‡ºä½ç 
-							offset=(94*(quma-1)+(weima-1))*288L;   //æ±‚å‡ºè¦æ˜¾ç¤ºçš„æ±‰å­—åœ¨å­—åº“æ–‡ä»¶ä¸­çš„åç§»
-							fseek(hzk_p,offset,SEEK_SET);         //é‡å®šä½æ–‡ä»¶æŒ‡é’ˆ
-							fread (mat,288,1,hzk_p);            //è¯»å‡ºè¯¥æ±‰å­—çš„å…·ä½“ç‚¹é˜µæ•°æ®,1ä¸ºè¦è¯»å…¥çš„é¡¹æ•°
+							quma=s[0]-0xa0;                      //Çó³öÇøÂë
+							weima=s[1]-0xa0;                     //Çó³öÎ»Âë
+							offset=(94*(quma-1)+(weima-1))*288L;   //Çó³öÒªÏÔÊ¾µÄºº×ÖÔÚ×Ö¿âÎÄ¼şÖĞµÄÆ«ÒÆ
+							fseek(hzk_p,offset,SEEK_SET);         //ÖØ¶¨Î»ÎÄ¼şÖ¸Õë
+							fread (mat,288,1,hzk_p);            //¶Á³ö¸Ãºº×ÖµÄ¾ßÌåµãÕóÊı¾İ,1ÎªÒª¶ÁÈëµÄÏîÊı
 
 							for(i=0;i<48;i++)
 							{
 								pos=6*i;
-								for(j=0;j<48;j++)    //ä¸€è¡Œä¸€è¡Œåœ°æ‰«æï¼Œå°†ä½ä¸Šä¸ºäº†1çš„ç‚¹æ˜¾ç¤ºå‡ºæ¥
+								for(j=0;j<48;j++)    //Ò»ĞĞÒ»ĞĞµØÉ¨Ãè£¬½«Î»ÉÏÎªÁË1µÄµãÏÔÊ¾³öÀ´
 								{
-									if((mask[j%8]&mat[pos+j/8])!=NULL)   //j%8åªèƒ½åœ¨0â€”8ä¹‹é—´å¾ªç¯ï¼Œj/8åœ¨0ï¼Œ1ä¹‹é—´å¾ªç¯
+									if((mask[j%8]&mat[pos+j/8])!=NULL)   //j%8Ö»ÄÜÔÚ0¡ª8Ö®¼äÑ­»·£¬j/8ÔÚ0£¬1Ö®¼äÑ­»·
 									{
 										putpixel(x+j,y,color);
 
@@ -211,12 +211,12 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 								}
 								y++;
 							}
-								//ä»¥ä¸Šæ˜¯ä¸€ä¸ªæ±‰å­—æ˜¾ç¤ºå®Œ
-							x+=part;    //ç»™x ä¸€ä¸ªåç§»é‡part
-							s+=2;          //æ±‰å­—é‡Œå­˜æ”¾çš„æ˜¯å†…ç ï¼Œ2ä¸ªå­—èŠ‚ï¼Œæ‰€ä»¥è¦åŠ 2
+								//ÒÔÉÏÊÇÒ»¸öºº×ÖÏÔÊ¾Íê
+							x+=part;    //¸øx Ò»¸öÆ«ÒÆÁ¿part
+							s+=2;          //ºº×ÖÀï´æ·ÅµÄÊÇÄÚÂë£¬2¸ö×Ö½Ú£¬ËùÒÔÒª¼Ó2
 
 						}
-						x=x0;y0+=flag+10;   //ä¸€è¡Œæ±‰å­—æ˜¾ç¤ºå®Œåï¼Œç»™yä¸€ä¸ªåç§»é‡
+						x=x0;y0+=flag+10;   //Ò»ĞĞºº×ÖÏÔÊ¾Íêºó£¬¸øyÒ»¸öÆ«ÒÆÁ¿
 					}
 						break;
 
