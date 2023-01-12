@@ -26,7 +26,7 @@ void welcomePage(){
 
 int loginPage(){
 	genButton(100,100);
-	//ç»˜å›¾
-	//åˆ¤æ–­æŒ‰é’®ç‚¹å‡»
+	//»æÍ¼
+	//ÅÐ¶Ï°´Å¥µã»÷
 	return 0;
 }
