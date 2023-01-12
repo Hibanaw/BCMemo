@@ -1,6 +1,6 @@
 #include"log.h"
 
-void log(logtype type = LOG,char *c){
+void log(char *c, logtype type = LOG){
     char *s;
     switch(type){
         case LOG:
@@ -17,5 +17,5 @@ void log(logtype type = LOG,char *c){
 }
 
 void errorlog(char *e){
-    log(ERROR, e);
+    log(e, ERROR);
 }

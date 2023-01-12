@@ -1,4 +1,5 @@
 #include"graph.h"
+
 int initsvga256(void) //³õÊ¼»¯º¯Êý
 {
 	int G_driver = DETECT, G_model;
