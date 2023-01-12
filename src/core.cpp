@@ -2,7 +2,9 @@
 #include"frontend.h"
 
 int init(){
+#ifndef _WIN32
 	mouseinit();
+#endif
 	initGraph();
 }
 
@@ -28,7 +30,7 @@ int login(){
 	FILE* userfile = fopen("./users","r");
 	char inputusernm[101], inputpasswd[101];
 	char readusernm[101], readpasswd[101];
-	//è¾“å…¥
+	//ÊäÈë
 	
 	while(fscanf(userfile, "u:%sp:%s", readusernm, readpasswd)!=EOF){
 		if(readusernm == inputusernm && readpasswd == inputpasswd){

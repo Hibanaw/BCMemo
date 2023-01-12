@@ -1,7 +1,12 @@
+#ifndef _LOG_H_
+
+#define _LOG_H_
 #include<stdio.h>
 
 
 typedef enum{LOG, DEBUG, ERROR} logtype;
 
-void log(logtype type = LOG,char *c); //è¾“å‡ºlogï¼Œä¼ å…¥ç±»å‹å’Œå†…å®¹
-void errorlog(char *e); //è¾“å‡ºé”™è¯¯ï¼Œä¼ å…¥é”™è¯¯å†…å®¹
+void log(char *c, logtype type = LOG); //Êä³ölog£¬´«ÈëÀàĞÍºÍÄÚÈİ
+void errorlog(char *e); //log³ö´íÎó£¬´«Èë´íÎóÄÚÈİ
+
+#endif

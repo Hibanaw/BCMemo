@@ -1,4 +1,5 @@
-#include "utils\input.h"
+#ifndef _WIN32
+#include "input.h"
 
 /************************************************************************
 FUNCTION:hz_input
@@ -475,3 +476,5 @@ int xouttextxy(int x,int y,char *s,int color)//8x16µãÕó×Ö¿â
 	free(mat);
 	return len;
 }
+
+#endif

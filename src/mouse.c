@@ -1,3 +1,4 @@
+#ifndef _WIN32
 #include<conio.h>
 #include<graphics.h>
 #include<dos.h>
@@ -310,3 +311,4 @@ int mouse_press(int x1, int y1, int x2, int y2)
 	}
 }
 
+#endif

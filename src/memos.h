@@ -5,7 +5,7 @@
 
 typedef struct{
     Memo content;
-    Memo *next;
+    MemoNode *next;
 }MemoNode;//备忘录的节点
 
 typedef struct{

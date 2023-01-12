@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include"utils/hz.h"
+#include"hz.h"
 
 void puthz(int x, int y,char *s,int flag,int part,int color)
 {

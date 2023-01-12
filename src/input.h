@@ -1,3 +1,4 @@
+#ifndef _WIN32
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
@@ -10,8 +11,8 @@
 #include <bios.h>
 #include <conio.h>
 #include <dos.h>
-#include "utils\hz.h"
-#include "utils\mouse.h"
+#include "hz.h"
+#include "mouse.h"
 
 
 int hz_input(int x1,int y1,int x2,int y2,char *s,int len,int color,int color2, int size);
@@ -29,4 +30,5 @@ void pyFrm(int x1,int y1,int x2,int y2);
 int xouttextxy(int x,int y,char *s,int color);
 //×Ö·ûÊäÈë·¨
 
+#endif
 #endif
