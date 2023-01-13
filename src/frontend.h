@@ -17,7 +17,7 @@
 
 
 int genButton(int x, int y, char* text = NULL, int sizex = 100, int sizey = 30);
-int homePage();
-int loginPage(struct Textbox *uBox, struct Textbox *pBox);
+void homePage();
+void loginPage();
 
 #endif

@@ -1,10 +1,8 @@
 #include"core.h"
 
 int init(){
-	graphInit();
-#ifndef _WIN32
+	initsvga256();
 	mouseinit();
-#endif
 	
 	return 0;
 }
@@ -17,9 +15,26 @@ int init(){
  */
 int home(){
 	log("home()");
-	setbkcolor(RED);
+	homePage();
 	while(1){
-		int status = homePage();
+		//鼠标事件
+		int x, y, c;
+		mread(&x, &y, &c);
+		//键盘事件
+		int k = -1;
+		if(bioskey(1)){
+			k = bioskey(0);
+		}
+		//进入登陆
+		if(c != 0){
+			log("clicked %d",DBG, c);
+			return 1;
+		}
+		if(k != -1 && k != ESCAPE){
+			log("pressed %x", DBG, k);
+		}
+		//退出
+		if(k == ESCAPE) return -1;
 		//判断登录
 		switch(status){
 			case 1://登陆
@@ -61,6 +76,7 @@ int login(){
 		if(s == -1){
 			return -1;
 		}
+		delay(50);
 	}while(!s);
 	//验证
 	int isLogin = 0;
@@ -88,7 +104,5 @@ void mainLoop(){
 
 
 void close(){
-#ifndef _WIN32
-	graphClose();
-#endif
+	closesvga256();
 }

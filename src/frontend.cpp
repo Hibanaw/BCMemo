@@ -28,32 +28,12 @@ int genButton(int x, int y, char* text, int width, int height){
 	fillpoly(5, point);
 	return 0;
 }
-/**
- * @brief 绘制欢迎主页
- * 
- * @return int 1进入登陆，-1退出
- */
-int homePage(){
-	setbkcolor(BLUE);
+
+void homePage(){
+	setfillstyle(SOLID_FILL, GREEN);
+	bar(0, 0, 1023, 767);
 	puthz(300,300,"点击任意键登陆", 16, 18, WHITE);
-	//鼠标事件
-	int x, y, c;
-	mread(&x, &y, &c);
-	//键盘事件
-	int k = -1;
-	if(bioskey(1)){
-		k = bioskey(0);
-	}
-	//进入登陆
-	if(c != 0){
-		log("clicked %d",DBG, c);
-		return 1;
-	}
-	if(k != -1 && k != ESCAPE){
-		log("pressed %x", DBG, k);
-	}
-	//退出
-	if(k == ESCAPE) return -1;
+	
 	return 0;
 }
 
@@ -64,11 +44,12 @@ int homePage(){
  */
 int loginPage(Textbox* uBox, Textbox* pBox){
 	log("Show login page");
-	setbkcolor(BLUE);
 	int goLogin, goExit;
 	//绘图
+	setfillstyle(SOLID_FILL, WHITE);
+	bar(0, 0, 1023, 767);
 	//genButton(100,100);
-
+	
 	//鼠标事件
 	int x, y, c;
 	newmouse(&x, &y, &c);
@@ -86,7 +67,7 @@ int loginPage(Textbox* uBox, Textbox* pBox){
 		return 1;
 	}
 	//判断退出
-
+	if(k == ESCAPE) goExit = 1;
 	if(goExit){
 		return -1;
 	}
