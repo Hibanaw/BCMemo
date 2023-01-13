@@ -1,14 +1,14 @@
 #ifndef _mouse_h_
 #define _mouse_h_
-int mouse_press(int x1, int y1, int x2, int y2);//濡傛灉鍦ㄦ?嗕腑鐐瑰嚮锛屽垯杩斿洖1锛涘湪妗嗕腑鏈?鐐瑰嚮锛屽垯杩斿洖2锛涗笉鍦ㄦ?嗕腑鍒欒繑鍥?0
-void mouse(int,int);//璁捐?￠紶鏍?
-void mouseinit(void);//鍒濆?嬪寲
-//void mou_pos(int*,int*,int*);//鏇存敼榧犳爣浣嶇疆
-void mread(int *,int *,int*);//鏀瑰潗鏍囦笉鐢?
-void save_bk_mou(int x,int y);//瀛橀紶鏍囪儗鏅?
-void clrmous(int x,int y);//娓呴櫎榧犳爣
-void drawmous(int x,int y);//鐢婚紶鏍?
-void newmouse(int *nx,int *ny,int *nbuttons);   //鏇存柊榧犳爣
+int mouse_press(int x1, int y1, int x2, int y2);//如果在???中点击，则返回1；在框中??点击，则返回2；不在???中则返??0
+void mouse(int,int);//设???鼠??
+void mouseinit(void);//初???化
+//void mou_pos(int*,int*,int*);//更改鼠标位置
+void mread(int *,int *,int*);//改坐标不??
+void save_bk_mou(int x,int y);//存鼠标背??
+void clrmous(int x,int y);//清除鼠标
+void drawmous(int x,int y);//画鼠??
+void newmouse(int *nx,int *ny,int *nbuttons);   //更新鼠标
 
 extern int MouseX;
 extern int MouseY;

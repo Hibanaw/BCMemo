@@ -1,18 +1,28 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 
-#include<graphics.h>
 #include<stdio.h>
+#include<string.h>
+#include"mouse.h"
 #include"memo.h"
 #include"memos.h"
+#include"frontend.h"
+#include"log.h"
+#include"svga.h"
 
-int init();
-int initGraph();
-int login();
-void mainLoop();
+struct Textbox{
+    char *str;
+    int isFocused;
+    int maxLength;
+};
+
+int init();//初始化
+int login();//登陆功能，登成果返回1，失败返回0，退出返回-1
+void mainLoop();//主循环
 void leftColumn();
 void rightColumn();
-void home();
-void loginExit();
+int home();
+
+void close();
 
 #endif

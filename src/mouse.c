@@ -1,4 +1,3 @@
-#ifndef _WIN32
 #include<conio.h>
 #include<graphics.h>
 #include<dos.h>
@@ -28,7 +27,7 @@ int flag=0;
 void mouseinit()//初始化
 {
 	int retcode;
-	int xmin,xmax,ymin,ymax,x_max=625,y_max=480;
+	int xmin,xmax,ymin,ymax,x_max=1024,y_max=768;
 	int size;
 
 	xmin=2;
@@ -57,7 +56,7 @@ void mouseinit()//初始化
 	MouseS = 0;
 	MouseX=320,MouseY=240;
 	save_bk_mou(320,240);
-	mouse(MouseX,MouseY);
+	//mouse(MouseX,MouseY);
 	flag=1;
 }
 
@@ -310,5 +309,3 @@ int mouse_press(int x1, int y1, int x2, int y2)
 		return 0;
 	}
 }
-
-#endif

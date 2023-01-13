@@ -1,12 +1,15 @@
 #ifndef _LOG_H_
 
 #define _LOG_H_
+
+#define LOGLEVEL 0
+
 #include<stdio.h>
+#include<stdarg.h>
+#include<string.h>
 
 
-typedef enum{LOG, DEBUG, ERROR} logtype;
+typedef enum{LOG, DBG, ERR} logtype;
 
-void log(char *c, logtype type = LOG); //输出log，传入类型和内容
-void errorlog(char *e); //log出错误，传入错误内容
-
+int log(char *c, logtype type = LOG, ...); //输出log，传入类型和内容
 #endif

@@ -1,5 +1,5 @@
-#ifndef _WIN32
-#include "input.h"
+//#ifndef _WIN32
+#include "ime.h"
 
 /************************************************************************
 FUNCTION:hz_input
@@ -24,7 +24,7 @@ int hz_input(int x1,int y1,int x2,int y2,char *s,int len,int color,int color2, i
 	int barx1,barx2,bary1,bary2;
 	char str[3]={'\0','\0','\0'};//Ò»¸öºº×Ö×°Èë
 	char py[12]={'\0','\0','\0','\0','\0','\0','\0','\0',
-	            '\0','\0','\0','\0'};//Æ´Òô×Ö·û´®(Î÷ÎÄ×Ö·û´®)
+				'\0','\0','\0','\0'};//Æ´Òô×Ö·û´®(Î÷ÎÄ×Ö·û´®)
 	settextjustify(LEFT_TEXT,CENTER_TEXT);
 	clrmous(MouseX, MouseY);
 	// setfillstyle(SOLID_FILL, color);
@@ -33,7 +33,7 @@ int hz_input(int x1,int y1,int x2,int y2,char *s,int len,int color,int color2, i
 	{
 		bioskey(0);
 	}
-	if((image=malloc(8241))==NULL)
+	if((image=(char*)malloc(8241))==NULL)
 	{
 		closegraph();
 		printf("error!,hz_input");
@@ -477,4 +477,4 @@ int xouttextxy(int x,int y,char *s,int color)//8x16µãÕó×Ö¿â
 	return len;
 }
 
-#endif
+//#endif

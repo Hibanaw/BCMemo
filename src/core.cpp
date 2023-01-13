@@ -1,46 +1,83 @@
 #include"core.h"
-#include"frontend.h"
 
 int init(){
+	graphInit();
 #ifndef _WIN32
 	mouseinit();
 #endif
-	initGraph();
-}
-
-int initGraph(){
-#ifndef _WIN32
-	int gd = VGA, gm = VGAHI;
-	initgraph(&gd, &gm, "C:\\BORLANDC\\BGI");
-#else
-	initgraph(1024, 768);
-#endif
+	
 	return 0;
 }
 
-void home(){
+
+/**
+ * @brief 主页
+ * 
+ * @return int 
+ */
+int home(){
+	log("home()");
+	setbkcolor(RED);
 	while(1){
-		login();
+		int status = homePage();
+		//判断登录
+		switch(status){
+			case 1://登陆
+				int status = login();
+				switch (status){
+					case 1:
+						//成功登陆
+						break;
+					case 2:
+						//密码错误
+						break;
+					case -1:
+						//点击返回
+						break;
+				}
+				break;
+			case -1://退出
+				return 0;
+		}
+		delay(50);
 	}
 }
 
+/**
+ * 
+ * @brief 登陆
+ * 
+ * @return int -1为退出，1为成功
+ */
 int login(){
-	int status = loginPage();
+	log("login()");
+	char username[101], password[101];
+	Textbox uBox = {username, 0, 100};
+	Textbox pBox = {password, 0, 100};
+    int s;
+	do{
+		s = loginPage(&uBox, &pBox);
+		//处理退出
+		if(s == -1){
+			return -1;
+		}
+	}while(!s);
+	//验证
 	int isLogin = 0;
 	FILE* userfile = fopen("./users","r");
 	char inputusernm[101], inputpasswd[101];
 	char readusernm[101], readpasswd[101];
-	//输入
-	
-	while(fscanf(userfile, "u:%sp:%s", readusernm, readpasswd)!=EOF){
+	strcpy(readusernm, username);
+	strcpy(readpasswd, password);
+	while(1){
+		fscanf(userfile, "u:%s", readusernm);
+		fscanf(userfile, "p:%s", readpasswd);
 		if(readusernm == inputusernm && readpasswd == inputpasswd){
 			isLogin = 1;
 			break;
 		}
 	}
-	if(isLogin){
-		mainLoop();
-	}
+	return isLogin;
 }
 
 void mainLoop(){
@@ -49,3 +86,9 @@ void mainLoop(){
 	}
 }
 
+
+void close(){
+#ifndef _WIN32
+	graphClose();
+#endif
+}
