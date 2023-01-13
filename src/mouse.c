@@ -1,8 +1,3 @@
-#include<conio.h>
-#include<graphics.h>
-#include<dos.h>
-#include<stdio.h>
-#include<stdlib.h>
 #include "mouse.h"
 
 

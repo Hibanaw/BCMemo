@@ -1,5 +1,20 @@
 #ifndef _mouse_h_
 #define _mouse_h_
+
+#include<conio.h>
+#include<graphics.h>
+#include<dos.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct{
+    int posX, posY;
+    enum{} style;
+    int click;
+    union REGS regs;
+    int flag;
+}Mouse;
+
 int mouse_press(int x1, int y1, int x2, int y2);//如果在???中点击，则返回1；在框中??点击，则返回2；不在???中则返??0
 void mouse(int,int);//设???鼠??
 void mouseinit(void);//初???化
