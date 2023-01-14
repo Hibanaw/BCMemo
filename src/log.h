@@ -3,7 +3,7 @@
 #define _LOG_H_
 
 #define LOGLEVEL 0
-#define LOGFILEMOD 1
+#define LOGFILEMOD 0
 
 #include<stdio.h>
 #include<stdarg.h>

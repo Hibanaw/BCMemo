@@ -285,7 +285,8 @@ enum HexColor
 enum MyColors{
     _WHITE = hexffffff,
     _BLACK = hex000000,
-    _DARKGRAY = hex2a1f00
+    _DARKGRAY = hex2a1f00,
+    _GRAY = hex808080,
 };
 
 int huge detectSVGA256(void);

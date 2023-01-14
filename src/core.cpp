@@ -30,7 +30,7 @@ int home(){
 			case -1://ÍË³ö
 				return 0;
 		}
-		delay(50);
+		delay(10);
 	}
 }
 
@@ -61,7 +61,7 @@ int login(){
 					return 0;
 					break;
 			}
-			delay(50);
+			delay(10);
 		}
 		LOGIN:
 		//ÑéÖ¤

@@ -8,6 +8,7 @@
 #include"keyboard.h"
 #include"hz.h"
 #include"core.h"
+#include"image.h"
 
 
 #ifndef NULL
@@ -15,8 +16,8 @@
 #endif
 
 
-
-int textButton(int x, int y, char* text = NULL, int sizex = 100, int sizey = 30);
+int pageButton(int x, int y, char* text, int width, int height);
+void pageTextBox();
 void pageHome();
 void pageLogin();
 

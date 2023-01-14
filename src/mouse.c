@@ -27,7 +27,7 @@ void mouseinit()//初始化
 
 	xmin=2;
 	xmax=x_max-1;
-	ymin=8;
+	ymin=2;
 	ymax=y_max-2;
 	regs.x.ax=0;
 	int86(51,&regs,&regs);
@@ -222,6 +222,12 @@ void newmouse(Mouse *m)
 	*nx = xn;
 	*ny = yn;
 	*nbuttons = buttonsn;
+	if(buttons0 == 1 && buttonsn == 0){
+		m->release = 1;
+	}
+	else{
+		m->release = 0;
+	}
 	if(buttons0 == *nbuttons)
 		*nbuttons = 0;    //使得能连续按键
 	if(xn == x0 && yn == y0 && buttonsn == buttons0)

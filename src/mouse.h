@@ -23,9 +23,10 @@
 typedef struct{
     int posX, posY;
     enum{} style;
-    int click;
+    int click;//点击
     union REGS regs;
-    int flag;
+    int flag;//可见性
+    int release;//松开按键
 }Mouse;
 
 int mouse_press(int x1, int y1, int x2, int y2);//如果在???中点击，则返回1；在框中??点击，则返回2；不在???中则返??0

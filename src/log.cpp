@@ -15,7 +15,7 @@ int log(char *str, logtype type, ...){
 	vsprintf(c, str, args);
 	va_end(args);
 	if(LOGFILEMOD){
-		freopen("C:\\log.txt", "rw", stdout);
+		freopen("log.txt", "w", stdout);
 	}
 	if(LOGLEVEL <= type)
 		switch(type){
@@ -29,6 +29,8 @@ int log(char *str, logtype type, ...){
 				printf("[debug]%s\n", c);
 				break;
 		}
-	fclose(stdout);
+	// if(LOGFILEMOD){
+	// 	fclose(stdout);
+	// }
 	return LOGLEVEL <= type;
 }

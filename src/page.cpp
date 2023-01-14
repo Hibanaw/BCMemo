@@ -8,44 +8,32 @@
  * @param text 填充内容
  * @param sizex 宽度
  * @param sizey 高度
- * @return int 是否被按下，0为否1为真
+ * 
  */
-int textButton(int x, int y, char* text, int width, int height){
-	int point[] = {
-		x, y,
-		x+width, y,
-		x+width, y+height,
-		x, y+height,
-		x, y
-	};
+int pageButton(int x, int y, char* text, int width, int height){
 	
-	setcolor(BLACK);
-	if(1){
-		setfillstyle(SOLID_FILL, WHITE);
-	}
-	else{
-		setfillstyle(SOLID_FILL, CYAN);
-	}
-	fillpoly(5, point);
-	return 0;
 }
-
+/**
+ * @brief 渲染主页固定页面
+ * 
+ */
 void pageHome(){
-	setfillstyle(SOLID_FILL, GREEN);
-	bar(0, 0, 1023, 767);
-	puthz(300,300,"点击任意键登陆", 16, 18, WHITE);
-	
+	putImage(0, 0, "RES\\HOMEPAGE.BIN");
+	puthz(449,500,"点击任意键登陆", 16, 18, _WHITE);
 	return;
 }
 
-
+/**
+ * @brief 渲染登陆固定页面
+ * 
+ */
 void pageLogin(){
 	log("Show login page");
 	int goLogin, goExit;
 	//绘图
 	setfillstyle(SOLID_FILL, BLUE);
 	bar(0, 0, 1023, 767);
-	textButton(100,100);
+	//textButton(100,100);
 	
 	return ;
 }

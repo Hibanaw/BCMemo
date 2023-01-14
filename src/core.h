@@ -10,12 +10,9 @@
 #include"listener.h"
 #include"log.h"
 #include"svga.h"
+#include"module.h"
 
-struct Textbox{
-    char *str;
-    int isFocused;
-    int maxLength;
-};
+
 
 int init();//初始化
 int login();//登陆功能，登成果返回1，失败返回0，退出返回-1
