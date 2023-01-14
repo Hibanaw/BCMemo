@@ -12,6 +12,7 @@
 #include <dos.h>
 #include "hz.h"
 #include "mouse.h"
+#include "keyboard.h"
 
 enum imekeyvalue{
     BACK = 0xe08,
