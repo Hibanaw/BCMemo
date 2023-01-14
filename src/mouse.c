@@ -22,7 +22,7 @@ int flag=0;
 void mouseinit()//≥ı ºªØ
 {
 	int retcode;
-	int xmin,xmax,ymin,ymax,x_max=1024,y_max=768;
+	int xmin,xmax,ymin,ymax,x_max=MOUSEMAXX,y_max=MOUSEMAXY;
 	int size;
 
 	xmin=2;
@@ -238,7 +238,7 @@ void save_bk_mou(int nx,int ny)//¥Ê Û±Í±≥æ∞
 	size=imagesize(nx-1,ny-2,nx+11,ny+17);
 	buffer=malloc(size);
 	if(buffer!=NULL)
-		getimage(nx-1,ny-2,nx+11,ny+17,buffer);
+		getimage(nx-1,ny-2, min(MOUSEMAXX-1, nx+11),min(MOUSEMAXX-1, ny+17),buffer);
 	else
 		printf("Error");
 }

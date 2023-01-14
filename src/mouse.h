@@ -8,6 +8,14 @@
 #include<stdlib.h>
 #include"svga.h"
 
+#define MOUSEMAXX 1024
+#define MOUSEMAXY 768
+
+#ifndef _WIN32
+#define min(a,b) (a)<(b)?(a):(b)
+#define max(a,b) (a)>(b)?(a):(b)
+#endif
+
 /**
  * @brief ЪѓБъ
  * 
