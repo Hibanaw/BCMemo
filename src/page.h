@@ -16,8 +16,8 @@
 
 
 
-int genButton(int x, int y, char* text = NULL, int sizex = 100, int sizey = 30);
-void homePage();
-void loginPage();
+int textButton(int x, int y, char* text = NULL, int sizex = 100, int sizey = 30);
+void pageHome();
+void pageLogin();
 
 #endif

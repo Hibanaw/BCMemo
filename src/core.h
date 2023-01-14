@@ -6,7 +6,8 @@
 #include"mouse.h"
 #include"memo.h"
 #include"memos.h"
-#include"frontend.h"
+#include"page.h"
+#include"listener.h"
 #include"log.h"
 #include"svga.h"
 

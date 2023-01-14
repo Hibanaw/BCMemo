@@ -3,7 +3,7 @@
 int init(){
 	initsvga256();
 	mouseinit();
-	
+	useRGB256Colors();
 	return 0;
 }
 
@@ -15,41 +15,17 @@ int init(){
  */
 int home(){
 	log("home()");
-	homePage();
+	pageHome();
+	int s;
+    Mouse m;
 	while(1){
-		//鼠标事件
-		int x, y, c;
-		mread(&x, &y, &c);
-		//键盘事件
-		int k = -1;
-		if(bioskey(1)){
-			k = bioskey(0);
-		}
-		//进入登陆
-		if(c != 0){
-			log("clicked %d",DBG, c);
-			return 1;
-		}
-		if(k != -1 && k != ESCAPE){
-			log("pressed %x", DBG, k);
-		}
-		//退出
-		if(k == ESCAPE) return -1;
+		s = listenerHome(&m);
 		//判断登录
-		switch(status){
+		switch(s){
 			case 1://登陆
-				int status = login();
-				switch (status){
-					case 1:
-						//成功登陆
-						break;
-					case 2:
-						//密码错误
-						break;
-					case -1:
-						//点击返回
-						break;
-				}
+				clrmous(m.posX, m.posY);
+				login();
+				pageHome();
 				break;
 			case -1://退出
 				return 0;
@@ -66,34 +42,53 @@ int home(){
  */
 int login(){
 	log("login()");
-	char username[101], password[101];
-	Textbox uBox = {username, 0, 100};
-	Textbox pBox = {password, 0, 100};
-    int s;
-	do{
-		s = loginPage(&uBox, &pBox);
-		//处理退出
-		if(s == -1){
-			return -1;
-		}
-		delay(50);
-	}while(!s);
-	//验证
-	int isLogin = 0;
-	FILE* userfile = fopen("./users","r");
-	char inputusernm[101], inputpasswd[101];
-	char readusernm[101], readpasswd[101];
-	strcpy(readusernm, username);
-	strcpy(readpasswd, password);
+	Mouse m;
 	while(1){
-		fscanf(userfile, "u:%s", readusernm);
-		fscanf(userfile, "p:%s", readpasswd);
-		if(readusernm == inputusernm && readpasswd == inputpasswd){
-			isLogin = 1;
-			break;
+		log("login loop time", DBG);
+		pageLogin();
+		char username[101], password[101];
+		Textbox uBox = {username, 0, 100};
+		Textbox pBox = {password, 0, 100};
+		int s;
+		while(1){
+			s = listenerLogin(&uBox, &pBox, &m);
+			switch(s){
+				case 1:
+					goto LOGIN;
+					break;
+				case -1:
+					clrmous(m.posX, m.posY);
+					return 0;
+					break;
+			}
+			delay(50);
 		}
+		LOGIN:
+		//验证
+		int isLogin = 0;
+		FILE* userfile = fopen("./users","r");
+		char inputusernm[101], inputpasswd[101];
+		char readusernm[101], readpasswd[101];
+		strcpy(readusernm, username);
+		strcpy(readpasswd, password);
+		while(1){
+			fscanf(userfile, "u:%s", readusernm);
+			fscanf(userfile, "p:%s", readpasswd);
+			if(readusernm == inputusernm && readpasswd == inputpasswd){
+				isLogin = 1;
+				break;
+			}
+		}
+		switch (isLogin){
+			case 1:
+				//成功登陆
+				break;
+			case 2:
+				//密码错误
+				break;
+		}	
 	}
-	return isLogin;
+	return 0;
 }
 
 void mainLoop(){
