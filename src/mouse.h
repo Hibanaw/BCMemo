@@ -6,7 +6,12 @@
 #include<dos.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include"svga.h"
 
+/**
+ * @brief 鼠标
+ * 
+ */
 typedef struct{
     int posX, posY;
     enum{} style;
@@ -23,7 +28,7 @@ void mread(int *,int *,int*);//改坐标不??
 void save_bk_mou(int x,int y);//存鼠标背??
 void clrmous(int x,int y);//清除鼠标
 void drawmous(int x,int y);//画鼠??
-void newmouse(int *nx,int *ny,int *nbuttons);   //更新鼠标
+void newmouse(Mouse *m);   //更新鼠标
 
 extern int MouseX;
 extern int MouseY;

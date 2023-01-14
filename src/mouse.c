@@ -52,7 +52,7 @@ void mouseinit()//初始化
 	MouseX=320,MouseY=240;
 	save_bk_mou(320,240);
 	//mouse(MouseX,MouseY);
-	flag=1;
+	flag=0;
 }
 
 /*****************************
@@ -68,7 +68,7 @@ void mouse(int x,int y)
 	{
 		case 1:                                  //手势鼠标
 		{
-				setcolor(WHITE);
+				setcolor(_WHITE);
 				setlinestyle(0,0,1);
 				line(x-1,y+9,x-1,y+8);
 				line(x,y+7,x,y+11);
@@ -88,7 +88,7 @@ void mouse(int x,int y)
 				line(x+10,y+6,x+10,y+16);
 				line(x+11,y+7,x+11,y+13);
 
-				setcolor(DARKGRAY);
+				setcolor(_DARKGRAY);
 				line(x-1,y+9,x-1,y+8);
 				line(x-1,y+8,x+1,y+6);
 				line(x+1,y+6,x+3,y+10);
@@ -109,7 +109,7 @@ void mouse(int x,int y)
 			break;
 		case 2:                        //光标
 		{
-			setcolor(DARKGRAY);
+			setcolor(_DARKGRAY);
 			setlinestyle(0,0,1);
 			line(x+1,y-1,x+9,y-1);
 			line(x+1,y+15,x+9,y+15);
@@ -118,7 +118,7 @@ void mouse(int x,int y)
 			break;
 		case 3:                        //十字
 		{
-			setcolor(WHITE);
+			setcolor(_WHITE);
 			setlinestyle(0,0,1);
 			line(x-1,y+7,x+11,y+7);
 			line(x+5,y-1,x+5,y+15);
@@ -127,7 +127,7 @@ void mouse(int x,int y)
 		default:              //默认鼠标
 		{
 			setlinestyle(0,0,1);
-			setcolor(WHITE);
+			setcolor(_WHITE);
 			line(x,y,x,y+13);
 			line(x+1,y+1,x+1,y+12);
 			line(x+2,y+2,x+2,y+11);
@@ -140,7 +140,7 @@ void mouse(int x,int y)
 			line(x+7,y+7,x+7,y+9);
 			line(x+8,y+8,x+8,y+9);
 			line(x+9,y+9,x+9,y+9);
-			setcolor(DARKGRAY);
+			setcolor(_DARKGRAY);
 			line(x-1,y-1,x-1,y+14);
 			line(x-1,y+14,x+3,y+11);
 			line(x+3,y+11,x+3,y+12);
@@ -213,8 +213,9 @@ DESCRIPTION: 鼠标状态发生变化则更新鼠标
 INPUT: nx,ny,nbuttons
 RETURN: 无
 ********************************************/
-void newmouse(int *nx,int *ny,int *nbuttons)
+void newmouse(Mouse *m)
 {
+	int *nx = &m->posX, *ny = &m->posY, *nbuttons = &m->click;
 	int xn,yn,buttonsn;
 	int x0=*nx,y0=*ny,buttons0=*nbuttons;
 	mread(&xn,&yn,&buttonsn);
