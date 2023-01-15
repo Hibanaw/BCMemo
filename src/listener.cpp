@@ -75,7 +75,7 @@ int listenerTextbox(Textbox *b){
     long lf = b->flickerChangeTime;
     long nt = clock() * 10 / CLK_TCK;
     if(nt - lf > 6){
-        b->flicker != b->flicker;
+		b->flicker = !b->flicker;
         b->flickerChangeTime = nt;
     }
     int k;
@@ -97,7 +97,7 @@ int listenerTextbox(Textbox *b){
     if(b->flicker){
         strcat(rstr, "|");
     }
-    outtext(b->posX, b->posY, b->text);
+	outtextxy(b->posX, b->posY, b->text);
     return 0;
 }
 
