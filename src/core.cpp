@@ -15,22 +15,23 @@ int init(){
  */
 int home(){
 	log("home()");
-	pageHome();
-	int s;
-    Mouse m;
 	while(1){
-		s = listenerHome(&m);
-		//ÅÐ¶ÏµÇÂ¼
-		switch(s){
-			case 1://µÇÂ½
-				clrmous(m.posX, m.posY);
-				login();
-				pageHome();
-				break;
-			case -1://ÍË³ö
-				return 0;
+		pageHome();
+		int s, ls = 0;
+		Mouse m;
+		while(!ls){
+			s = listenerHome(&m);
+			//ÅÐ¶ÏµÇÂ¼
+			switch(s){
+				case 1://µÇÂ½
+					clrmous(m.posX, m.posY);
+					ls = login();
+					break;
+				case -1://ÍË³ö
+					return 0;
+			}
+			delay(10);
 		}
-		delay(10);
 	}
 }
 
@@ -44,21 +45,23 @@ int login(){
 	log("login()");
 	Mouse m;
 	while(1){
+		Textbox tu;
+		Textbox tp;
+		Button b;
 		log("login loop time", DBG);
-		pageLogin();
+		pageLogin(tu, tp, b);
 		char username[101], password[101];
-		Textbox uBox = {username, 0, 100};
-		Textbox pBox = {password, 0, 100};
+
 		int s;
 		while(1){
-			s = listenerLogin(&uBox, &pBox, &m);
+			s = listenerLogin(&tu, &tp, &b, &m);
 			switch(s){
 				case 1:
 					goto LOGIN;
 					break;
 				case -1:
 					clrmous(m.posX, m.posY);
-					return 0;
+					return -1;
 					break;
 			}
 			delay(10);
