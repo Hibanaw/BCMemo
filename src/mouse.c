@@ -49,8 +49,8 @@ void mouseinit()//≥ı ºªØ
 		int86(51,&regs,&regs);
 	}
 	MouseS = 0;
-	MouseX=320,MouseY=240;
-	save_bk_mou(320,240);
+	MouseX=512,MouseY=384;
+	save_bk_mou(512,384);
 	//mouse(MouseX,MouseY);
 	flag=0;
 }

@@ -13,7 +13,6 @@
 int main(){
 	init();
 	while(home());
-	getchar();
 	close();
 	return 0;
 }

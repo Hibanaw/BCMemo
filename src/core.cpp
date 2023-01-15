@@ -4,6 +4,7 @@ int init(){
 	initsvga256();
 	mouseinit();
 	useRGB256Colors();
+	textcolor(_WHITE);
 	return 0;
 }
 
@@ -45,12 +46,16 @@ int login(){
 	log("login()");
 	Mouse m;
 	while(1){
+		char username[101], password[101];
 		Textbox tu;
 		Textbox tp;
 		Button b;
+		tu.posX = tp.posX = 384;
+		tu.posY = 420; tp.posY = 500;
+		tu.width = tp.width = 256;
+		tu.height = tp.height = 32;
 		log("login loop time", DBG);
 		pageLogin(tu, tp, b);
-		char username[101], password[101];
 
 		int s;
 		while(1){
@@ -102,5 +107,6 @@ void mainLoop(){
 
 
 void close(){
+	cleardevice();
 	closesvga256();
 }

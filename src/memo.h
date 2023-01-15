@@ -1,13 +1,3 @@
-/*
- * @Author: Hibanaw Hu hibanaw@qq.com
- * @Date: 2023-01-12 10:14:00
- * @LastEditors: Hibanaw Hu hibanaw@qq.com
- * @LastEditTime: 2023-01-12 14:03:21
- * @FilePath: \memo\src\memo.h
- * @Description: 
- * 
- * Copyright (c) 2023 by Hibanaw Hu hibanaw@qq.com, All Rights Reserved. 
- */
 #ifndef _MEMO_H_
 #define _MEMO_H_
 
