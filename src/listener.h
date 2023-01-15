@@ -13,9 +13,9 @@
 
 
 int listenerHome(Mouse*);
-int listenerLogin(struct Textbox *bu, struct Textbox *bp,  Button *b, Mouse *m);
+int listenerLogin(Textbox *bu, Textbox *bp, Button *b, Mouse *m);
 int listenerButton( Button *b, Mouse m);
-int listenerTextbox(struct Textbox *b);
+int listenerTextbox(Textbox *b);
 int listenerKey();
 
 #endif
