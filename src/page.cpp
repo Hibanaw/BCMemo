@@ -1,19 +1,6 @@
 #include"page.h"
 
 /**
- * @brief 绘制按钮
- * 
- * @param x 横坐标
- * @param y 纵坐标
- * @param text 填充内容
- * @param sizex 宽度
- * @param sizey 高度
- * 
- */
-int pageButton(int x, int y, char* text, int width, int height){
-	
-}
-/**
  * @brief 渲染主页固定页面
  * 
  */
@@ -27,13 +14,13 @@ void pageHome(){
  * @brief 渲染登陆固定页面
  * 
  */
-void pageLogin(){
+void pageLogin(Textbox tu, Textbox tp, Button b){
 	log("Show login page");
-	int goLogin, goExit;
 	//绘图
-	setfillstyle(SOLID_FILL, BLUE);
+	setfillstyle(SOLID_FILL, _WHITE);
 	bar(0, 0, 1023, 767);
-	//textButton(100,100);
-	
+	drawTextbox(tu);
+	drawTextbox(tp);
+	drawButton(b);
 	return ;
 }

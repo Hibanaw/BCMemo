@@ -16,9 +16,7 @@
 #endif
 
 
-int pageButton(int x, int y, char* text, int width, int height);
-void pageTextBox();
 void pageHome();
-void pageLogin();
+void pageLogin(struct Textbox tu, struct Textbox tp, struct Button b);
 
 #endif
