@@ -1,6 +1,6 @@
 #include"module.h"
 
-void newButton(Button b){
+void drawButton(Button b){
     switch(b.status){
         case 0:
             setfillstyle(SOLID_FILL, _WHITE);
@@ -21,4 +21,16 @@ void newButton(Button b){
 		x, y
 	};
 	fillpoly(5, point);
+}
+
+void drawTextbox(Textbox t){
+    setfillstyle(SOLID_FILL, _WHITE);
+    bar(t.posX, t.posY, t.posX+t.width, t.posY+t.height);
+    setcolor(_BLACK);
+    setlinestyle(SOLID_LINE, 1, 10);
+    line(t.posX, t.posY, t.posX+t.width, t.posY);
+    line(t.posX, t.posY+t.height, t.posX+t.width, t.posY+t.height);
+    line(t.posX+t.width, t.posY, t.posX+t.width, t.posY+t.height);
+    line(t.posX, t.posY, t.posX, t.posY+t.height);
+    //puthz(t.posX, t.posY, t.text, t.fontSize, t.fontSize + 2, t.fontColor);
 }
