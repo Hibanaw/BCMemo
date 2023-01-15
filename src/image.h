@@ -3,6 +3,7 @@
 
 #include<graphics.h>
 #include"svga.h"
+#include"hz.h"
 
 #ifndef NULL
 #define NULL 0
