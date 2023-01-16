@@ -9,6 +9,7 @@
 #include"hz.h"
 #include"core.h"
 #include"image.h"
+#include"module.h"
 
 
 #ifndef NULL
@@ -16,7 +17,7 @@
 #endif
 
 
-void pageHome();
-void pageLogin(struct Textbox tu, struct Textbox tp, struct Button b);
+void drawHome();
+void drawLogin(Textbox tu, Textbox tp, Button b);
 
 #endif
