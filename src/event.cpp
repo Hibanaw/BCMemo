@@ -40,17 +40,17 @@ int loginEvent(Textbox *bu, Textbox *bp, Button *b, Mouse *m){
  * @param sizey 高度
  * @return int 是否被按下，0为否1为真
  */
-int buttonEvent(Button *b, Mouse m){
+int buttonEvent(Button *b, Mouse *m){
     Button ob = *b, nb = *b;
     if(
-        m.posX > ob.posX && m.posX < ob.posX+ob.width\
-        && m.posY > ob.posY && m.posY < ob.posY+ob.height
+        m->posX > ob.posX && m->posX < ob.posX+ob.width\
+        && m->posY > ob.posY && m->posY < ob.posY+ob.height
     ){
-        if(m.click){
+        if(m->click){
             nb.status = 2;
         }
         else{
-            if(m.release){
+            if(m->release){
                 return 1;
             }
             else{
@@ -71,9 +71,17 @@ int buttonEvent(Button *b, Mouse m){
  * @param b 文本栏内容
  * @return int 1表示增加，-1表示退格
  */
-int textboxEvent(Textbox *b){
-    char rstr[101];
-    strcpy(rstr, b->text);
+int textboxEvent(Textbox *b, Mouse *m){
+    if(
+        m->posX > b->posX && m->posX < b->posX+b->width\
+        && m->posY > b->posY && m->posY < b->posY+b->height
+    ){
+        m->style = TEXTMOS;
+    }
+    char lt[101];
+    char *t = b->text;
+    strcpy(lt, t);
+    int len = strlen(t);
     int color = _GRAY;
     if(b->isFocused){
         long lf = b->flickerChangeTime;
@@ -86,23 +94,29 @@ int textboxEvent(Textbox *b){
         char c;
         k = keyEvent();
         if(k == BACKSPACEKEY){
-            
-            return -1;
+            if(t[len-1] < 128u){//ascii alphabet
+                t[len-1] = 0;
+            }
+            else{//gb2312 chinese character
+                t[len-1] = t[len-2] = 0;
+            }
         }
         c = bk2ascii(k);
         if(c >= 'a' && c <='z' || c >= 'A' && c <= 'Z'){
-            char *s = b->text;
-            int l = strlen(s);
-            s[l] = c;
-            s[l+1] = 0;
+            t[len] = c;
+            t[len+1] = 0;
             return 1;
         }
         
         if(b->flicker){
-            strcat(rstr, "|");
+            strcat(t, "|");
         }
         setcolor(_BLACK);
-	    outtextxy(b->posX, b->posY, b->text);
+        if(strcmp(lt, t))
+            putimage(b->posX, b->posY, b->buffer, COPY_PUT);
+            settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
+			settextstyle(GOTHIC_FONT,HORIZ_DIR,1);
+	        outtextxy(b->posX, b->posY, b->text);
     }
     
     return 0;

@@ -36,8 +36,8 @@ void drawTextbox(Textbox t){
 }
 
 void *saveBg(int x1, int y1, int x2, int y2){
-	unsigned long size = imagesize();
-    void *buffer=malloc(size);
+	unsigned long size = imagesize(x1, y1, x2, y2);
+	void *buffer = malloc(size);
 	if(buffer!=NULL)
 		getimage(x1,y1, min(SCREENWIDTH-1, x2),min(SCREENHEIGHT-1, y2),buffer);
 	else

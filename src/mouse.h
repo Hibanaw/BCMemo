@@ -22,7 +22,12 @@
  */
 typedef struct{
     int posX, posY;
-    enum{} style;
+    enum{
+        POINTERMOS = 0,
+        SELECTMOS,
+        TEXTMOS,
+        CROSSMOS
+        } style;
     int click;//点击
     union REGS regs;
     int flag;//可见性

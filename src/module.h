@@ -3,6 +3,7 @@
 
 #include<time.h>
 #include<graphics.h>
+#include<stdlib.h>
 #include"svga.h"
 #include"keyboard.h"
 #include"hz.h"
