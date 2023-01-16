@@ -7,7 +7,7 @@
  */
 int listenerHome(Mouse *m){
     //鼠标
-    newmouse(m);
+    mread(&m->posX, &m->posY, &m->click);
     //键盘
     int k = listenerKey();
     //通信
@@ -45,7 +45,7 @@ int listenerButton(Button *b, Mouse m){
     if(
         m.posX > ob.posX && m.posX < ob.posX+ob.width\
         && m.posY > ob.posY && m.posY < ob.posY+ob.height
-    ){//鼠标范围在按钮上
+    ){
         if(m.click){
             nb.status = 2;
         }
@@ -73,7 +73,7 @@ int listenerButton(Button *b, Mouse m){
  */
 int listenerTextbox(Textbox *b){
     long lf = b->flickerChangeTime;
-    long nt = clock() * 10 / CLK_TCK;
+    long nt = 1 * 10 / CLK_TCK;
     if(nt - lf > 6){
 		b->flicker = !b->flicker;
         b->flickerChangeTime = nt;
@@ -97,6 +97,7 @@ int listenerTextbox(Textbox *b){
     if(b->flicker){
         strcat(rstr, "|");
     }
+    setcolor(_BLACK);
 	outtextxy(b->posX, b->posY, b->text);
     return 0;
 }
