@@ -34,3 +34,12 @@ void drawTextbox(Textbox t){
     line(t.posX, t.posY, t.posX, t.posY+t.height);
     //puthz(t.posX, t.posY, t.text, t.fontSize, t.fontSize + 2, t.fontColor);
 }
+
+void *saveBg(int x1, int y1, int x2, int y2){
+	unsigned long size = imagesize();
+    void *buffer=malloc(size);
+	if(buffer!=NULL)
+		getimage(x1,y1, min(SCREENWIDTH-1, x2),min(SCREENHEIGHT-1, y2),buffer);
+	else
+		log("save background error", ERR);
+}
