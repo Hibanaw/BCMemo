@@ -1,4 +1,6 @@
 import struct
+import cv2
+
 m = {
     0x000000:0,
     0x800000:1,
@@ -271,29 +273,34 @@ def Hex2Code(h):
 if __name__ == '__main__':
     infilename = input()
     outfilename = infilename+".out"
-    with open(infilename, mode='r') as infile:
-        outfile = open(outfilename, mode='wb')
-        infile.readline()
-        s = infile.readline()
-        w = int(s.split()[0])
-        h = int(s.split()[1])
-        #print(s)
+    image = cv2.imread(infilename)
+    size = image.shape
+    #print(size)
+    h = size[0]
+    w = size[1]
+    with open(outfilename, mode='wb') as outfile:
         bt = struct.pack("2h", w, h)
         outfile.write(bt)
-        for line in infile:
-            s = line
-            l = s.split()
-            for i in range(w):
-                r = int(l[i*3])
-                g = int(l[i*3+1])
-                b = int(l[i*3+2])
+        for i in range(h):
+            for j in range(w):
+                pixelcolor = image[i, j]
+                
+                r = pixelcolor[2]
+                g = pixelcolor[1]
+                b = pixelcolor[0]
+                #print(r,g,b)
                 h = RGB2Hex(r, g, b)
+                #print(h)
                 try:
                     c = Hex2Code(h)
+                    bt = struct.pack('B', c)
                 except:
-                    print("error")
+                    print("[error] not a Windows standard 8 bit bitmap:")
+                    print(f"color rgb={[r, g, b]} do not exist in the palette")
+                    print("try ms paint to convert the image once")
+                    exit(1)
                 #print(c)
-                bt = struct.pack('B', c)
+                
                 outfile.write(bt)
     outfile.close()
     print("OK")
