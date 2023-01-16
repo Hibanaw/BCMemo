@@ -12,10 +12,10 @@
 #include"module.h"
 
 
-int listenerHome(Mouse*);
-int listenerLogin(Textbox *bu, Textbox *bp, Button *b, Mouse *m);
-int listenerButton( Button *b, Mouse m);
-int listenerTextbox(Textbox *b);
-int listenerKey();
+int homeEvent(Mouse*);
+int loginEvent(Textbox *bu, Textbox *bp, Button *b, Mouse *m);
+int buttonEvent( Button *b, Mouse m);
+int textboxEvent(Textbox *b);
+int keyEvent();
 
 #endif

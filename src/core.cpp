@@ -17,11 +17,11 @@ int init(){
 int home(){
 	log("home()");
 	while(1){
-		pageHome();
+		drawHome();
 		int s, ls = 0;
 		Mouse m;
 		while(!ls){
-			s = listenerHome(&m);
+			s = homeEvent(&m);
 			//ÅÐ¶ÏµÇÂ¼
 			switch(s){
 				case 1://µÇÂ½
@@ -31,7 +31,7 @@ int home(){
 				case -1://ÍË³ö
 					return 0;
 			}
-			delay(10);
+			delay(50);
 		}
 	}
 }
@@ -55,11 +55,11 @@ int login(){
 		tu.width = tp.width = 256;
 		tu.height = tp.height = 32;
 		log("login loop time", DBG);
-		pageLogin(tu, tp, b);
+		drawLogin(tu, tp, b);
 
 		int s;
 		while(1){
-			s = listenerLogin(&tu, &tp, &b, &m);
+			s = loginEvent(&tu, &tp, &b, &m);
 			switch(s){
 				case 1:
 					goto LOGIN;
@@ -69,7 +69,7 @@ int login(){
 					return -1;
 					break;
 			}
-			delay(10);
+			delay(50);
 		}
 		LOGIN:
 		//ÑéÖ¤
@@ -87,14 +87,12 @@ int login(){
 				break;
 			}
 		}
-		switch (isLogin){
-			case 1:
-				//³É¹¦µÇÂ½
-				break;
-			case 2:
-				//ÃÜÂë´íÎó
-				break;
-		}	
+		if(isLogin){
+
+		}
+		else{
+
+		}
 	}
 	return 0;
 }

@@ -1,28 +1,28 @@
-#include"listener.h"
+#include"event.h"
 
 /**
  * @brief Home监听
  * 
  * @return int 1为登陆，-1为退出
  */
-int listenerHome(Mouse *m){
+int homeEvent(Mouse *m){
     //鼠标
     mread(&m->posX, &m->posY, &m->click);
     //键盘
-    int k = listenerKey();
+    int k = keyEvent();
     //通信
 	if(m->click || k && !isESCAPE(k)) return 1;
 	if(isESCAPE(k)) return -1;
     return 0;
 }
 
-int listenerLogin(Textbox *bu, Textbox *bp, Button *b, Mouse *m){
+int loginEvent(Textbox *bu, Textbox *bp, Button *b, Mouse *m){
     newmouse(m);
-	int k = listenerKey();
+	int k = keyEvent();
     if(isESCAPE(k)){
         return -1;
     }
-    int s = listenerButton(b, *m);
+	int s = buttonEvent(b, *m);
 	if(s == 1){
         return 1;
     }
@@ -40,7 +40,7 @@ int listenerLogin(Textbox *bu, Textbox *bp, Button *b, Mouse *m){
  * @param sizey 高度
  * @return int 是否被按下，0为否1为真
  */
-int listenerButton(Button *b, Mouse m){
+int buttonEvent(Button *b, Mouse m){
     Button ob = *b, nb = *b;
     if(
         m.posX > ob.posX && m.posX < ob.posX+ob.width\
@@ -66,48 +66,54 @@ int listenerButton(Button *b, Mouse m){
 }
 
 /**
- * @brief 文本栏输入监听
+ * @brief 文本栏输入
  * 
  * @param b 文本栏内容
  * @return int 1表示增加，-1表示退格
  */
-int listenerTextbox(Textbox *b){
-    long lf = b->flickerChangeTime;
-    long nt = 1 * 10 / CLK_TCK;
-    if(nt - lf > 6){
-		b->flicker = !b->flicker;
-        b->flickerChangeTime = nt;
-    }
-    int k;
-    char c;
-    k = listenerKey();
-	if(k == BACKSPACEKEY){
-        return -1;
-    }
-    c = bk2ascii(k);
-    if(c >= 'a' && c <='z' || c >= 'A' && c <= 'Z'){
-        char *s = b->text;
-        int l = strlen(s);
-        s[l] = c;
-        s[l+1] = 0;
-        return 1;
-    }
+int textboxEvent(Textbox *b){
     char rstr[101];
     strcpy(rstr, b->text);
-    if(b->flicker){
-        strcat(rstr, "|");
+    int color = _GRAY;
+    if(b->isFocused){
+        long lf = b->flickerChangeTime;
+        long nt = 1 * 10 / CLK_TCK;
+        if(nt - lf > 6){
+            b->flicker = !b->flicker;
+            b->flickerChangeTime = nt;
+        }
+        int k;
+        char c;
+        k = keyEvent();
+        if(k == BACKSPACEKEY){
+            
+            return -1;
+        }
+        c = bk2ascii(k);
+        if(c >= 'a' && c <='z' || c >= 'A' && c <= 'Z'){
+            char *s = b->text;
+            int l = strlen(s);
+            s[l] = c;
+            s[l+1] = 0;
+            return 1;
+        }
+        
+        if(b->flicker){
+            strcat(rstr, "|");
+        }
+        setcolor(_BLACK);
+	    outtextxy(b->posX, b->posY, b->text);
     }
-    setcolor(_BLACK);
-	outtextxy(b->posX, b->posY, b->text);
+    
     return 0;
 }
 
 /**
- * @brief 键盘监听
+ * @brief 键盘事件
  * 
  * @return int 按下的bioskey(0)值
  */
-int listenerKey(){
+int keyEvent(){
     int k = 0;
     if(bioskey(1)){
         k = bioskey(0);
