@@ -15,7 +15,7 @@ typedef struct MemoBlockNode{//备忘录块的节点
 }MemoBlockNode;
 
 typedef struct{//备忘录本体，为备忘录块的链表结构，记录了头节点和总数量
-    MemoBlock start;
+    MemoBlockNode start;
     unsigned int count;
 }Memo;
 

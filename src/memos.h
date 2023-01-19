@@ -9,7 +9,7 @@ typedef struct MemoNode{//备忘录的节点
 }MemoNode;
 
 typedef struct{//所有备忘录，备忘录的链表结构，记录了头结点和总个数。
-    Memo *start;
+    MemoNode *start;
     unsigned int count;
 }Memos;
 

@@ -27,11 +27,13 @@ typedef struct Textbox{
 	int fontSize;
 	int fontColor;
 	int isFocused;
+	int isMoveOn;
+	int isHovered;
 	int maxLength;
 	int outLine;
 	char *discription;
 	int flicker;
-	long flickerChangeTime;
+	time_t flickerChangeTime;
 	void *buffer;
 }Textbox;
 

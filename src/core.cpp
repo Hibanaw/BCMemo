@@ -97,12 +97,34 @@ int login(){
 	return 0;
 }
 
-void mainLoop(){
+void memu(){
 	while(1){
-		//TODO
+		//绘制背景
+
+		//读取列表
+		Memos list;
+		MemoNode *currentNode = list.start;
+
+		//若为空，则直接创建第一篇
+		if(list.start == NULL){
+			MemoNode newMemoNode;
+			list.start = (MemoNode huge *)malloc(sizeof(newMemoNode));
+			memoDocument(&list.start->content);
+			continue;
+		}
+		//不为空，显示列表
+		int n = 0;
+		while(n < 5 && currentNode->next != NULL){
+			n++;
+			
+		}
+
 	}
 }
 
+void memoDocument(Memo *m){
+
+}
 
 void close(){
 	cleardevice();

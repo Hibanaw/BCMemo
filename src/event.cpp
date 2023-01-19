@@ -67,24 +67,25 @@ int buttonEvent(Button *b, Mouse *m){
 
 
 int textboxEvent(Textbox *b, Mouse *m){
+    //处理hover
     if(
         m->posX > b->posX && m->posX < b->posX+b->width\
         && m->posY > b->posY && m->posY < b->posY+b->height
     ){
-        m->style = TEXTMOUSE;
+        b->isHovered = 1;
     }
+    else{
+        b->isHovered = 0;
+    }
+    
     char lt[101];
     char *t = b->text;
     strcpy(lt, t);
     int len = strlen(t);
     int color = _GRAY;
+    
     if(b->isFocused){
-        long lf = b->flickerChangeTime;
-        long nt = 1 * 10 / CLK_TCK;
-        if(nt - lf > 6){
-            b->flicker = !b->flicker;
-            b->flickerChangeTime = nt;
-        }
+        //处理退格
         int k;
         char c;
         k = keyEvent();
@@ -96,13 +97,21 @@ int textboxEvent(Textbox *b, Mouse *m){
                 t[len-1] = t[len-2] = 0;
             }
         }
+        //输入
         c = bk2ascii(k);
         if(c >= 'a' && c <='z' || c >= 'A' && c <= 'Z'){
             t[len] = c;
             t[len+1] = 0;
             return 1;
         }
-        
+        //处理光标闪烁
+        long lf = b->flickerChangeTime;
+        long nt = time(NULL);
+        if(nt - lf >= 1){
+            b->flicker = !b->flicker;//切换闪烁状态
+            b->flickerChangeTime = nt;//记录本次切换时间
+        }
+        //需要闪烁
         if(b->flicker){
             strcat(t, "|");
         }
