@@ -65,18 +65,13 @@ int buttonEvent(Button *b, Mouse *m){
 	return 0;
 }
 
-/**
- * @brief 文本栏输入
- * 
- * @param b 文本栏内容
- * @return int 1表示增加，-1表示退格
- */
+
 int textboxEvent(Textbox *b, Mouse *m){
     if(
         m->posX > b->posX && m->posX < b->posX+b->width\
         && m->posY > b->posY && m->posY < b->posY+b->height
     ){
-        m->style = TEXTMOS;
+        m->style = TEXTMOUSE;
     }
     char lt[101];
     char *t = b->text;

@@ -23,10 +23,10 @@
 typedef struct{
     int posX, posY;
     enum{
-        POINTERMOS = 0,
-        SELECTMOS,
-        TEXTMOS,
-        CROSSMOS
+        POINTERMOUSE = 0,
+        SELECTMOUSE,
+        TEXTMOUSE,
+        CROSSMOUSE
         } style;
     int click;//µã»÷
     union REGS regs;
