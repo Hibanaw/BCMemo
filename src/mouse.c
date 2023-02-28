@@ -3,7 +3,7 @@
  * @author dengshuumin, Hibanaw Hu (hibanaw@qq.com)
  * @brief Mouse under DOS with no global variables.
  * @date 2023-02-26
- * @version 4.0
+ * @version 4.1
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -32,7 +32,6 @@ void mouse_init()
 	union REGS regs;
 	Mouse *m = mouse();
 	int size=imagesize(0,0,12,19);
-
 	m->buffer=malloc(size);
 	xmin=2;
 	xmax=x_max-1;
@@ -61,6 +60,7 @@ void mouse_init()
 	m->posX=xmax/2;
 	m->posY=ymax/2;
 	m->_flag=0;
+	_mouse_saveBackground(m->posX,m->posY);
 }
 
 /**
@@ -80,14 +80,19 @@ void mouse_update()
 	// 	m->click = 0;    //使得能连续按键
 	if(xn == x0 && yn == y0 && buttonsn == buttons0)
 		return;            //鼠标状态不变则直接返回S
+	_mouse_clrmous(x0,y0);        //说明鼠标状态发生了改变
+	_mouse_saveBackground(m->posX,m->posY);
 	if(m->visibility){
-		_mouse_clrmous(x0,y0);        //说明鼠标状态发生了改变
-		_mouse_saveBackground(m->posX,m->posY);
 		_mouse_drawmous(m->posX,m->posY);
 	}
 	
 }
 
+void mouse_pageUpdate(){
+	_mouse_saveBackground(mouse()->posX,mouse()->posY);
+	if(mouse()->visibility)
+		_mouse_drawmous(mouse()->posX, mouse()->posY);
+}
 
 /**
  * @brief Whether mouse is clicked in box.
@@ -284,6 +289,7 @@ void _mouse_read(int *nx,int *ny,int *nbuttons)
 void _mouse_saveBackground(int nx,int ny)
 {
 	void *buffer = mouse()->buffer;
+	
 	if(buffer!=NULL)
 		getimage(nx-1,ny-2,MIN(nx+11, MAXWIDTH-1),MIN(ny+17, MAXHEIGHT-1),buffer);
 	else
@@ -300,15 +306,14 @@ void _mouse_saveBackground(int nx,int ny)
  */
 void _mouse_clrmous(int nx,int ny)//清除鼠标
 {
-	if(mouse()->_flag==1)
-	{
+	// if(mouse()->_flag==1)
+	// {
 		setwritemode(XOR_PUT);
 		_mouse_draw(nx,ny);
 		putimage(nx-1,ny-2,mouse()->buffer,COPY_PUT);
-		// free(mouse()->buffer);
 		mouse()->_flag=0;
 		setwritemode(COPY_PUT);
-	}
+	// }
 }
 
 /**
@@ -321,12 +326,12 @@ void _mouse_clrmous(int nx,int ny)//清除鼠标
  */
 void _mouse_drawmous(int nx,int ny)
 {
-	if(mouse()->_flag==0)
-	{
+	// if(mouse()->_flag==0)
+	// {
 		setwritemode(COPY_PUT);
 	    _mouse_draw(nx,ny);
 		mouse()->_flag=1;
-	}
+	// }
 }
 
 
