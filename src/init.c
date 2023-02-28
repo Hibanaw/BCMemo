@@ -11,12 +11,15 @@
 #include "init.h"
 
 void init(){
+	log(LOG, "Init.");
 	initsvga256();
     useRGB256Colors();
 	mouse_init();
+	log(DEBUG, "Init ends.");
 	return ;
 }
 
 void destruct(){
 	closesvga256();
+	log(LOG, "Destruct ends.");
 }

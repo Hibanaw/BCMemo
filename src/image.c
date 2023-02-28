@@ -15,8 +15,9 @@ void image_render(string filePath, int x, int y){
     FILE *imgFile = fopen(path, "rb");
     int i, j;
     short w, h;
+    log(LOG, "Start rendering image.");
     if(imgFile == NULL){
-        printf("ERR\n");
+        log(ERROR, "Image load error!");
         return ;
     }
     fread(&w, sizeof(short), 1, imgFile);
@@ -28,4 +29,5 @@ void image_render(string filePath, int x, int y){
         }
     }
     fclose(imgFile);
+    log(DEBUG, "Image rendering ends.");
 }
