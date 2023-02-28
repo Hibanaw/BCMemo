@@ -13,6 +13,7 @@
 void init(){
 	initsvga256();
     useRGB256Colors();
+	mouse_init();
 	return ;
 }
 

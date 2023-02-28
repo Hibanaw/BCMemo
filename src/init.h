@@ -12,6 +12,7 @@
 #define __INIT_H__
 
 #include "svga.h"
+#include "mouse.h"
 
 void init();
 void destruct();
