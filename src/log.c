@@ -20,6 +20,7 @@ void log(enum LogLevel l, string s){
             break;
         case LOG:
             t = "[LOG]";
+            break;
         default:
             t = "[ERR]";
         }

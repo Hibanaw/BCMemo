@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include "global.h"
+#include "svga.h"
 
 enum LogLevel{
     DEBUG,
