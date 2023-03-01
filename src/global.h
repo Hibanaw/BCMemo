@@ -11,16 +11,17 @@
 #ifndef __GLOBAL_H__
 #define __GLOBAL_H__
 
-#ifndef NULL
-#define NULL 0
-#endif
 
 #define MAXHEIGHT 768
 #define MAXWIDTH 1024
 
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
+#define ABS(x) ((x) > 0 ? (x) : -(x))
 
 typedef char * string;
+typedef enum{false, true} bool;
+
+#include "log.h"
 
 #endif
