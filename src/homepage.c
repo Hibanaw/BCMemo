@@ -14,11 +14,11 @@ void homepage(){
     while(1){
         int signal = 0;
 		//draw
-		string bg = "res\\img\\hpbg.bin";
 
 		log(LOG, "Homepage starts.");
 		mouse_setVisibility(1);
-        image_render(bg, 0, 0);
+        image_render("res\\img\\hpbg.bin", 0, 0);
+        image_renderEmerge("res\\img\\hpf.bin", 0, 0);
         
         //event
         mouse_pageUpdate();

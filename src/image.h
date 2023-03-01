@@ -17,5 +17,6 @@
 #include "global.h"
 
 void image_render(string, int, int);
+void image_renderEmerge(string, int, int);
 
 #endif
