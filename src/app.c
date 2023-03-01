@@ -23,16 +23,19 @@ void app(){
     while(1){
         int signal = 0;
         AppData *ad = app_data();
-        log(LOG, "Main app starts.");        
-        setcolor(_WHITE);
+		// Button b;
+        
+        log(LOG, "Main app starts.");
+        setfillstyle(1, _WHITE);
         bar(0, 0, MAXWIDTH, MAXHEIGHT);
 
-        mouse_pageUpdate();
+        
         if(ad -> leftBar){
-            setcolor(_GRAY);
+            setfillstyle(1, _GRAY);
             bar(0, 0, 200, MAXHEIGHT);
         }
-
+        
+        mouse_pageUpdate();
         while(1){
             int k = keybord_getKey();
             Mouse * m = mouse();
