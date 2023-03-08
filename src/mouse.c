@@ -3,7 +3,7 @@
  * @author dengshuumin, Hibanaw Hu (hibanaw@qq.com)
  * @brief Mouse under DOS with no global variables.
  * @date 2023-02-26
- * @version 4.1
+ * @version 4.2
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -88,8 +88,15 @@ void mouse_update()
 	
 }
 
-void mouse_pageUpdate(){
+void mouse_chunkUpdate(){
+    _mouse_clrmous(mouse()->posX, mouse()->posY);
 	_mouse_saveBackground(mouse()->posX,mouse()->posY);
+	if(mouse()->visibility)
+		_mouse_drawmous(mouse()->posX, mouse()->posY);
+}
+
+void mouse_pageUpdate(){
+    _mouse_saveBackground(mouse()->posX,mouse()->posY);
 	if(mouse()->visibility)
 		_mouse_drawmous(mouse()->posX, mouse()->posY);
 }
@@ -101,7 +108,7 @@ void mouse_pageUpdate(){
  * @param y1 
  * @param x2 
  * @param y2 
- * @return int 1 if clicked in box; 2 if in box but not clicked; 2 if not in box.
+ * @return int 1 if clicked in box; 2 if in box but not clicked; 0 if not in box.
  */
 int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 {
@@ -168,43 +175,43 @@ void _mouse_draw(int x,int y)
 	{
 		case 1:                                  //手势鼠标
 		{
-				setcolor(_WHITE);
-				setlinestyle(0,0,1);
-				line(x-1,y+9,x-1,y+8);
-				line(x,y+7,x,y+11);
-				line(x+1,y+6,x+1,y+13);
-				line(x+2,y+8,x+2,y+14);
-				line(x+3,y-1,x+3,y+15);
-				arc(x+4,y-1,0,180,1);
-				line(x+4,y-2,x+4,y+15);
-				line(x+5,y-1,x+5,y+16);
-				arc(x+6,y+3,0,180,1);
-				line(x+6,y+2,x+6,y+16);
-				line(x+7,y+3,x+7,y+17);
-				arc(x+8,y+5,0,180,1);
-				line(x+8,y+4,x+8,y+17);
-				line(x+9,y+5,x+9,y+16);
-				arc(x+10,y+7,0,180,1);
-				line(x+10,y+6,x+10,y+16);
-				line(x+11,y+7,x+11,y+13);
+            setcolor(_WHITE);
+            setlinestyle(0,0,1);
+            line(x-1,y+9,x-1,y+8);
+            line(x,y+7,x,y+11);
+            line(x+1,y+6,x+1,y+13);
+            line(x+2,y+8,x+2,y+14);
+            line(x+3,y-1,x+3,y+15);
+            arc(x+4,y-1,0,180,1);
+            line(x+4,y-2,x+4,y+15);
+            line(x+5,y-1,x+5,y+16);
+            arc(x+6,y+3,0,180,1);
+            line(x+6,y+2,x+6,y+16);
+            line(x+7,y+3,x+7,y+17);
+            arc(x+8,y+5,0,180,1);
+            line(x+8,y+4,x+8,y+17);
+            line(x+9,y+5,x+9,y+16);
+            arc(x+10,y+7,0,180,1);
+            line(x+10,y+6,x+10,y+16);
+            line(x+11,y+7,x+11,y+13);
 
-				setcolor(_DARKGRAY);
-				line(x-1,y+9,x-1,y+8);
-				line(x-1,y+8,x+1,y+6);
-				line(x+1,y+6,x+3,y+10);
-				line(x+3,y+10,x+3,y-1);
-				arc(x+4,y-1,0,180,1);
-				line(x+5,y-1,x+5,y+5);
-				arc(x+6,y+3,0,180,1);
-				line(x+7,y+3,x+7,y+7);
-				arc(x+8,y+5,0,180,1);
-				line(x+9,y+5,x+9,y+9);
-				arc(x+10,y+7,0,180,1);
-				line(x+11,y+7,x+11,y+13);
-				arc(x+7,y+13,-90,0,4);
-				line(x+7,y+17,x+3,y+15);
-				line(x+3,y+15,x+1,y+13);
-				line(x+1,y+13,x-1,y+9);
+            setcolor(_DARKGRAY);
+            line(x-1,y+9,x-1,y+8);
+            line(x-1,y+8,x+1,y+6);
+            line(x+1,y+6,x+3,y+10);
+            line(x+3,y+10,x+3,y-1);
+            arc(x+4,y-1,0,180,1);
+            line(x+5,y-1,x+5,y+5);
+            arc(x+6,y+3,0,180,1);
+            line(x+7,y+3,x+7,y+7);
+            arc(x+8,y+5,0,180,1);
+            line(x+9,y+5,x+9,y+9);
+            arc(x+10,y+7,0,180,1);
+            line(x+11,y+7,x+11,y+13);
+            arc(x+7,y+13,-90,0,4);
+            line(x+7,y+17,x+3,y+15);
+            line(x+3,y+15,x+1,y+13);
+            line(x+1,y+13,x-1,y+9);
 		}
 			break;
 		case 2:                        //光标
@@ -306,14 +313,14 @@ void _mouse_saveBackground(int nx,int ny)
  */
 void _mouse_clrmous(int nx,int ny)//清除鼠标
 {
-	// if(mouse()->_flag==1)
-	// {
+	if(mouse()->_flag==1)
+	{
 		setwritemode(XOR_PUT);
 		_mouse_draw(nx,ny);
 		putimage(nx-1,ny-2,mouse()->buffer,COPY_PUT);
 		mouse()->_flag=0;
 		setwritemode(COPY_PUT);
-	// }
+	}
 }
 
 /**
@@ -326,12 +333,12 @@ void _mouse_clrmous(int nx,int ny)//清除鼠标
  */
 void _mouse_drawmous(int nx,int ny)
 {
-	// if(mouse()->_flag==0)
-	// {
+	if(mouse()->_flag==0)
+	{
 		setwritemode(COPY_PUT);
 	    _mouse_draw(nx,ny);
 		mouse()->_flag=1;
-	// }
+	}
 }
 
 

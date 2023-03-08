@@ -57,6 +57,7 @@ typedef struct{
 Mouse *mouse();
 void mouse_init();
 void mouse_update();
+void mouse_chunkUpdate();
 void mouse_pageUpdate();
 int mouse_isClickedInBox(int, int, int, int);
 void mouse_setVisibility(bool);
