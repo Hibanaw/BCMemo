@@ -14,6 +14,7 @@
 #define LOGLEVEL 0
 
 #include <stdio.h>
+#include <conio.h>
 #include "global.h"
 #include "svga.h"
 
@@ -23,6 +24,6 @@ enum LogLevel{
     ERROR
 };
 
-void log(enum LogLevel, string);
+void log(enum LogLevel, char *);
 
 #endif

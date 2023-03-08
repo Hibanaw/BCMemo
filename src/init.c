@@ -11,7 +11,7 @@
 #include "init.h"
 
 void init(){
-	log(LOG, "Init.");
+	//log(LOG, "Init.");
 	initsvga256();
     useRGB256Colors();
 	mouse_init();

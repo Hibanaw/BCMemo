@@ -10,8 +10,10 @@
 
 #include "log.h"
 
-void log(enum LogLevel l, string s){
-    string t;
+void log(enum LogLevel l, char *s){
+    char * t;
+    char str[101];
+    int fl;
     if(l >= LOGLEVEL){
         switch (l)
         {
@@ -24,6 +26,12 @@ void log(enum LogLevel l, string s){
         default:
             t = "[ERR]";
         }
-        printf("%s%s\n", t, s);
+        sprintf(str, "%s%s", t, s);
+        settextstyle(0, 0, 2);
+        fl = textwidth(str);
+        setfillstyle(1, _WHITE);
+        bar(0, 0, fl, 16);
+        setcolor(_BLACK);
+        outtextxy(0, 0, str);
     }
 }
