@@ -16,7 +16,7 @@
 #include <graphics.h>
 #include "global.h"
 
-void image_render(string, int, int);
-void image_renderEmerge(string, int, int);
+void image_render(char *, int, int);
+void image_renderEmerge(char *, int, int);
 
 #endif
