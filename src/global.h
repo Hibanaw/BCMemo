@@ -18,8 +18,8 @@
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define ABS(x) ((x) > 0 ? (x) : -(x))
+#define CEILING(f) ((int)(f) + (((f) - (int)(f) > 0) ? 1 : 0))
 
-typedef char * string;
 typedef enum{false, true} bool;
 
 #include "log.h"
