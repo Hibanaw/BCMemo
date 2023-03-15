@@ -12,7 +12,7 @@
 
 int main(){
 	init();
-	Homepage();
+	homepage();
 	
 	return 0;
 }
