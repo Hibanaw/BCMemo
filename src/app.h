@@ -18,7 +18,7 @@
 #include "global.h"
 
 typedef struct{
-    string uid;
+    char * uid;
     bool leftBar;
 	//Memos *memoList;
 }AppData;
