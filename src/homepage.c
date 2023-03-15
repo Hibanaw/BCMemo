@@ -13,21 +13,36 @@
 void homepage(){
     while(1){
         int signal = 0;
+        Button b = {
+            550, 500,
+            850, 550,
+            ButtonDefault
+		};
+        Textbox t = {
+			"Input your username here.",
+            550, 400,
+            850, 450,
+        };
 		//draw
-
 		log(LOG, "Homepage starts.");
 		mouse_setVisibility(1);
         image_render("res\\img\\hpbg.bin", 0, 0);
-        image_renderEmerge("res\\img\\hpf.bin", 0, 0);
-        
+        image_render("res\\img\\hpf.bin", 0, 0);
+		button_draw(&b);
+        textbox_draw(&t);
         //event
-        mouse_pageUpdate();
+		mouse_pageUpdate();
         while(1){
-			int k = keybord_getKey();
+			int k, bs;
             Mouse *m = mouse();
-			if(keybord_isESCAPE(k)) return;
-			mouse_update();
-			if(m->click == ClickLeft){
+            mouse_update();
+			k = keybord_getKey();
+			bs = button_event(&b);
+            if(keybord_isESCAPE(k)){
+                signal = -1;
+                break;
+            }
+			if(bs){
                 signal = 1;
                 break;
             }
@@ -38,8 +53,9 @@ void homepage(){
             app_init();
             app();
             break;
-        default:
+        case -1:
             log(DEBUG, "EXIT.");
+            return;
             break;
         }
     }
