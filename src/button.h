@@ -17,21 +17,22 @@
 #include "mouse.h"
 #include "button.h"
 
-typedef enum{
+enum ButtonStatus{
     ButtonDefault,
     ButtonFocused,
-    ButtonClicked
-}ButtonStatus;
+    ButtonSelected
+};
 
-typedef struct{
-    ButtonStatus status;
+typedef struct Button{
     int posX1;
     int posY1;
     int posX2;
     int posY2;
+    enum ButtonStatus status;
 }Button;
 
 
 void button_draw(Button *);
+int button_event(Button *);
 
 #endif
