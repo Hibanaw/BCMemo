@@ -3,7 +3,7 @@
  * @author dengshuumin, Hibanaw Hu (hibanaw@qq.com)
  * @brief Mouse under DOS with no global variables.
  * @date 2023-02-26
- * @version 4.2
+ * @version 5.0
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -32,7 +32,7 @@ void mouse_init()
 	union REGS regs;
 	Mouse *m = mouse();
 	int size=imagesize(0,0,12,19);
-	m->buffer=malloc(size);
+	m -> buffer=malloc(size);
 	xmin=2;
 	xmax=x_max-1;
 	ymin=3;
@@ -59,7 +59,8 @@ void mouse_init()
 	m->style = 0;
 	m->posX=xmax/2;
 	m->posY=ymax/2;
-	m->_flag=0;
+	m->_flag=1;
+	mouse_update();
 	_mouse_saveBackground(m->posX,m->posY);
 }
 
@@ -76,29 +77,24 @@ void mouse_update()
 	m->posX = xn;
 	m->posY = yn;
 	m->click = buttonsn;
-	// if(buttons0 == m->click)
-	// 	m->click = 0;    //Ê¹µÃÄÜÁ¬Ðø°´¼ü
 	if(xn == x0 && yn == y0 && buttonsn == buttons0)
-		return;            //Êó±ê×´Ì¬²»±äÔòÖ±½Ó·µ»ØS
-	_mouse_clrmous(x0,y0);        //ËµÃ÷Êó±ê×´Ì¬·¢ÉúÁË¸Ä±ä
-	_mouse_saveBackground(m->posX,m->posY);
-	if(m->visibility){
-		_mouse_drawmous(m->posX,m->posY);
-	}
+		return;
+	_mouse_clrmous(x0,y0);
+	_mouse_saveBackground(xn, yn);
+	_mouse_drawmous(xn, yn);
 	
 }
 
-void mouse_chunkUpdate(){
-    _mouse_clrmous(mouse()->posX, mouse()->posY);
-	_mouse_saveBackground(mouse()->posX,mouse()->posY);
-	if(mouse()->visibility)
-		_mouse_drawmous(mouse()->posX, mouse()->posY);
+void mouse_show(){
+	Mouse *m = mouse();
+	int x = m->posX, y = m->posY;
+	_mouse_saveBackground(x, y);
+	_mouse_drawmous(x, y);
 }
-
-void mouse_pageUpdate(){
-    _mouse_saveBackground(mouse()->posX,mouse()->posY);
-	if(mouse()->visibility)
-		_mouse_drawmous(mouse()->posX, mouse()->posY);
+void mouse_hide(){
+	Mouse *m = mouse();
+	int x = m->posX, y = m->posY;
+	_mouse_clrmous(x, y);
 }
 
 /**
@@ -115,7 +111,7 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 	int MouseX = mouse()->posX;
 	int MouseY = mouse()->posY;
 	int press = mouse()->click;
-	//ÔÚ¿òÖÐµã»÷£¬Ôò·µ»Ø1
+	//ï¿½Ú¿ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½1
 	if(MouseX > x1 
 	&&MouseX < x2
 	&&MouseY > y1
@@ -125,7 +121,7 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 		return 1;
 	}
 	
-	//ÔÚ¿òÖÐÎ´µã»÷£¬Ôò·µ»Ø2
+	//ï¿½Ú¿ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½2
 	else if(MouseX > x1 
 	&&MouseX < x2
 	&&MouseY > y1
@@ -135,7 +131,7 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 		return 2;
 	}
 	
-	//ÔÚ¿òÖÐµã»÷ÓÒ¼ü£¬Ôò·µ»Ø3
+	//ï¿½Ú¿ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½3
 	else if(MouseX > x1 
 	&&MouseX < x2
 	&&MouseY > y1
@@ -152,15 +148,6 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 }
 
 /**
- * @brief Set mouse visibility.
- * 
- * @param t 
- */
-void mouse_setVisibility(bool t){
-	mouse()->visibility = t;
-}
-
-/**
  * @brief Draw mouse at x, y.
  * 
  * @param x Position x.
@@ -170,10 +157,9 @@ void mouse_setVisibility(bool t){
  */
 void _mouse_draw(int x,int y)
 {
-	
 	switch(mouse()->style)
 	{
-		case 1:                                  //ÊÖÊÆÊó±ê
+		case 1:                                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		{
             setcolor(_WHITE);
             setlinestyle(0,0,1);
@@ -214,7 +200,7 @@ void _mouse_draw(int x,int y)
             line(x+1,y+13,x-1,y+9);
 		}
 			break;
-		case 2:                        //¹â±ê
+		case 2:                        //ï¿½ï¿½ï¿½
 		{
 			setcolor(_DARKGRAY);
 			setlinestyle(0,0,1);
@@ -223,7 +209,7 @@ void _mouse_draw(int x,int y)
 			line(x+5,y-1,x+5,y+15);
 		}
 			break;
-		case 3:                        //Ê®×Ö
+		case 3:                        //Ê®ï¿½ï¿½
 		{
 			setcolor(_WHITE);
 			setlinestyle(0,0,1);
@@ -231,7 +217,7 @@ void _mouse_draw(int x,int y)
 			line(x+5,y-1,x+5,y+15);
 		}
 			break;
-		default:              //Ä¬ÈÏÊó±ê
+		default:              //Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½
 		{
 			setlinestyle(0,0,1);
 			setcolor(_WHITE);
@@ -296,11 +282,7 @@ void _mouse_read(int *nx,int *ny,int *nbuttons)
 void _mouse_saveBackground(int nx,int ny)
 {
 	void *buffer = mouse()->buffer;
-	
-	if(buffer!=NULL)
-		getimage(nx-1,ny-2,MIN(nx+11, MAXWIDTH-1),MIN(ny+17, MAXHEIGHT-1),buffer);
-	else
-		printf("Error when save background");
+	getimage(nx-1,ny-2,MIN(nx+11, MAXWIDTH-1),MIN(ny+17, MAXHEIGHT-1),buffer);
 }
 
 /**
@@ -309,16 +291,16 @@ void _mouse_saveBackground(int nx,int ny)
  * @param nx 
  * @param ny 
  * 
- * @private
  */
-void _mouse_clrmous(int nx,int ny)//Çå³ýÊó±ê
+void _mouse_clrmous(int nx, int ny)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 {
-	if(mouse()->_flag==1)
+	Mouse *m = mouse();
+	if(m->_flag==1)
 	{
-		setwritemode(XOR_PUT);
+		setwritemode(XOR_PUT); 
 		_mouse_draw(nx,ny);
-		putimage(nx-1,ny-2,mouse()->buffer,COPY_PUT);
-		mouse()->_flag=0;
+		putimage(nx-1,ny-2,m->buffer,COPY_PUT);
+		m->_flag=0;
 		setwritemode(COPY_PUT);
 	}
 }
@@ -329,15 +311,15 @@ void _mouse_clrmous(int nx,int ny)//Çå³ýÊó±ê
  * @param nx 
  * @param ny 
  * 
- * @private
  */
-void _mouse_drawmous(int nx,int ny)
+void _mouse_drawmous(int nx, int ny)
 {
-	if(mouse()->_flag==0)
+	Mouse *m = mouse();
+	if(m->_flag==0)
 	{
 		setwritemode(COPY_PUT);
 	    _mouse_draw(nx,ny);
-		mouse()->_flag=1;
+		m->_flag=1;
 	}
 }
 
