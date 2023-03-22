@@ -20,7 +20,7 @@ int initsvga256(void) //初始化函数
 	int G_driver = DETECT, G_model;
 	char Gr_error; //错误信息储存
 	installuserdriver("SVGA256", detectSVGA256);
-	initgraph(&G_driver, &G_model, "");
+	initgraph(&G_driver, &G_model, "C:\\BORLANDC\\BGI");
 	Gr_error = graphresult();
 	if (Gr_error != grOk)
 	{

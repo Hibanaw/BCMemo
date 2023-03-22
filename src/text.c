@@ -35,10 +35,10 @@ void text_display(Text t){
                 ty += rd;
             }
             setcolor(c);
-            settextstyle(0, HORIZ_DIR, fs/8);
-            // setusercharsize(3, 1, 3, 1);
-            outtextxy(tx, ty+0.2*fs, s);
-            tx+=d*0.8;
+            settextstyle(SANS_SERIF_FONT, HORIZ_DIR, fs/8-1);
+            //setusercharsize(1, 1, 1, 1);
+            outtextxy(tx, ty-2, s);
+            tx+=d*0.6;
         }
         else{
             //gb2312
