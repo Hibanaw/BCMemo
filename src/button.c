@@ -100,7 +100,7 @@ int button_event(Button *b){
     if(b -> status != ButtonDefault && s == 0){
         log(DEBUG, "Button disfocused.");
         b -> status = ButtonDefault;
-        m -> style = CURSORSELECT;
+        m -> style = CURSORPOINTER;
         mouse_hide();
         thisdraw(b);
         mouse_show();
