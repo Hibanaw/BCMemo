@@ -24,5 +24,5 @@ int keybord_isAlphabet(unsigned k){
 }
 
 int keybord_isESCAPE(unsigned k){
-    return k == ESCAPEKEY;
+    return k == KEYESCAPE;
 }

@@ -13,9 +13,18 @@
 #include<bios.h>
 
 enum spicalkey{
-    ESCAPEKEY = 0x011b,
-    BACKSPACEKEY = 0xe08,
-    ENTERKEY = 0x1c0d
+    KEYESCAPE = 0x011b,
+    KEYBACKSPACE = 0xe08,
+    KEYSPACE = 0x3920,
+    KEYENTER = 0x1c0d,
+    KEYUP = 0x4800,
+    KEYLEFT = 0x4b00,
+    KEYRIGHT = 0x4d00,
+    KEYDOWN = 0x5000,
+    KEYONE = 0x0231,
+    KEYTWO = 0x0332,
+    KEYTHREE = 0x0433,
+    KEYFOUR = 0x0534
 };
 
 int keybord_getKey();
