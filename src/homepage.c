@@ -25,13 +25,11 @@ void homepage(){
         };
 		//draw
 		log(LOG, "Homepage starts.");
-		mouse_setVisibility(1);
         image_render("res\\img\\hpbg.bin", 0, 0);
         image_render("res\\img\\hpf.bin", 0, 0);
 		button_draw(&b);
         textbox_draw(&t);
         //event
-		mouse_pageUpdate();
         while(1){
 			int k, bs;
             Mouse *m = mouse();

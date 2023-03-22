@@ -34,8 +34,6 @@ void app(){
             setfillstyle(1, _GRAY);
             bar(0, 0, 200, MAXHEIGHT);
         }
-        
-        mouse_pageUpdate();
         while(1){
             int k = keybord_getKey();
             Mouse * m = mouse();
