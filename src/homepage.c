@@ -16,7 +16,9 @@ void homepage(){
         Button b = {
             550, 500,
             850, 550,
-            ButtonDefault
+            "µÇ Â¼",
+            ButtonDefault,
+			button_drawWithText
 		};
         Textbox t = {
 			"Input your username here.",
@@ -24,20 +26,21 @@ void homepage(){
             850, 450,
         };
 		//draw
+        mouse_hide();
 		log(LOG, "Homepage starts.");
-		mouse_setVisibility(1);
         image_render("res\\img\\hpbg.bin", 0, 0);
         image_render("res\\img\\hpf.bin", 0, 0);
 		button_draw(&b);
         textbox_draw(&t);
+        mouse_show();
         //event
-		mouse_pageUpdate();
         while(1){
 			int k, bs;
             Mouse *m = mouse();
             mouse_update();
 			k = keybord_getKey();
 			bs = button_event(&b);
+            textbox_event(&t);
             if(keybord_isESCAPE(k)){
                 signal = -1;
                 break;
@@ -50,7 +53,6 @@ void homepage(){
         switch (signal){
         case 1:
             log(DEBUG, "Jump to app.");
-            app_init();
             app();
             break;
         case -1:
