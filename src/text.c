@@ -37,6 +37,7 @@ void text_display(Text t){
             setcolor(c);
             settextstyle(SANS_SERIF_FONT, HORIZ_DIR, fs/8-1);
             //setusercharsize(1, 1, 1, 1);
+            setwritemode(COPY_PUT);
             outtextxy(tx, ty-2, s);
             tx+=d*0.6;
         }

@@ -32,6 +32,7 @@ void log(enum LogLevel l, char *s){
         setfillstyle(1, _WHITE);
         bar(0, 0, fl, 16);
         setcolor(_BLACK);
+        setwritemode(COPY_PUT);
         outtextxy(0, 0, str);
     }
 }
