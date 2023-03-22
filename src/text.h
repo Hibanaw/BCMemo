@@ -35,6 +35,6 @@ typedef struct
 }Text;
 
 
-void text_display(Text *);
+void text_display(Text);
 
 #endif

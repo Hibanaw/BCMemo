@@ -10,46 +10,44 @@
 
 #include "text.h"
 
-void text_display(Text *t){
-	int x = t->posX, y = t->posY,
-		w = t->width, h = t->hight;
-	int c = t->font.fontColor;
+void text_display(Text t){
+	int x = t.posX, y = t.posY,
+		w = t.width, h = t.hight;
+	int c = t.font.fontColor;
 	int tx = x, ty = y;
-	int fs = t->font.fontSize;
-	int d = t->font.fontSize + t->font.spacing;
-	int rd = t->font.rowSpacing;
-    char *p = t->content;
+	int fs = t.font.fontSize;
+	int d = t.font.fontSize + t.font.spacing;
+	int rd = t.font.rowSpacing;
+    char *p = t.content;
     log(LOG, "Start display text");
     while(*p != '\0'){
 		char s[3] = {0, 0, 0};
         // printf("1");
         if((unsigned)*p < 128){
-            printf("ascii\n");
             //ascii
             s[0] = *p;
             p++;
-            if(tx+d*0.6 > x+w){
-                if(ty+ d + rd > y){
+            if(w && tx+d*0.6 > x+w){
+                if(h && ty+ d + rd > y){
                     return;
                 }
                 tx = x;
                 ty += rd;
             }
             setcolor(c);
-            settextstyle(1, HORIZ_DIR, 0);
-            setusercharsize(3, 1, 3, 1);
+            settextstyle(0, HORIZ_DIR, fs/8);
+            // setusercharsize(3, 1, 3, 1);
             outtextxy(tx, ty+0.2*fs, s);
-            tx+=d*0.6;
+            tx+=d*0.8;
         }
         else{
             //gb2312
-            printf("gb2312\n");
             s[0] = *p;
             p++;
             s[1] = *p;
             p++;
-            if(tx+d > x+w){
-                if(ty+ d + rd > y){
+            if(w && tx+d > x+w){
+                if(h && ty+ d + rd > y){
                     return;
                 }
                 tx = x;
