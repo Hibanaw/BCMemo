@@ -14,28 +14,22 @@ AppData *app_data(){
     return &d;
 }
 
-void app_init(){
-    AppData *ad = app_data();
-    ad -> leftBar = true;
-}
-
 void app(){
+	_app_init();
     while(1){
         int signal = 0;
         AppData *ad = app_data();
 		// Button b;
-        
-        log(LOG, "Main app starts.");
-        setfillstyle(1, _WHITE);
-        bar(0, 0, MAXWIDTH, MAXHEIGHT);
-
-        
-        if(ad -> leftBar){
-            setfillstyle(1, _GRAY);
+		mouse_hide();
+		log(LOG, "Main app starts.");
+		setfillstyle(1, _WHITE);
+		bar(0, 0, MAXWIDTH, MAXHEIGHT);
+        mouse_show();
+		if(ad -> leftBar){
+			setfillstyle(1, _GRAY);
             bar(0, 0, 200, MAXHEIGHT);
         }
         
-        mouse_pageUpdate();
         while(1){
             int k = keybord_getKey();
             Mouse * m = mouse();
@@ -51,5 +45,10 @@ void app(){
             break;
         }
     }
-    
+}
+
+
+void _app_init(){
+    AppData *ad = app_data();
+    ad -> leftBar = true;
 }

@@ -24,7 +24,8 @@ typedef struct{
 }AppData;
 
 AppData *app_data();
-void app_init();
 void app();
+
+void _app_init();
 
 #endif
