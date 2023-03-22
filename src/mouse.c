@@ -3,7 +3,7 @@
  * @author dengshuumin, Hibanaw Hu (hibanaw@qq.com)
  * @brief Mouse under DOS with no global variables.
  * @date 2023-02-26
- * @version 5.0
+ * @version 5.1
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -60,7 +60,6 @@ void mouse_init()
 	m->posX=xmax/2;
 	m->posY=ymax/2;
 	m->_flag=1;
-	mouse_update();
 	_mouse_saveBackground(m->posX,m->posY);
 }
 
@@ -111,7 +110,7 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 	int MouseX = mouse()->posX;
 	int MouseY = mouse()->posY;
 	int press = mouse()->click;
-	//�ڿ��е�����򷵻�1
+	//�ڿ��е�����򷵻�?1
 	if(MouseX > x1 
 	&&MouseX < x2
 	&&MouseY > y1
@@ -121,7 +120,7 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 		return 1;
 	}
 	
-	//�ڿ���δ������򷵻�2
+	//�ڿ���δ������򷵻�?2
 	else if(MouseX > x1 
 	&&MouseX < x2
 	&&MouseY > y1
@@ -131,7 +130,7 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 		return 2;
 	}
 	
-	//�ڿ��е���Ҽ����򷵻�3
+	//�ڿ��е���Ҽ����򷵻�?3
 	else if(MouseX > x1 
 	&&MouseX < x2
 	&&MouseY > y1
@@ -159,7 +158,7 @@ void _mouse_draw(int x,int y)
 {
 	switch(mouse()->style)
 	{
-		case 1:                                  //�������
+		case 1:                                  //�������?
 		{
             setcolor(_WHITE);
             setlinestyle(0,0,1);
@@ -200,7 +199,7 @@ void _mouse_draw(int x,int y)
             line(x+1,y+13,x-1,y+9);
 		}
 			break;
-		case 2:                        //���
+		case 2:                        //���?
 		{
 			setcolor(_DARKGRAY);
 			setlinestyle(0,0,1);
@@ -217,7 +216,7 @@ void _mouse_draw(int x,int y)
 			line(x+5,y-1,x+5,y+15);
 		}
 			break;
-		default:              //Ĭ�����
+		default:              //Ĭ�����?
 		{
 			setlinestyle(0,0,1);
 			setcolor(_WHITE);
