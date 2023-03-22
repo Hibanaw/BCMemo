@@ -16,6 +16,7 @@
 #include "svga.h"
 #include "mouse.h"
 #include "button.h"
+#include "text.h"
 
 enum ButtonStatus{
     ButtonDefault,
@@ -28,11 +29,14 @@ typedef struct Button{
     int posY1;
     int posX2;
     int posY2;
+    char *content;
     enum ButtonStatus status;
+	void (*draw)();
 }Button;
 
-
 void button_draw(Button *);
+void button_drawDefault(Button *);
+void button_drawWithText(Button *);
 int button_event(Button *);
 
 #endif
