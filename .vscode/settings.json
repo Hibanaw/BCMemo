@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "MOUSE.C": "cpp",
+        "mouse.h": "c",
+        "*.rh": "c",
+        "hz.h": "c",
+        "textbox.h": "c",
+        "iinput.h": "c",
+        "isound.h": "c",
+        "dos.h": "c",
+        "ibar.h": "c"
+    },
+    "files.encoding": "gb2312"
+}
