@@ -13,6 +13,8 @@
 #include <string.h>
 #include <time.h>
 #include "global.h"
+#include "text.h"
+#include "hzinput.h"
 
 enum TextboxStatus{
     TextboxDefault,
@@ -27,6 +29,7 @@ typedef struct{
     int posX2;
     int posY2;
 	char content[500];
+    FontFamily font;
 	enum TextboxStatus status;
 	clock_t lastBlink;
 }Textbox;
