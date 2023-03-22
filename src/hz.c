@@ -38,7 +38,7 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 					}
 					while(*s!=NULL)
 					{
-						while (x<640-flag && (*s!=NULL))
+						while (x<MAXWIDTH-flag && (*s!=NULL))
 						{
 							y=y0;
 							quma=s[0]-0xa0;                      //求出区码
@@ -95,7 +95,7 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 					}
 					while(*s!=NULL)
 					{
-						while(x<640-flag && (*s!=NULL))
+						while(x<MAXWIDTH-flag && (*s!=NULL))
 						{
 							y=y0;
 							quma=s[0]-0xa0;                      //求出区码
@@ -140,7 +140,7 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 					}
 					while(*s!=NULL)
 					{
-						while (x<640-flag && (*s!=NULL))
+						while (x<MAXWIDTH-flag && (*s!=NULL))
 						{
 							y=y0;
 							quma=s[0]-0xa0;                      //求出区码
@@ -193,7 +193,7 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 					}
 					while(*s!=NULL)
 					{
-						while (x<640-flag && (*s!=NULL))
+						while (x<MAXWIDTH-flag && (*s!=NULL))
 						{
 							y=y0;
 							quma=s[0]-0xa0;                      //求出区码
@@ -235,3 +235,7 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 	fclose(hzk_p);
 }
 
+
+void hz_puthzold(int x, int y, char *s, int flag, int part, int color){
+	hz_puthz(s, x, y, flag, part, color);
+}

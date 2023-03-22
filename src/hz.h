@@ -7,6 +7,12 @@
 #include<stdlib.h>
 #include<string.h>
 
+#include"global.h"
+
 void hz_puthz(char *s, int x, int y, int flag,int part,int color);
+
+void hz_puthzold(int x, int y, char *s, int flag,int part,int color);
+
 #endif
+
 
