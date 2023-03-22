@@ -62,6 +62,7 @@ void button_drawWithText(Button *b){
 
 int button_event(Button *b){
     int s;
+    Mouse *m = mouse();
     int x1 = b -> posX1, y1 = b -> posY1,
         x2 = b -> posX2, y2 = b -> posY2;
 	void (*thisdraw)() = button_draw;
@@ -72,15 +73,16 @@ int button_event(Button *b){
     if(b -> status == ButtonFocused && s == 1){
         log(DEBUG, "Button clicked.");
         b -> status = ButtonSelected;
+        m -> style = CURSORSELECT;
         mouse_hide();
         thisdraw(b);
-        
         mouse_show();
         return 0;
     }
     if(b -> status == ButtonSelected && s == 2){
         log(DEBUG, "Button released.");
         b -> status = ButtonDefault;
+        m -> style = CURSORPOINTER;
         mouse_hide();
         thisdraw(b);
         mouse_show();
@@ -89,6 +91,7 @@ int button_event(Button *b){
     if(b -> status == ButtonDefault && s == 2){
         log(DEBUG, "Button focused.");
         b -> status = ButtonFocused;
+        m -> style = CURSORSELECT;
         mouse_hide();
         thisdraw(b);
         mouse_show();
@@ -97,6 +100,7 @@ int button_event(Button *b){
     if(b -> status != ButtonDefault && s == 0){
         log(DEBUG, "Button disfocused.");
         b -> status = ButtonDefault;
+        m -> style = CURSORSELECT;
         mouse_hide();
         thisdraw(b);
         mouse_show();
