@@ -12,12 +12,13 @@
 #include "hz.h"
 #include "mouse.h"
 #include "keyboard.h"
+#include "text.h"
+#include "global.h"
 
 #define FAIL 0
 #define SUCCESS 1
 
-
-int hz_input(int x1,int y1,int x2,int y2,char *s,int len,int color,int color2, int size);
+int hzinput(int x,int y, char *s);
 //ºº×ÖÊäÈë·¨
 
 int input_method(int x,int y,char *str,int value,char *py) ;
