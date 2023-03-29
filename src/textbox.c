@@ -41,7 +41,42 @@ int textbox_event(Textbox *tb)
     if (tb->status == TextboxSelected)
     {
         //TODO: edit
+        char olds[500], inss[20], olds1[500], olds2[500], finals[500];
+        int cl = tb->cursorLocation;
+        int i;
+        int is;
+        memset(inss, 0, sizeof(inss));
+        memset(olds1, 0, sizeof(olds1));
+        memset(olds2, 0, sizeof(olds2));
+        memset(finals, 0, sizeof(finals));
 
+        strcpy(olds, tb->content);
+        for(i = 0; i < strlen(olds); i++){
+            if(i < cl){
+                olds1[i] = olds[i];
+            }
+            else{
+                olds2[i-cl] = olds[i];
+            }
+        }
+        is = ime_input(inss);
+        if(strlen(olds) + strlen(inss) > tb->maxLength){
+            return 0;
+        }
+        if(is == -1){
+            olds1[MAX(0, cl-1)] = 0;
+            strcat(finals, olds1);
+            strcat(finals, olds2);
+        }
+        else{
+            strcat(finals, olds1);
+            strcat(finals, inss);
+            strcat(finals, olds2);
+        }
+        if(strcmp(olds, finals)){
+            strcpy(tb->content, finals);
+            textbox_draw(tb);
+        }
     }
 }
 
@@ -56,7 +91,7 @@ void textbox_determinState(Textbox *tb)
         tb->status = TextboxFocused;
         m->style = CURSORTEXT;
     }
-    if (ltb.status == TextboxDefault && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 1)
+    if (ltb.status == TextboxFocused && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 1)
     {
         tb->status = TextboxSelected;
         m->style = CURSORTEXT;

@@ -14,7 +14,7 @@
 #include <time.h>
 #include "global.h"
 #include "text.h"
-#include "hzinput.h"
+#include "ime.h"
 
 enum TextboxStatus{
     TextboxDefault,
@@ -28,7 +28,7 @@ typedef struct{
     int posY1;
     int posX2;
     int posY2;
-	char content[100];
+	char content[500];
     int maxLength;
     FontFamily font;
 	enum TextboxStatus status;
