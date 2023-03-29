@@ -28,10 +28,16 @@ typedef struct{
     int posY1;
     int posX2;
     int posY2;
-	char content[500];
+	char content[100];
+    int maxLength;
     FontFamily font;
 	enum TextboxStatus status;
-	clock_t lastBlink;
+    int cursorLocation;
+    int cursorStatus;
+	clock_t cursorLastBlink;
 }Textbox;
+
+void textbox_determinState(Textbox *tb);
+Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2);
 
 #endif
