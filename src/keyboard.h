@@ -31,5 +31,6 @@ int keybord_getKey();
 char keybord_bios2ascii(unsigned);
 int keybord_isAlphabet(unsigned);
 int keybord_isESCAPE(unsigned);
+int keybord_isBACKSPACE(unsigned);
 
 #endif

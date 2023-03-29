@@ -26,3 +26,7 @@ int keybord_isAlphabet(unsigned k){
 int keybord_isESCAPE(unsigned k){
     return k == KEYESCAPE;
 }
+
+int keybord_isBACKSPACE(unsigned k){
+    return k == KEYBACKSPACE;
+}
