@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "MOUSE.C": "cpp",
+        "MOUSE.C": "c",
         "mouse.h": "c",
         "*.rh": "c",
         "hz.h": "c",
@@ -8,7 +8,17 @@
         "iinput.h": "c",
         "isound.h": "c",
         "dos.h": "c",
-        "ibar.h": "c"
+        "ibar.h": "c",
+        "type_traits": "c",
+        "xtr1common": "c",
+        "xutility": "c",
+        "text.h": "c",
+        "global.h": "c",
+        "log.h": "c",
+        "svga.h": "c",
+        "keyboard.h": "c",
+        "ime.h": "c"
     },
-    "files.encoding": "gb2312"
+    "files.encoding": "gb2312",
+    "C_Cpp.inlayHints.autoDeclarationTypes.enabled": false
 }
