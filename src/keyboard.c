@@ -23,6 +23,14 @@ int keybord_isAlphabet(unsigned k){
     return a >= 'a' && a <= 'z' || a >= 'A' && a <= 'Z';
 }
 
+int keybord_isCharacter(unsigned k){
+    char a = keybord_bios2ascii(k);
+    return a >= 'a' && a <= 'z' || 
+        a >= 'A' && a <= 'Z' ||
+        a >= '0' && a <= '9' ||
+        a == '?' || a == ',' || a == '.';
+}
+
 int keybord_isESCAPE(unsigned k){
     return k == KEYESCAPE;
 }
