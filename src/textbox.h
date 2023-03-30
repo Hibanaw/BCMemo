@@ -22,6 +22,11 @@ enum TextboxStatus{
     TextboxSelected
 };
 
+enum TextboxMouseStatus{
+    TextboxMouseFocused,
+	TextboxMouseDefault
+};
+
 typedef struct{
 	const char * defaultContent;
     int posX1;
@@ -32,6 +37,7 @@ typedef struct{
     int maxLength;
     FontFamily font;
 	enum TextboxStatus status;
+    enum TextboxMouseStatus mstatus;
     int cursorLocation;
     int cursorStatus;
 	clock_t cursorLastBlink;

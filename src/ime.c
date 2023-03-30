@@ -11,7 +11,7 @@
 #include "ime.h"
 
 Ime *ime(){
-    static i;
+    static Ime i;
     return &i;
 }
 
@@ -24,20 +24,21 @@ Ime *ime(){
 int ime_input(char *s){
     int k;
     switch(ime()->status){
-        IMEOFF:
+        case IMEOFF:
+            //log(DEBUG, "imeoff, get input");
             k = keybord_getKey();
             if(keybord_isBACKSPACE(k)){
                 return -1;
             }
-            if(keybord_isAlphabet(k)){
+            if(keybord_isCharacter(k)){
                 *s = keybord_bios2ascii(k);
                 return 1;
             }
             break;
-        IMEPINYIN:
+        case IMEPINYIN:
             
             break;
-        IMEEMOJI:
+        case IMEEMOJI:
             break;
     }
     return 0;

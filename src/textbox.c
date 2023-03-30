@@ -30,6 +30,20 @@ void textbox_draw(Textbox *tb)
         t.font.fontColor = _GRAY;
         text_display(t);
     }
+    if(tb->status = TextboxSelected){
+        int c, r;
+        int lx , ly;
+        int loc = tb->cursorLocation;
+        int w = tb->posX2 - tb->posX1;
+        int wpl = (w % (tb->font.fontSize + tb->font.spacing) / tb->font.fontSize) + w / (tb->font.fontSize + tb->font.spacing);
+        r = (loc+1) / wpl;
+        c = loc - r*wpl;
+        ly = r * (tb->font.fontSize+tb->font.rowSpacing) + tb->posY1;
+        lx = c * (tb->font.fontSize+tb->font.spacing) + tb->font.spacing / 2 + tb->posX1;
+        setcolor(tb->cursorStatus ? _BLACK : _WHITE);
+        setlinestyle(0, 1, 5);
+        line(lx, ly+2, lx, ly+tb->font.fontSize-2);
+    }
 }
 
 int textbox_event(Textbox *tb)
@@ -38,6 +52,19 @@ int textbox_event(Textbox *tb)
     Mouse *m = mouse();
     int mx = m->posX, my = m->posY;
     textbox_determinState(tb);
+    if (tb->status == TextboxSelected){
+        clock_t lt, nt, dt;
+        nt = clock();
+        lt = tb->cursorLastBlink;
+        dt = nt - lt;
+        if(dt / CLK_TCK >= 0.6){
+            tb->cursorLastBlink = nt;
+            tb->cursorStatus = !tb->cursorStatus;
+            mouse_hide();
+            textbox_draw(tb);
+            mouse_show();
+        }
+    }
     if (tb->status == TextboxSelected)
     {
         //TODO: edit
@@ -49,7 +76,11 @@ int textbox_event(Textbox *tb)
         memset(olds1, 0, sizeof(olds1));
         memset(olds2, 0, sizeof(olds2));
         memset(finals, 0, sizeof(finals));
-
+        is = ime_input(inss);
+        if(is == 0){
+            return 0;
+        }
+        log(DEBUG, inss);
         strcpy(olds, tb->content);
         for(i = 0; i < strlen(olds); i++){
             if(i < cl){
@@ -59,7 +90,6 @@ int textbox_event(Textbox *tb)
                 olds2[i-cl] = olds[i];
             }
         }
-        is = ime_input(inss);
         if(strlen(olds) + strlen(inss) > tb->maxLength){
             return 0;
         }
@@ -75,7 +105,10 @@ int textbox_event(Textbox *tb)
         }
         if(strcmp(olds, finals)){
             strcpy(tb->content, finals);
+            tb->cursorLocation += is;
+            mouse_hide();
             textbox_draw(tb);
+            mouse_show();
         }
     }
 }
@@ -86,19 +119,14 @@ void textbox_determinState(Textbox *tb)
     Mouse *m = mouse();
     int mx = m->posX, my = m->posY, mc = m->click;
     
-    if (ltb.status == TextboxDefault && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 2)
+    if (ltb.mstatus == TextboxMouseDefault && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) > 0)
     {
-        tb->status = TextboxFocused;
+        tb->mstatus = TextboxMouseFocused;
         m->style = CURSORTEXT;
     }
-    if (ltb.status == TextboxFocused && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 1)
+    if (ltb.mstatus == TextboxMouseFocused && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 0)
     {
-        tb->status = TextboxSelected;
-        m->style = CURSORTEXT;
-    }
-    if (ltb.status != TextboxDefault && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 0)
-    {
-        tb->status = TextboxDefault;
+        tb->mstatus = TextboxMouseDefault;
         m->style = CURSORPOINTER;
     }
     // 在框里点，需要改变编辑器光标位置
@@ -106,17 +134,25 @@ void textbox_determinState(Textbox *tb)
     {
         int x = tb->posX1, y = tb -> posY1;
 		int w = tb->posX2 - tb->posX1, h = tb->posY2 - tb->posY1;
-        int row = CEILING(1.0 * y / (tb->font.fontSize + tb->font.rowSpacing));
+        int row = CEILING(1.0 * (my-y) / (tb->font.fontSize + tb->font.rowSpacing))-1;
         int colum = CEILING(1.0 * (mx - x) / (tb->font.fontSize + tb->font.spacing));
         int words_per_line = (w % (ltb.font.fontSize + ltb.font.spacing) / ltb.font.fontSize) + w / (ltb.font.fontSize + ltb.font.spacing);
-        tb->cursorLocation = MIN(text_getLength(tb->content), (row - 1) * words_per_line + colum);
+        tb->status = TextboxSelected;
+        tb->cursorLocation = MIN(text_getLength(tb->content), row * words_per_line + colum);
+    }
+    if (tb->status == TextboxSelected &&mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == -1){
+        tb->status = TextboxDefault;
     }
 }
 
 Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2){
     Textbox tb;
     memset(&tb, 0, sizeof(tb));
+    tb.status = TextboxDefault;
+    tb.mstatus = TextboxMouseDefault;
+    tb.cursorStatus = 0;
     tb.defaultContent = ds;
+    tb.maxLength = 100;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,
     tb.font.spacing = 2;
