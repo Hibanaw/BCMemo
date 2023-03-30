@@ -20,11 +20,10 @@ void homepage(){
             ButtonDefault,
 			button_drawWithText
 		};
-        Textbox t = {
-			"Input your username here.",
+        Textbox t = textbox_newDefault(
+            "请在此输入用户名", 
             550, 400,
-            850, 450,
-        };
+            850, 450);
 		//draw
         mouse_hide();
 		log(LOG, "Homepage starts.");
