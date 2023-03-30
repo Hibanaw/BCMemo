@@ -139,9 +139,12 @@ int mouse_isClickedInBox(int x1, int y1, int x2, int y2)
 	{
 		return 3;
 	}
-	
+	else if(press){
+		return -1;
+	}
 	else
 	{
+		
 		return 0;
 	}
 }
