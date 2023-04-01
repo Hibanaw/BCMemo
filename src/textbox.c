@@ -30,7 +30,7 @@ void textbox_draw(Textbox *tb)
         t.font.fontColor = _GRAY;
         text_display(t);
     }
-    if(tb->status = TextboxSelected){
+    if(tb->status == TextboxSelected){
         int c, r;
         int lx , ly;
         int loc = tb->cursorLocation;
@@ -48,10 +48,17 @@ void textbox_draw(Textbox *tb)
 
 int textbox_event(Textbox *tb)
 {
+    int otbs = tb->status;
     char *s = tb->content;
     Mouse *m = mouse();
     int mx = m->posX, my = m->posY;
+    int change = 0;
     textbox_determinState(tb);
+    if(otbs != tb->status){
+        mouse_hide();
+        textbox_draw(tb);
+        mouse_show();
+    }
     if (tb->status == TextboxSelected){
         clock_t lt, nt, dt;
         nt = clock();
@@ -124,13 +131,16 @@ void textbox_determinState(Textbox *tb)
         tb->mstatus = TextboxMouseFocused;
         m->style = CURSORTEXT;
     }
-    if (ltb.mstatus == TextboxMouseFocused && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 0)
+    if (ltb.mstatus != TextboxMouseDefault && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 0)
     {
         tb->mstatus = TextboxMouseDefault;
         m->style = CURSORPOINTER;
     }
+    if(ltb.mstatus == TextboxMouseClicked && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) != 1){
+        tb->mstatus = TextboxMouseFocused;
+    }
     // 在框里点，需要改变编辑器光标位置
-    if (mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 1)
+    if (mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 1 && tb->mstatus != TextboxMouseClicked)
     {
         int x = tb->posX1, y = tb -> posY1;
 		int w = tb->posX2 - tb->posX1, h = tb->posY2 - tb->posY1;
@@ -139,6 +149,9 @@ void textbox_determinState(Textbox *tb)
         int words_per_line = (w % (ltb.font.fontSize + ltb.font.spacing) / ltb.font.fontSize) + w / (ltb.font.fontSize + ltb.font.spacing);
         tb->status = TextboxSelected;
         tb->cursorLocation = MIN(text_getLength(tb->content), row * words_per_line + colum);
+        tb->cursorLastBlink = 0;
+        tb->cursorStatus = 0;
+        tb->mstatus = TextboxMouseClicked;
     }
     if (tb->status == TextboxSelected &&mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == -1){
         tb->status = TextboxDefault;

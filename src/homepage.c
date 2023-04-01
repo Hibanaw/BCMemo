@@ -24,6 +24,7 @@ void homepage(){
             "请在此输入用户名", 
             550, 400,
             850, 450);
+        t.maxLength = 8;
 		//draw
         mouse_hide();
 		log(LOG, "Homepage starts.");
@@ -45,13 +46,24 @@ void homepage(){
                 break;
             }
 			if(bs){
-                signal = 1;
-                break;
+                //uid check
+                log(DEBUG, "UID check.");
+                if(text_getLength(t.content) < 3){
+                    Text tw = text_newDefault("用户名过短！", 550, 450, 1024, 500);
+                    tw.font.fontColor = _RED;
+                    text_display(tw);
+                    continue;
+                }
+                else{
+                    signal = 1;
+                    break;
+                }
             }
         }
         switch (signal){
         case 1:
             log(DEBUG, "Jump to app.");
+            app_data()->uid = t.content;
             app();
             break;
         case -1:

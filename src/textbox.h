@@ -23,8 +23,9 @@ enum TextboxStatus{
 };
 
 enum TextboxMouseStatus{
+	TextboxMouseDefault,
     TextboxMouseFocused,
-	TextboxMouseDefault
+    TextboxMouseClicked
 };
 
 typedef struct{

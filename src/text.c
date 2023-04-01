@@ -19,7 +19,7 @@ void text_display(Text t){
 	int d = t.font.fontSize + t.font.spacing;
 	int rd = t.font.rowSpacing;
     char *p = t.content;
-    log(LOG, "Start display text");
+    log(DEBUG, "Start display text");
     while(*p != '\0'){
 		char s[3] = {0, 0, 0};
         if((unsigned)*p < 128){
@@ -96,8 +96,12 @@ Text text_newDefault(char *s, int x1, int y1, int x2, int y2){
     t.content = s;
     t.posX = x1;
     t.posY = y1;
-    t.width = x2-x1,
-    t.hight = y2-y1,
+    if(x2!=0)
+        t.width = x2-x1;
+    else t.width = 0;
+    if(y2!=0)
+        t.hight = y2-y1;
+    else t.hight = 0;
     t.font.fontSize = 24;
     t.font.fontColor = _BLACK,
     t.font.spacing = 2;
