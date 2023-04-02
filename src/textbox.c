@@ -13,12 +13,8 @@ void textbox_draw(Textbox *tb)
 {
     int x1 = tb->posX1, y1 = tb->posY1,
         x2 = tb->posX2, y2 = tb->posY2;
-    setfillstyle(1, _GRAY);
-    bar(x1 + 3, y1 + 3, x2 + 3, y2 + 3);
-    setfillstyle(1, _BLACK);
-    bar(x1, y1, x2, y2);
     setfillstyle(1, _WHITE);
-    bar(x1 + 1, y1 + 1, x2 - 1, y2 - 1);
+    bar(x1, y1, x2, y2);
     if(strlen(tb->content)){
         Text t = text_newDefault(tb->content, x1, y1, x2, y2);
         t.font = tb->font;
@@ -36,7 +32,7 @@ void textbox_draw(Textbox *tb)
         int loc = tb->cursorLocation;
         int w = tb->posX2 - tb->posX1;
         int wpl = (w % (tb->font.fontSize + tb->font.spacing) / tb->font.fontSize) + w / (tb->font.fontSize + tb->font.spacing);
-        r = (loc+1) / wpl;
+        r = (loc-1) / wpl;
         c = loc - r*wpl;
         ly = r * (tb->font.fontSize+tb->font.rowSpacing) + tb->posY1;
         lx = c * (tb->font.fontSize+tb->font.spacing) + tb->font.spacing / 2 + tb->posX1;
@@ -59,6 +55,7 @@ int textbox_event(Textbox *tb)
         textbox_draw(tb);
         mouse_show();
     }
+    //cursor blink
     if (tb->status == TextboxSelected){
         clock_t lt, nt, dt;
         nt = clock();
@@ -72,13 +69,45 @@ int textbox_event(Textbox *tb)
             mouse_show();
         }
     }
+    //cursor position key
+	if (tb->status == TextboxSelected){
+        int k;
+        if(k = bioskey(1)){
+            switch(k){
+                case KEYLEFT:
+                    bioskey(0);
+                    tb->cursorLocation--;
+                    tb->cursorLocation = MAX(0, tb->cursorLocation);
+                    break;
+                case KEYRIGHT:
+                    bioskey(0);
+                    tb->cursorLocation++;
+                    tb->cursorLocation = MIN(tb->cursorLocation, text_getLength(tb->content));
+                    break;
+                case KEYHOME:
+                    bioskey(0);
+                    tb->cursorLocation = 0;
+                    break;
+                case KEYEND:
+                    bioskey(0);
+                    tb->cursorLocation = text_getLength(tb->content);
+                    break;
+            }
+            tb->cursorLastBlink = 0;
+            tb->cursorStatus = 0;
+            mouse_hide();
+            textbox_draw(tb);
+            mouse_show();
+        }
+    }
+    // input
     if (tb->status == TextboxSelected)
     {
-        //TODO: edit
         char olds[500], inss[20], olds1[500], olds2[500], finals[500];
         int cl = tb->cursorLocation;
         int i;
         int is;
+        int clp;
         memset(inss, 0, sizeof(inss));
         memset(olds1, 0, sizeof(olds1));
         memset(olds2, 0, sizeof(olds2));
@@ -89,19 +118,22 @@ int textbox_event(Textbox *tb)
         }
         log(DEBUG, inss);
         strcpy(olds, tb->content);
+        clp = text_getNthChar(olds, cl) - olds;
         for(i = 0; i < strlen(olds); i++){
-            if(i < cl){
+            if(i < clp ){
                 olds1[i] = olds[i];
             }
             else{
-                olds2[i-cl] = olds[i];
+                olds2[i-clp] = olds[i];
             }
         }
         if(strlen(olds) + strlen(inss) > tb->maxLength){
             return 0;
         }
         if(is == -1){
-            olds1[MAX(0, cl-1)] = 0;
+            if(cl != 0){
+                *text_getNthChar(olds1, MAX(0, cl-1)) = 0;
+            }
             strcat(finals, olds1);
             strcat(finals, olds2);
         }
@@ -144,8 +176,8 @@ void textbox_determinState(Textbox *tb)
     {
         int x = tb->posX1, y = tb -> posY1;
 		int w = tb->posX2 - tb->posX1, h = tb->posY2 - tb->posY1;
-        int row = CEILING(1.0 * (my-y) / (tb->font.fontSize + tb->font.rowSpacing))-1;
-        int colum = CEILING(1.0 * (mx - x) / (tb->font.fontSize + tb->font.spacing));
+        int row = CEILING(1.0 * (my - y) / (tb->font.fontSize + tb->font.rowSpacing))-1;
+        int colum = (int)(1.0 * (mx - x) / (tb->font.fontSize + tb->font.spacing)*2.0) - ((mx - x) / (tb->font.fontSize + tb->font.spacing));
         int words_per_line = (w % (ltb.font.fontSize + ltb.font.spacing) / ltb.font.fontSize) + w / (ltb.font.fontSize + ltb.font.spacing);
         tb->status = TextboxSelected;
         tb->cursorLocation = MIN(text_getLength(tb->content), row * words_per_line + colum);

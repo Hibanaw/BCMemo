@@ -44,6 +44,8 @@ typedef struct{
 	clock_t cursorLastBlink;
 }Textbox;
 
+void textbox_draw(Textbox *tb);
+int textbox_event(Textbox *tb);
 void textbox_determinState(Textbox *tb);
 Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2);
 
