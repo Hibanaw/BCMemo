@@ -17,58 +17,128 @@ int hzinput(int x,int y, char *s)
 	int value=0;
 	int asc;
 	int barx1,barx2,bary1,bary2;
-	char str[3]={'\0','\0','\0'};//一个汉字装入
-	char py[12]={'\0','\0','\0','\0','\0','\0','\0','\0',
-	            '\0','\0','\0','\0'};//拼音字符串(西文字符串)s
+	char str[5];//一个汉字装入
+	char py[15];//拼音字符串(西文字符串)s
 	int color = _WHITE, color2 = _BLACK;
 	int size = 16;
 	int return_value = 0;
+	memset(str, 0, sizeof(str));
+	memset(py, 0, sizeof(py));
 	settextjustify(LEFT_TEXT,CENTER_TEXT);
-	mouse_hide();
-	while(bioskey(1))//清除键盘缓冲区  防止误输入
+	//mouse_hide();
+	value=bioskey(1);
+	/*进入汉字输入法*/
+	asc=value&0xff;
+	if(asc>=97&&asc<=122)
 	{
 		bioskey(0);
-	}
-	if((image=malloc(8241))==NULL)
-	{
-		closegraph();
-		printf("error!,hzinput");
-		getch();
-		exit(1);
-	}
-	if(kbhit())
-	{
-		value=bioskey(0);
-
-		/*进入汉字输入法*/
-		asc=value&0xff;
-		if(asc>=97&&asc<=122)
+		image=malloc(8241);
+		if(image==NULL)
 		{
-			barx1=x;       //计算输入法位置  离所输入距离较近且不溢出屏幕
-			barx2=x+200;
-			bary1=y;
-			bary2=y+40;
-			getimage(barx1,bary1,barx2,bary2,image);
-			pyFrm(barx1,bary1,barx2,bary2);
-			setfillstyle(1,color);
-			ST=input_method(barx1,bary1,str,value,py);
-			switch(ST)
-			{
-				case 1://由数字键或空格键退出输入法  输入汉字
-					strcpy(s, str);
-					return_value = 2;
-					break;
-				case 2://由回车键退出输入法 （键入西文）
-					strcpy(s, py);
-					return_value = strlen(py);
-					break;
-				case 3://西文删除为0自动退出输入法  不输入
-					return_value = 0;
-					break;
-			}
+			closegraph();
+			printf("%x", image);
+			getch();
+			exit(1);
+		}
+		barx1=x;       //计算输入法位置  离所输入距离较近且不溢出屏幕
+		barx2=x+200;
+		bary1=y;
+		bary2=y+40;
+		getimage(barx1,bary1,barx2,bary2,image);
+		pyFrm(barx1,bary1,barx2,bary2);
+		setfillstyle(1,color);
+		ST=input_method(barx1,bary1,str,value,py);
+		switch(ST)
+		{
+			case 0:
+				return_value = 0;
+				break;
+			case 1://由数字键或空格键退出输入法  输入汉字
+				strcpy(s, str);
+				return_value = 1;
+				break;
+			case 2://由回车键退出输入法 （键入西文）
+				strcpy(s, py);
+				return_value = strlen(py);
+				break;
+			case 3://西文删除为0自动退出输入法  不输入
+				return_value = 0;
+				break;
 		}
 		putimage(barx1,bary1,image,0);
+		free(image);
 	}
+	else{
+		char *fc = s;
+		return_value = ime_en(s);
+
+		switch(*s){
+			case '!':
+				fc = "！";
+				break;
+			case '.':
+				fc = "。";
+				break;
+			case ',':
+				fc = "，";
+				break;
+			case '?':
+				fc = "？";
+				break;
+			case '\\':
+				fc = "、";
+				break;
+			case '/':
+				fc = "、";
+				break;
+			case '$':
+				fc = "￥";
+				break;
+			case '<':
+				fc = "《》";
+				break;
+			case '>':
+				fc = "》";
+				break;
+			case '(':
+				fc = "（）";
+				break;
+			case ')':
+				fc = "）";
+				break;
+			case '_':
+				fc = "——";
+				return_value = 2;
+				break;
+			case '^':
+				fc = "……";
+				return_value = 2;
+				break;
+			case ';':
+				fc = "；";
+				break;
+			case ':':
+				fc = "：";
+				break;
+			case '`':
+				fc = "~";
+				break;
+			case '"':
+				fc = "“”";
+				break;
+			case '\'':
+				fc = "‘’";
+				break;
+			case '[':
+				fc = "【】";
+				break;
+			case ']':
+				fc = "】";
+				break;
+		}
+		strcpy(s, fc);
+	}
+	
 	return return_value;
 }
 
@@ -108,6 +178,11 @@ int input_method(int x,int y,char *str,int value,char *py)
 			/*特殊按键处理*/
 			switch(value)
 			{
+				case KEYESCAPE:
+					if(oldfp) fclose(oldfp);
+					if(fp) fclose(fp);
+					return 0;
+					break;
 				case KEYBACKSPACE:
 					p--;
 					*p='\0';
@@ -192,8 +267,9 @@ int input_method(int x,int y,char *str,int value,char *py)
 				hznow=0;
 			}
 			pyFrm(x,y,x+200,y+40);
-			setfillstyle(1,WHITE);
+			setfillstyle(1,_WHITE);
 			settextstyle(1,0,2);
+			settextjustify(LEFT_TEXT,CENTER_TEXT);
 			outtextxy(PyStartx,PyStarty,py);        //拼音字体
 		    strcat(pypath,py);
 		    strcat(pypath,".txt");
@@ -232,12 +308,12 @@ int input_method(int x,int y,char *str,int value,char *py)
 				}
 				for(i=0;i<hznum;i++)
 				{
-					setcolor(BLUE);
-                    settextstyle(1,0,2);
-		   		    xouttextxy(HzStartx+i*50,HzStarty+5,itostr(i+1,temp),DARKGRAY);
-    				hz_puthzold(HzStartx+i*50+16,HzStarty,temphz[i],16,16,DARKGRAY);
+					setcolor(_DARKGRAY);
+					settextstyle(3, 0, 1);
+		   		    outtextxy(HzStartx+i*50,HzStarty+4,itostr(i+1,temp));
+    				hz_puthzold(HzStartx+i*50+16,HzStarty,temphz[i],16,16,_DARKGRAY);
 				}
-				hz_puthzold(HzStartx+hznow*50+16,HzStarty,temphz[hznow],16,16,CYAN);//显示选中汉字
+				hz_puthzold(HzStartx+hznow*50+16,HzStarty,temphz[hznow],16,16,hexff7f00);//显示选中汉字
 			}
 		}
 		strcpy(pypath,ABpath);          //绝对路径复原（不可少）
@@ -283,29 +359,9 @@ void pyFrm(int x1,int y1,int x2,int y2)
 {
 	setfillstyle(1,_WHITE);
 	bar(x1,y1,x2,y2);
-	setcolor(BLUE);
+	setcolor(_BLUE);
 	setlinestyle(0,0,1);
 	line(x1+5,y1+20,x2-5,y1+20);
 	setcolor(_DARKGRAY);
 	rectangle(x1,y1,x2,y2);
-}
-
-/************************************************************************
-FUNCTION:xouttextxy
-DESCRIPTION: 字符输入法
-INPUT:x,y,s,color
-RETURN:字符长度len
-************************************************************************/
-
-int xouttextxy(int x,int y,char *s,int color)//8x16点阵字库
-{
-	Text t;
-	t.content = s;
-	t.posX = x,
-	t.posY = y,
-	t.font.fontSize = 24;
-	t.font.fontColor = color;
-	t.font.spacing = 2;
-	t.font.rowSpacing = 2;
-	text_display(t);
 }

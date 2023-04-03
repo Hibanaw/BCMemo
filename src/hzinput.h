@@ -14,6 +14,7 @@
 #include "keyboard.h"
 #include "text.h"
 #include "global.h"
+#include "ime.h"
 
 #define FAIL 0
 #define SUCCESS 1
