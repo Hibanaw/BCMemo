@@ -19,6 +19,7 @@
 #include "button.h"
 #include "textbox.h"
 #include "text.h"
+#include "textinput.h"
 
 void homepage();
 

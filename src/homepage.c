@@ -13,43 +13,47 @@
 void homepage(){
     while(1){
         int signal = 0;
-        Button b = {
-            550, 500,
+        Button b = button_new(550, 500,
             850, 550,
-            "登 录",
-            ButtonDefault,
-			button_drawWithText
-		};
-        Textbox t = textbox_newDefault(
-            "请在此输入用户名", 
+			"登 录",
+			button_drawWithText);
+		TextInput t = textinput_newDefault(
+            "请输入用户名", 
             550, 400,
             850, 450);
-        t.maxLength = 8;
 		//draw
         mouse_hide();
 		log(LOG, "Homepage starts.");
+        setfillstyle(1, hexaa3f00);
+        bar(0, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpbg.bin", 0, 0);
+        setfillstyle(1, hexd4bfaa);
+        bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
 		button_draw(&b);
-        textbox_draw(&t);
+        textinput_draw(&t);
+        ime_draw();
         mouse_show();
         //event
         while(1){
-			int k, bs;
+			int k, bs, tbs;
             Mouse *m = mouse();
             mouse_update();
-			k = keybord_getKey();
+            ime_check();
+            keybord_eat();
+			k = bioskey(1);
 			bs = button_event(&b);
-            textbox_event(&t);
+            tbs = textbox_event(&t.textbox);
             if(keybord_isESCAPE(k)){
+                bioskey(0);
                 signal = -1;
                 break;
             }
-			if(bs){
+			if(bs||tbs){
                 //uid check
                 log(DEBUG, "UID check.");
-                if(text_getLength(t.content) < 3){
-                    Text tw = text_newDefault("用户名过短！", 550, 450, 1024, 500);
+				if(strlen(t.textbox.content) < 3){
+                    Text tw = text_newDefault("用户名过短！", 550, 460, 0, 0);
                     tw.font.fontColor = _RED;
                     text_display(tw);
                     continue;
@@ -63,7 +67,7 @@ void homepage(){
         switch (signal){
         case 1:
             log(DEBUG, "Jump to app.");
-            app_data()->uid = t.content;
+			app_data()->uid = t.textbox.content;
             app();
             break;
         case -1:

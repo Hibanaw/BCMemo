@@ -16,6 +16,8 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "global.h"
+#include "textbox.h"
+#include "image.h"
 
 typedef struct{
     char * uid;

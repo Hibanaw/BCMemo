@@ -24,7 +24,6 @@ int initsvga256(void) //³õÊ¼»¯º¯Êý
 	Gr_error = graphresult();
 	if (Gr_error != grOk)
 	{
-        // log("SVGA256 init faild as %d", ERR, Gr_error);
 		printf("error when open svga, id: %d\n",  Gr_error);
 		return 1;
 	}

@@ -19,22 +19,28 @@ void app(){
     while(1){
         int signal = 0;
         AppData *ad = app_data();
+        Textbox tb = textbox_newDefault("ÐÂµÄ¶ÎÂä", 120, 30, MAXWIDTH, 100);
 		// Button b;
 		mouse_hide();
 		log(LOG, "Main app starts.");
 		setfillstyle(1, _WHITE);
 		bar(0, 0, MAXWIDTH, MAXHEIGHT);
+        setfillstyle(1, _BLACK);
+		bar(0, 0, MAXWIDTH, 20);
+        setfillstyle(1, _GRAY);
+		bar(0, 0, 75, MAXHEIGHT);
+		textbox_draw(&tb);
+        ime_draw();
         mouse_show();
-		if(ad -> leftBar){
-			setfillstyle(1, _GRAY);
-            bar(0, 0, 200, MAXHEIGHT);
-        }
-        
         while(1){
-            int k = keybord_getKey();
+            int k = bioskey(1);
             Mouse * m = mouse();
+            keybord_eat();
             mouse_update();
+            ime_check();
+            textbox_event(&tb);
             if(keybord_isESCAPE(k)){
+                bioskey(0);
                 signal = -1;
                 break;
             }
