@@ -1,3 +1,12 @@
+/**
+ * @file memo.h
+ * @author wywgwt (2504133124@qq.com)
+ * @brief 
+ * @date 2023-04-03
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef _MEMO_H_
 #define _MEMO_H_
 
@@ -31,15 +40,16 @@ typedef struct Memo
 
 Memo *memo();
 
-MemoBlock *memoBlock_add(MemoBlock *a);
+MemoBlock *memo_addBlock(MemoBlock *a);
 
-MemoBlock *memoBlock_insert(MemoBlock *p, MemoBlock *a);
+MemoBlock *memo_insertBlock(MemoBlock *p, MemoBlock *a);
 
 // 在第一个参数的位置之后插入新Node，新node的内容是第二个参数，返回插入的node的地址。
-MemoBlock *memoBlock_delete(MemoBlock *p);
+MemoBlock *memo_deleteBlock(MemoBlock *p);
 
 // 删除参数所在的节点，返回该节点的next。
 
-MemoBlock *memoBlock_new(Memotype type, int checkBoxisChecked, char *content);
+MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content);
 
+MemoBlock *memo_preBlock(MemoBlock *p);
 #endif
