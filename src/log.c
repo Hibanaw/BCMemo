@@ -26,13 +26,13 @@ void log(enum LogLevel l, char *s){
         default:
             t = "[ERR]";
         }
-        sprintf(str, "%s%s", t, s);
+        sprintf(str, "[%ld]%s%s",clock(), t, s);
         settextstyle(0, 0, 2);
         fl = textwidth(str);
         setfillstyle(1, _WHITE);
         bar(0, 0, fl, 16);
         setcolor(_BLACK);
-        setwritemode(COPY_PUT);
+        settextjustify(LEFT_TEXT,TOP_TEXT);
         outtextxy(0, 0, str);
     }
 }

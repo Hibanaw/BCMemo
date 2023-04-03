@@ -11,10 +11,11 @@
 #ifndef __LOG_H__
 #define __LOG_H__
 
-#define LOGLEVEL 0
+#define LOGLEVEL 1
 
 #include <stdio.h>
 #include <conio.h>
+#include <time.h>
 #include "global.h"
 #include "svga.h"
 
