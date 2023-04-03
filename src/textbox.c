@@ -100,6 +100,13 @@ int textbox_event(Textbox *tb)
             mouse_show();
         }
     }
+    if (tb->status == TextboxSelected){
+        int k = bioskey(1);
+        if(k == KEYENTER){
+            bioskey(0);
+            return 1;
+        }
+    }
     // input
     if (tb->status == TextboxSelected)
     {
@@ -150,6 +157,7 @@ int textbox_event(Textbox *tb)
             mouse_show();
         }
     }
+    return 0;
 }
 
 void textbox_determinState(Textbox *tb)
@@ -207,4 +215,12 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2){
     tb.posY1 = y1;
     tb.posY2 = y2;
     return tb;
+}
+
+int textbox_getCursorPositionX(){
+
+}
+
+int textbox_getCursorPositionY(){
+    
 }
