@@ -17,7 +17,11 @@
         "log.h": "c",
         "svga.h": "c",
         "keyboard.h": "c",
-        "ime.h": "c"
+        "ime.h": "c",
+        "homepage.h": "c",
+        "hzinput.h": "c",
+        "init.h": "c",
+        "app.h": "c"
     },
     "files.encoding": "gb2312",
     "C_Cpp.inlayHints.autoDeclarationTypes.enabled": false
