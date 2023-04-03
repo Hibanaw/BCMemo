@@ -13,6 +13,7 @@
 
 #include "svga.h"
 #include "mouse.h"
+#include "ime.h"
 
 void init();
 void destruct();

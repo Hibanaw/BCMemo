@@ -15,11 +15,12 @@ void init(){
 	initsvga256();
     useRGB256Colors();
 	mouse_init();
+	ime_init();
 	log(DEBUG, "Init ends.");
 	return ;
 }
 
 void destruct(){
+	log(LOG, "Destruct.");
 	closesvga256();
-	log(LOG, "Destruct ends.");
 }

@@ -15,6 +15,7 @@
 #include <time.h>
 #include "text.h"
 #include "hzinput.h"
+#include "button.h"
 
 enum imeStatus{
     IMEOFF,
@@ -27,15 +28,14 @@ typedef struct
     int posX;
     int posY;
     enum imeStatus status;
-    int noticeBox;
-    clock_t lastChangeTime;
-    void *buffer;
+
+    Button button;
 }Ime;
 
+void ime_init();
 int ime_input(char *s);
+int ime_en(char *s);
+void ime_check();
 void ime_next();
-void ime_draw(int x, int y, enum imeStatus status);
-void ime_saveBackgrond(int x, int y, void *buffer);
-void ime_clearIme(int x, int y, void *buffer);
-
+void ime_draw();
 #endif

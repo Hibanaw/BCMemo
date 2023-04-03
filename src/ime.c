@@ -22,21 +22,21 @@ Ime *ime(){
  * @return int as string length. -1 if backspace.
  */
 int ime_input(char *s){
-    int k;
+    int k = bioskey(1);
+    if(keybord_isControlOn()){
+        return;
+    }
+    if(keybord_isBACKSPACE(k)){
+        bioskey(0);
+        return -1;
+    }
     switch(ime()->status){
         case IMEOFF:
-            //log(DEBUG, "imeoff, get input");
-            k = keybord_getKey();
-            if(keybord_isBACKSPACE(k)){
-                return -1;
-            }
-            if(keybord_isCharacter(k)){
-                *s = keybord_bios2ascii(k);
-                return 1;
-            }
+            log(DEBUG, "imeoff, get input");
+            return ime_en(s);
             break;
         case IMEPINYIN:
-            
+            return hzinput(300, 300, s);
             break;
         case IMEEMOJI:
             break;
@@ -44,30 +44,29 @@ int ime_input(char *s){
     return 0;
 }
 
-Ime ime_check(){
+void ime_check(){
     // ¼à²â¿ì½Ý¼üÇÐ»»
-    if(bioskey(1)){
-        if(bioskey(2)&0x04 && bioskey(0) & 0xff == ' '){
+    if(bioskey(2)&0x04){
+        if(bioskey(1) == KEYSPACE){
+            bioskey(0);
             ime_next();
         }
     }
-    // ¼à²âÌáÊ¾¿ò
-    if(clock()-ime()->lastChangeTime / CLK_TCK > 2){
-
+    if(button_event(&ime()->button)){
+        ime_next();
     }
 }
 
 void ime_next(){
-    ime() -> status = (ime() -> status + 1) % 3;
-    ime() -> lastChangeTime = clock();
-    if(!ime()->noticeBox){
-        ime()->noticeBox = 1;
-        //ime_saveBackgrond();
-    }
+    ime() -> status = (ime() -> status + 1) % 2;
+    ime_draw();
+    log(DEBUG, "IME change");
 }
 
-void ime_draw(int x, int y, enum imeStatus status){
+void ime_draw(){
+    int x = 1004, y = 0;
     Text t = text_newDefault(NULL, x+2, y+2, 0, 0);
+    int status = ime()->status;
     t.font.fontSize = 16;
     t.font.fontColor = _BLACK,
     t.font.spacing = 2;
@@ -78,26 +77,35 @@ void ime_draw(int x, int y, enum imeStatus status){
     bar(x+2, y+2, x+18, y+18);
     switch (status){
         case IMEOFF:
-            t.content = "Aa";
+            t.content = "Ó¢";
             break;
         case IMEPINYIN:
-            t.content = "ÎÄ";
+            t.content = "ÖÐ";
             break;
         case IMEEMOJI:
-            t.content = "\160\0";
+			t.content = "±í";
             break;
     }
     text_display(t);
 }
 
-void ime_saveBackgrond(int x, int y, void *buffer){
-    int size = imagesize(0, 0, 20, 20);
-    buffer = malloc(size);
-    getimage(x, y, x+20, y+20, buffer);
+int ime_en(char *s){
+    int k = bioskey(1);
+    if(keybord_isCharacter(k)){
+        bioskey(0);
+        *s = keybord_bios2ascii(k);
+        return 1;
+    }
+    return 0;
 }
 
-void ime_clearIme(int x, int y, void *buffer){
-
-    putimage(x, y, buffer, COPY_PUT);
-    free(buffer);
+void ime_init(){
+    Ime *i = ime();
+    memset(i, 0, sizeof(Ime));
+    i->button = button_new(
+        1000, 0,
+        1020, 20,
+        NULL,
+        ime_draw
+    );
 }
