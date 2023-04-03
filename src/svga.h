@@ -294,7 +294,9 @@ enum MyColors{
     _GRAY = hex808080,
     _BLUE = hex0000ff,
     _RED = hexff0000,
-    _CYAN = hex2adfff
+    _CYAN = hex2adfff,
+    _LIGHTGRAY = hexc0c0c0,
+    _LIGHTYELLOW = hexffdf00,
 };
 
 int huge detectSVGA256(void);
