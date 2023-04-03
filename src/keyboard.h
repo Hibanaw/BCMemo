@@ -24,14 +24,17 @@ enum spicalkey{
     KEYONE = 0x0231,
     KEYTWO = 0x0332,
     KEYTHREE = 0x0433,
-    KEYFOUR = 0x0534
+    KEYFOUR = 0x0534,
+    KEYHOME = 0x4700,
+    KEYEND = 0x4f00
 };
 
-int keybord_getKey();
 char keybord_bios2ascii(unsigned);
 int keybord_isAlphabet(unsigned);
 int keybord_isCharacter(unsigned);
 int keybord_isESCAPE(unsigned);
 int keybord_isBACKSPACE(unsigned);
+int keybord_isControlOn();
+void keybord_eat();
 
 #endif
