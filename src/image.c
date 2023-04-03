@@ -35,35 +35,17 @@ void image_render(char * filePath, int x, int y){
     log(DEBUG, "Image rendering ends.");
 }
 
-void image_renderEmerge(char * filePath, int x, int y){
+void image_getSize(char *filePath, int *width, int *height){
     const char *path = filePath;
-    FILE *imgFile;
-    int i, j, k, l;
+    FILE *imgFile = fopen(path, "rb");
     short w, h;
-    int step = 3;
-    log(LOG, "Start rendering image with emerge effect.");
-
-    for(l = 0; l < step; l++){
-        FILE *p = fopen(path, "rb");
-        if(imgFile == NULL){
-            log(ERROR, "Image load error!");
-            return ;
-        }
-        fread(&w, sizeof(short), 1, p);
-        fread(&h, sizeof(short), 1, p);
-        for(i = 0; i < h; i++){
-            for(j = 0; j < w; j++){
-                char p, cp;
-                p = fgetc(imgFile);
-                if((j+x) /2% step == l || (i+y)/2 % step == l){
-                    cp = getpixel(x+j, y+i);
-                    if(p != cp)
-				        putpixel(x+j, y+i, p);
-                }
-            }
-        }
-        fclose(p);
+    if(imgFile == NULL){
+        log(ERROR, "Image load error!");
+        return ;
     }
+    fread(&w, sizeof(short), 1, imgFile);
+	fread(&h, sizeof(short), 1, imgFile);
+    *width = w;
+    *height = h;
     fclose(imgFile);
-    log(DEBUG, "Image rendering ends.");
 }

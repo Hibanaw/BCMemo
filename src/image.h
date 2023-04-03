@@ -17,6 +17,6 @@
 #include "global.h"
 
 void image_render(char *, int, int);
-void image_renderEmerge(char *, int, int);
+void image_getSize(char *, int*, int *);
 
 #endif
