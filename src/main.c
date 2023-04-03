@@ -13,6 +13,6 @@
 int main(){
 	init();
 	homepage();
-	
+	destruct();
 	return 0;
 }
