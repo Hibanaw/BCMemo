@@ -27,17 +27,17 @@ void text_display(Text t){
             s[0] = *p;
             p++;
             if(w && tx+d*0.6 > x+w){
-                if(h && ty+ d + rd > y){
+                if(h && ty+ d + rd > h){
                     return;
                 }
                 tx = x;
-                ty += rd;
+                ty += fs + rd;
             }
             setcolor(c);
             settextstyle(SANS_SERIF_FONT, HORIZ_DIR, fs/8);
-            //setusercharsize(1, 1, 1, 1);
+            settextjustify(LEFT_TEXT,2);
             setwritemode(COPY_PUT);
-            outtextxy(tx+fs/10, ty-fs/4, s);
+            outtextxy(tx+fs/2, ty-fs/4, s);
             tx+=d;
         }
         if((unsigned)*p > 0xA0){
@@ -47,11 +47,11 @@ void text_display(Text t){
             s[1] = *p;
             p++;
             if(w && tx+d > x+w){
-                if(h && ty+ d + rd > y){
+                if(h && ty+ d + rd > h){
                     return;
                 }
                 tx = x;
-                ty += rd;
+                ty += fs + rd;
             }
             hz_puthz(s, tx, ty, fs, d, c);
             tx+=d;
@@ -91,6 +91,16 @@ int text_getLength(char *s){
     return l;
 }
 
+char *text_getNthChar(char *s, int n){
+    char *p = s;
+    int i;
+    for(i = 0; i < n; i++){
+        if(*p >= 0) p++;
+        else p+=2;
+    }
+    return p;
+}
+
 Text text_newDefault(char *s, int x1, int y1, int x2, int y2){
     Text t;
     t.content = s;
@@ -105,6 +115,6 @@ Text text_newDefault(char *s, int x1, int y1, int x2, int y2){
     t.font.fontSize = 24;
     t.font.fontColor = _BLACK,
     t.font.spacing = 2;
-    t.font.rowSpacing = 0;
+	t.font.rowSpacing = 0;
     return t;
 }
