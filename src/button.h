@@ -34,6 +34,7 @@ typedef struct Button{
 	void (*draw)();
 }Button;
 
+Button button_new(int x1, int y1, int x2, int y2, char *s, void (*f)());
 void button_draw(Button *);
 void button_drawDefault(Button *);
 void button_drawWithText(Button *);

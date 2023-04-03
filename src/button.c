@@ -108,3 +108,15 @@ int button_event(Button *b){
     }
     return 0;
 }
+
+Button button_new(int x1, int y1, int x2, int y2, char *s, void (*f)()){
+    Button b;
+    memset(&b, 0, sizeof(b));
+    b.posX1 = x1;
+    b.posX2 = x2;
+    b.posY1 = y1;
+    b.posY2 = y2;
+    b.content = s;
+    b.draw = f;
+    return b;
+}
