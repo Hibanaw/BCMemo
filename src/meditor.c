@@ -1,5 +1,5 @@
 /**
- * @file memoeditor.c
+ * @file meditor.c
  * @author Hibanaw Hu (hibanaw@qq.com)
  * @brief 
  * @date 2023-04-02
@@ -8,21 +8,10 @@
  * 
  */
 
-#include "memoeditor.h"
+#include "meditor.h"
 
-void memoEditor_init(){
+void memoEditor_init(MemoEditor *me){
     
-}
-
-void memoEditor_draw(MemoEditor *me){
-    MemoBlock *p = me->BeginMemoBlock;
-    int py = me->posY;
-    while(p){
-        int h;
-        
-        py += h;
-        p++;
-    }
 }
 
 void memoEditor_event(MemoEditor *me){
