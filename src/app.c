@@ -22,7 +22,7 @@ void app(){
         Textbox tb = textbox_newDefault("ÐÂµÄ¶ÎÂä", 120, 30, MAXWIDTH, 100);
 		// Button b;
 		mouse_hide();
-		log(LOG, "Main app starts.");
+		debug(LOG, "Main app starts.");
 		setfillstyle(1, _WHITE);
 		bar(0, 0, MAXWIDTH, MAXHEIGHT);
         setfillstyle(1, _BLACK);

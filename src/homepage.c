@@ -24,7 +24,7 @@ void homepage(){
         t.textbox.maxLength = 10;
 		//draw
         mouse_hide();
-		log(LOG, "Homepage starts.");
+		debug(LOG, "Homepage starts.");
         setfillstyle(1, hexaa3f00);
         bar(0, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpbg.bin", 0, 0);
@@ -54,7 +54,7 @@ void homepage(){
             }
 			if(bs||tbs){
                 //uid check
-                log(DEBUG, "UID check.");
+                debug(DEBUG, "UID check.");
 				if(strlen(t.textbox.content) < 3){
                     Text tw = text_newDefault("用户名过短！", 550, 460, 0, 0);
                     tw.font.fontColor = _RED;
@@ -69,12 +69,12 @@ void homepage(){
         }
         switch (signal){
         case 1:
-            log(DEBUG, "Jump to app.");
+            debug(DEBUG, "Jump to app.");
 			app_data()->uid = t.textbox.content;
             app();
             break;
         case -1:
-            log(DEBUG, "EXIT.");
+            debug(DEBUG, "EXIT.");
             return;
             break;
         }

@@ -22,6 +22,6 @@
 
 typedef enum{false, true} bool;
 
-#include "log.h"
+#include "debug.h"
 
 #endif

@@ -1,5 +1,5 @@
 /**
- * @file log.c
+ * @file debug.c
  * @author Hibanaw Hu (hibanaw@qq.com)
  * @brief 
  * @date 2023-02-28
@@ -8,9 +8,9 @@
  * 
  */
 
-#include "log.h"
+#include "debug.h"
 
-void log(enum LogLevel l, char *s){
+void debug(enum LogLevel l, char *s){
     char * t;
     char str[101];
     int fl;

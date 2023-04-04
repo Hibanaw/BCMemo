@@ -19,7 +19,7 @@ void text_display(Text t){
 	int d = t.font.fontSize + t.font.spacing;
 	int rd = t.font.rowSpacing;
     char *p = t.content;
-    log(DEBUG, "Start display text");
+    debug(DEBUG, "Start display text");
     while(*p != '\0'){
 		char s[3] = {0, 0, 0};
         if((unsigned)*p < 128){

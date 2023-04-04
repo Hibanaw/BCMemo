@@ -71,7 +71,7 @@ int button_event(Button *b){
     }
     s = mouse_isClickedInBox(x1, y1, x2, y2);
     if(b -> status == ButtonFocused && s == 1){
-        log(DEBUG, "Button clicked.");
+        debug(DEBUG, "Button clicked.");
         b -> status = ButtonSelected;
         m -> style = CURSORSELECT;
         mouse_hide();
@@ -80,7 +80,7 @@ int button_event(Button *b){
         return 0;
     }
     if(b -> status == ButtonSelected && s == 2){
-        log(DEBUG, "Button released.");
+        debug(DEBUG, "Button released.");
         b -> status = ButtonDefault;
         m -> style = CURSORPOINTER;
         mouse_hide();
@@ -89,7 +89,7 @@ int button_event(Button *b){
         return 1;
     }
     if(b -> status == ButtonDefault && s == 2){
-        log(DEBUG, "Button focused.");
+        debug(DEBUG, "Button focused.");
         b -> status = ButtonFocused;
         m -> style = CURSORSELECT;
         mouse_hide();
@@ -98,7 +98,7 @@ int button_event(Button *b){
         return 0;
     }
     if(b -> status != ButtonDefault && s == 0){
-        log(DEBUG, "Button disfocused.");
+        debug(DEBUG, "Button disfocused.");
         b -> status = ButtonDefault;
         m -> style = CURSORPOINTER;
         mouse_hide();

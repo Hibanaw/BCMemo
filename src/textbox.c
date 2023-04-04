@@ -123,7 +123,7 @@ int textbox_event(Textbox *tb)
         if(is == 0){
             return 0;
         }
-        log(DEBUG, inss);
+        debug(DEBUG, inss);
         strcpy(olds, tb->content);
         clp = text_getNthChar(olds, cl) - olds;
         for(i = 0; i < strlen(olds); i++){

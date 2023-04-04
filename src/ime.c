@@ -32,7 +32,7 @@ int ime_input(char *s){
     }
     switch(ime()->status){
         case IMEOFF:
-            log(DEBUG, "imeoff, get input");
+            debug(DEBUG, "imeoff, get input");
             return ime_en(s);
             break;
         case IMEPINYIN:
@@ -60,7 +60,7 @@ void ime_check(){
 void ime_next(){
     ime() -> status = (ime() -> status + 1) % 2;
     ime_draw();
-    log(DEBUG, "IME change");
+    debug(DEBUG, "IME change");
 }
 
 void ime_draw(){

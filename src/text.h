@@ -14,7 +14,7 @@
 #include <graphics.h>
 #include "svga.h"
 #include "hz.h"
-#include "log.h"
+#include "debug.h"
 
 typedef struct{
     int fontSize;

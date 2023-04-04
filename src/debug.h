@@ -1,5 +1,5 @@
 /**
- * @file log.h
+ * @file debug.h
  * @author Hibanaw Hu (hibanaw@qq.com)
  * @brief 
  * @date 2023-02-28
@@ -25,6 +25,6 @@ enum LogLevel{
     ERROR
 };
 
-void log(enum LogLevel, char *);
+void debug(enum LogLevel, char *);
 
 #endif

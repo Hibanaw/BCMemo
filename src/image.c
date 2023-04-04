@@ -15,9 +15,9 @@ void image_render(char * filePath, int x, int y){
     FILE *imgFile = fopen(path, "rb");
     int i, j;
     short w, h;
-    log(LOG, "Start rendering image.");
+    debug(LOG, "Start rendering image.");
     if(imgFile == NULL){
-        log(ERROR, "Image load error!");
+        debug(ERROR, "Image load error!");
         return ;
     }
     fread(&w, sizeof(short), 1, imgFile);
@@ -32,7 +32,7 @@ void image_render(char * filePath, int x, int y){
         }
     }
     fclose(imgFile);
-    log(DEBUG, "Image rendering ends.");
+    debug(DEBUG, "Image rendering ends.");
 }
 
 void image_getSize(char *filePath, int *width, int *height){
@@ -40,7 +40,7 @@ void image_getSize(char *filePath, int *width, int *height){
     FILE *imgFile = fopen(path, "rb");
     short w, h;
     if(imgFile == NULL){
-        log(ERROR, "Image load error!");
+        debug(ERROR, "Image load error!");
         return ;
     }
     fread(&w, sizeof(short), 1, imgFile);
