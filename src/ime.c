@@ -64,17 +64,17 @@ void ime_next(){
 }
 
 void ime_draw(){
-    int x = 1004, y = 0;
-    Text t = text_newDefault(NULL, x+2, y+2, 0, 0);
+    int x = 900, y = 0;
+    Text t = text_newDefault(NULL, x+3, y+2, 0, 0);
     int status = ime()->status;
     t.font.fontSize = 16;
     t.font.fontColor = _BLACK,
     t.font.spacing = 2;
     t.font.rowSpacing = 0;
-    setcolor(_BLACK);
+    setfillstyle(1, _BLACK);
     bar(x, y, x+20, y+20);
-    setcolor(_WHITE);
-    bar(x+2, y+2, x+18, y+18);
+    setfillstyle(1, _WHITE);
+    bar(x+1, y+1, x+19, y+19);
     switch (status){
         case IMEOFF:
             t.content = "Ӣ";
@@ -103,8 +103,8 @@ void ime_init(){
     Ime *i = ime();
     memset(i, 0, sizeof(Ime));
     i->button = button_new(
-        1000, 0,
-        1020, 20,
+        900, 0,
+        920, 20,
         NULL,
         ime_draw
     );
