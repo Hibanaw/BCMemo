@@ -32,6 +32,7 @@ void app(){
 		textbox_draw(&tb);
         ime_draw();
         mouse_show();
+        digitalClock_getTime();
         while(1){
             int k = bioskey(1);
             Mouse * m = mouse();
@@ -39,6 +40,7 @@ void app(){
             mouse_update();
             ime_check();
             textbox_event(&tb);
+            digitalClock_getTime();
             if(keybord_isESCAPE(k)){
                 bioskey(0);
                 signal = -1;

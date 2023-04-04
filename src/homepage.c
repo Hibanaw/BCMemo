@@ -21,6 +21,7 @@ void homepage(){
             "请输入用户名", 
             550, 400,
             850, 450);
+        t.textbox.maxLength = 10;
 		//draw
         mouse_hide();
 		log(LOG, "Homepage starts.");
@@ -34,11 +35,13 @@ void homepage(){
         textinput_draw(&t);
         ime_draw();
         mouse_show();
+        digitalClock_getTime();
         //event
         while(1){
 			int k, bs, tbs;
             Mouse *m = mouse();
             mouse_update();
+            digitalClock_getTime();
             ime_check();
             keybord_eat();
 			k = bioskey(1);
