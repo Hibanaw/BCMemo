@@ -18,6 +18,7 @@
 #include "global.h"
 #include "textbox.h"
 #include "image.h"
+#include "anim.h"
 
 typedef struct{
     char * uid;

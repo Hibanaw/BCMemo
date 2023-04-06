@@ -28,9 +28,11 @@ void homepage(){
 		//draw
         mouse_hide();
 		debug(LOG, "Homepage starts.");
+       // ani1
         setfillstyle(1, hexaa3f00);
         bar(0, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpbg.bin", 0, 0);
+        //ani2
         setfillstyle(1, hexd4bfaa);
         bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
