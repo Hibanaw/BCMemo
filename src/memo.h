@@ -17,8 +17,8 @@
 
 typedef enum
 {
-    IMAGE,
     PARAGRAPH,
+    IMAGE,
     CHECKBOX
 } Memotype;
 

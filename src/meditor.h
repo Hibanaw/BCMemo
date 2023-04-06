@@ -14,22 +14,24 @@
 #include "memo.h"
 #include "image.h"
 #include "button.h"
+#include "textbox.h"
+#include "imagebox.h"
 
 #define EDITORHEIGHT 680
 #define EDITORWIDTH 800
 
-enum MemoEditorStatus{
-    MemoEditorFocused,
-    MemoEditorDefault
-};
+typedef struct{
+    void *widget[20];
+    enum Memotype type[20];
+    int count;
+} MemoEditorWidgetList;
 
 typedef struct{
-    MemoBlock *BeginMemoBlock;
+    MemoBlock *beginMemoBlock;
     int posX;
     int posY;
-    enum MemoEditorStatus status;
+    MemoEditorWidgetList list;
 } MemoEditor;
 
-typedef Button MemoEditorImageBox;
 
 #endif
