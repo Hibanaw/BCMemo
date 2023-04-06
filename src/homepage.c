@@ -11,6 +11,8 @@
 #include "homepage.h"
 
 void homepage(){
+    char textInputBuffer[50];
+    memset(textInputBuffer, 0, sizeof(textInputBuffer));
     while(1){
         int signal = 0;
         Button b = button_new(550, 500,
@@ -20,7 +22,8 @@ void homepage(){
 		TextInput t = textinput_newDefault(
             "请输入用户名", 
             550, 400,
-            850, 450);
+            850, 450,
+            textInputBuffer);
         t.textbox.maxLength = 10;
 		//draw
         mouse_hide();
@@ -32,7 +35,7 @@ void homepage(){
         bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
 		button_draw(&b);
-        textinput_draw(&t);
+        textinput_drawDefault(&t);
         ime_draw();
         mouse_show();
         digitalClock_getTime();

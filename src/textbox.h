@@ -29,12 +29,12 @@ enum TextboxMouseStatus{
 };
 
 typedef struct{
-	const char * defaultContent;
+	char *defaultContent;
     int posX1;
     int posY1;
     int posX2;
     int posY2;
-	char content[500];
+	char *content;
     int maxLength;
     FontFamily font;
 	enum TextboxStatus status;
@@ -47,6 +47,6 @@ typedef struct{
 void textbox_draw(Textbox *tb);
 int textbox_event(Textbox *tb);
 void textbox_determinState(Textbox *tb);
-Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2);
+Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffer);
 
 #endif

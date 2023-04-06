@@ -21,7 +21,7 @@ typedef struct{
     Textbox textbox;
 }TextInput;
 
-void textinput_draw(TextInput *tb);
-TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2);
+void textinput_drawDefault(TextInput *tb);
+TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffer);
 
 #endif

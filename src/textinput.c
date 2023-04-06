@@ -11,7 +11,7 @@
 #include "textinput.h"
 
 
-void textinput_draw(TextInput *ti)
+void textinput_drawDefault(TextInput *ti)
 {
     int x1 = ti->posX1, y1 = ti->posY1,
         x2 = ti->posX2, y2 = ti->posY2;
@@ -24,7 +24,7 @@ void textinput_draw(TextInput *ti)
     textbox_draw(&ti->textbox);
 }
 
-TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2){
+TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffer){
     Textbox tb;
     TextInput ti;
     memset(&tb, 0, sizeof(tb));
@@ -32,6 +32,7 @@ TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2){
     tb.mstatus = TextboxMouseDefault;
     tb.cursorStatus = 0;
     tb.defaultContent = ds;
+    tb.content = buffer;
     tb.maxLength = 100;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,

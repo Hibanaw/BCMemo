@@ -19,8 +19,10 @@ void app(){
     while(1){
         int signal = 0;
         AppData *ad = app_data();
-        Textbox tb = textbox_newDefault("新的段落", 120, 30, MAXWIDTH, 100);
-		// Button b;
+        char textBuffer[500];
+        Textbox tb = textbox_newDefault("新的段落", 120, 30, MAXWIDTH, 100, textBuffer);
+		memset(textBuffer, 0, sizeof(textBuffer));
+        // Button b;
 		mouse_hide();
 		debug(LOG, "Main app starts.");
 		setfillstyle(1, _WHITE);

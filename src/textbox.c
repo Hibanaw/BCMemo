@@ -198,13 +198,14 @@ void textbox_determinState(Textbox *tb)
     }
 }
 
-Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2){
+Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffer){
     Textbox tb;
     memset(&tb, 0, sizeof(tb));
     tb.status = TextboxDefault;
     tb.mstatus = TextboxMouseDefault;
     tb.cursorStatus = 0;
     tb.defaultContent = ds;
+    tb.content = buffer;
     tb.maxLength = 100;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,
