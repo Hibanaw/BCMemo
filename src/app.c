@@ -23,6 +23,7 @@ void app(){
 		// Button b;
 		mouse_hide();
 		debug(LOG, "Main app starts.");
+        animation_login();
 		setfillstyle(1, _WHITE);
 		bar(0, 0, MAXWIDTH, MAXHEIGHT);
         setfillstyle(1, _BLACK);
