@@ -91,6 +91,14 @@ int text_getLength(char *s){
     return l;
 }
 
+int text_getHeight(Text t){
+    int w = text_getLength(t.content);
+    int rm = (w % (t.font.fontSize + t.font.spacing) / t.font.fontSize) + w / (t.font.fontSize + t.font.spacing);
+    int c = CEILING((float) w / rm);
+    if(!w) c = 1;
+    return c * (t.font.fontSize+t.font.rowSpacing);
+}
+
 char *text_getNthChar(char *s, int n){
     char *p = s;
     int i;

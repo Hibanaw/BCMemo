@@ -38,4 +38,5 @@ void text_display(Text);
 int text_getLength(char *s);
 Text text_newDefault(char *s, int x1, int y1, int x2, int y2);
 char *text_getNthChar(char *s, int n);
+int text_getHeight(Text t);
 #endif
