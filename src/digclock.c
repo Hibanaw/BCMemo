@@ -20,10 +20,12 @@ void digitalClock_getTime(){
         mouse_hide();
         setfillstyle(1, _BLACK);
         bar(920, 0, 1024, 20);
+        setfillstyle(1, _WHITE);
+        bar(921, 1, 1022, 19);
         settextstyle(3, 0, 1);
-        setcolor(_WHITE);
+        setcolor(_BLACK);
         settextjustify(LEFT_TEXT, 2);
-        outtextxy(930, -2, times);
+        outtextxy(930, -3, times);
         mouse_show();
     }
 }
