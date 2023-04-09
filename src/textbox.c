@@ -49,6 +49,7 @@ int textbox_event(Textbox *tb)
     Mouse *m = mouse();
     int mx = m->posX, my = m->posY;
     int change = 0;
+    int r = 0;
     textbox_determinState(tb);
     if(otbs != tb->status){
         mouse_hide();
@@ -119,7 +120,7 @@ int textbox_event(Textbox *tb)
         memset(olds1, 0, sizeof(olds1));
         memset(olds2, 0, sizeof(olds2));
         memset(finals, 0, sizeof(finals));
-        is = ime_input(inss);
+        is = ime_input(inss, textbox_getCursorPositionX(*tb) + 20, textbox_getCursorPositionY(*tb) + 30);
         if(is == 0){
             return 0;
         }
@@ -134,12 +135,15 @@ int textbox_event(Textbox *tb)
                 olds2[i-clp] = olds[i];
             }
         }
-        if(strlen(olds) + strlen(inss) > tb->maxLength){
+        if(text_getLength(olds) + text_getLength(inss) > tb->maxLength){
             return 0;
         }
         if(is == -1){
             if(cl != 0){
                 *text_getNthChar(olds1, MAX(0, cl-1)) = 0;
+            }
+            else{
+                r = 1;
             }
             strcat(finals, olds1);
             strcat(finals, olds2);
@@ -157,6 +161,7 @@ int textbox_event(Textbox *tb)
             mouse_show();
         }
     }
+    if(r) return -1;
     return 0;
 }
 
@@ -206,11 +211,11 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffe
     tb.cursorStatus = 0;
     tb.defaultContent = ds;
     tb.content = buffer;
-    tb.maxLength = 100;
+    tb.maxLength = 150;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,
     tb.font.spacing = 2;
-    tb.font.rowSpacing = 0;
+    tb.font.rowSpacing = 2;
     tb.posX1 = x1;
     tb.posX2 = x2;
     tb.posY1 = y1;
@@ -218,10 +223,29 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffe
     return tb;
 }
 
-int textbox_getCursorPositionX(){
-
+int textbox_getCursorPositionX(Textbox t){
+    int p = t.cursorLocation;
+    int w = t.posX2 - t.posX1;
+    int rm = (w % (t.font.fontSize + t.font.spacing) / t.font.fontSize) + w / (t.font.fontSize + t.font.spacing);
+    int r = p % rm ? p % rm : rm;
+    if(!strlen(t.content)) r = 0;
+    return t.posX1 + r * (t.font.fontSize + t.font.spacing);
 }
 
-int textbox_getCursorPositionY(){
-    
+int textbox_getCursorPositionY(Textbox t){
+    int p = t.cursorLocation;
+    int w = t.posX2 - t.posX1;
+    int rm = (w % (t.font.fontSize + t.font.spacing) / t.font.fontSize) + w / (t.font.fontSize + t.font.spacing);
+    int c = CEILING((float) p / rm)-1;
+    if(!strlen(t.content)) c = 0;
+    return t.posY1 +  c*(t.font.fontSize + t.font.rowSpacing);
+}
+
+Text textbox_convert2text(Textbox tb){
+    Text t;
+    t.hight = tb.posY2 - tb.posY1;
+    t.width = tb.posX2 - tb.posX1;
+    t.font = tb.font;
+    t.content = tb.content;
+    return t;
 }

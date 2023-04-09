@@ -48,5 +48,7 @@ void textbox_draw(Textbox *tb);
 int textbox_event(Textbox *tb);
 void textbox_determinState(Textbox *tb);
 Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffer);
-
+Text textbox_convert2text(Textbox tb);
+int textbox_getCursorPositionX(Textbox t);
+int textbox_getCursorPositionY(Textbox t);
 #endif
