@@ -19,15 +19,9 @@
 #include "textbox.h"
 #include "image.h"
 #include "anim.h"
+#include "meditor.h"
 
-typedef struct{
-    char * uid;
-    bool leftBar;
-	//Memos *memoList;
-}AppData;
-
-AppData *app_data();
-void app();
+void app(char *uid);
 
 void _app_init();
 

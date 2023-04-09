@@ -9,57 +9,55 @@
  */
 #include "app.h"
 
-AppData *app_data(){
-    static AppData d;
-    return &d;
-}
-
-void app(){
-	_app_init();
+void app(char *uid){
     while(1){
         int signal = 0;
-        AppData *ad = app_data();
-        char textBuffer[500];
-        Textbox tb = textbox_newDefault("ÐÂµÄ¶ÎÂä", 120, 30, MAXWIDTH, 100, textBuffer);
-		memset(textBuffer, 0, sizeof(textBuffer));
-        // Button b;
+        MemoEditor me;
 		mouse_hide();
 		debug(LOG, "Main app starts.");
-        animation_login();
+        // animation_login();
 		setfillstyle(1, _WHITE);
 		bar(0, 0, MAXWIDTH, MAXHEIGHT);
-        setfillstyle(1, _BLACK);
-		bar(0, 0, MAXWIDTH, 20);
-        setfillstyle(1, _GRAY);
+        setfillstyle(1, hexfffbf0);
+		bar(0, 0, MAXWIDTH, 40);
+        image_render("res/img/logotxt.bin", 85, 5);
+        setfillstyle(1, hexfffbf0);
 		bar(0, 0, 75, MAXHEIGHT);
-		textbox_draw(&tb);
+        setcolor(hexd4dfff);
+        setlinestyle(0, 0, 5);
+        line(73, 0, 73, MAXHEIGHT);
         ime_draw();
         mouse_show();
         digitalClock_getTime();
+        me = memoEditor_new("etc/1.mem", uid);
         while(1){
             int k = bioskey(1);
-            Mouse * m = mouse();
+            int mes = 0;
+            Mouse *m = mouse();
             keybord_eat();
             mouse_update();
             ime_check();
-            textbox_event(&tb);
             digitalClock_getTime();
+            mes = memoEditor_event(&me);
             if(keybord_isESCAPE(k)){
                 bioskey(0);
                 signal = -1;
                 break;
             }
+            switch (mes){
+				case 1:
+                    signal = 1;
+                    break;
+            
+                default:
+                    break;
+            }
         }
         switch(signal){
         case -1:
             return 0;
-            break;
+			break;
+            
         }
     }
-}
-
-
-void _app_init(){
-    AppData *ad = app_data();
-    ad -> leftBar = true;
 }
