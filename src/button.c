@@ -18,25 +18,27 @@ void button_draw(Button *b){
 void button_drawDefault(Button *b){
 	int x1 = b->posX1, y1 = b->posY1,
 		x2 = b->posX2, y2 = b->posY2;
-    setfillstyle(1,_GRAY);
-    bar(x1+3, y1+3, x2+3, y2+3);
+    setfillstyle(1,_LIGHTGRAY);
+    bar(x1, y1, x2, y2);
     switch (b->status)
     {
     case ButtonDefault:
+        setfillstyle(1, hexfffbf0);
+        bar(x1, y1, x2, y2-2);
         setfillstyle(1, _WHITE);
-        bar(x1, y1, x2, y2);
+        bar(x1+1, y1+2, x2-1, y2-2);
         break;
     case ButtonFocused:
-        setfillstyle(1, hexff9f00);
-        bar(x1, y1, x2, y2);
-        setfillstyle(1, _WHITE);
-        bar(x1+2, y1+2, x2-2, y2-2);
+        setfillstyle(1, hexffdfaa);
+        bar(x1, y1, x2, y2-2);
+        setfillstyle(1, hexfffbf0);
+        bar(x1+1, y1+2, x2-1, y2-2);
         break;
     case ButtonSelected:
-        setfillstyle(1, hexff9f00);
-        bar(x1, y1, x2, y2);
-        setfillstyle(1, hexffffaa);
-        bar(x1+2, y1+2, x2-2, y2-2);
+        setfillstyle(1, hexffdfaa);
+        bar(x1, y1, x2, y2-2);
+        setfillstyle(1, hexfffbf0);
+        bar(x1+1, y1+2, x2-1, y2-2);
         break;
     default:
         break;
@@ -56,6 +58,9 @@ void button_drawWithText(Button *b){
     t.font.fontColor = _BLACK,
     t.font.spacing = 2;
     t.font.rowSpacing = 0;
+    if(b->status == ButtonSelected){
+        t.font.fontColor = hex555f55;
+    }
     button_drawDefault(b);
 	text_display(t);
 }
