@@ -49,3 +49,12 @@ void image_getSize(char *filePath, int *width, int *height){
     *height = h;
     fclose(imgFile);
 }
+
+int image_illegal(char *path){
+    FILE *imgFile = fopen(path, "rb");
+    if(imgFile == NULL){
+        return 1;
+    }
+    fclose(imgFile);
+    return 0;
+}

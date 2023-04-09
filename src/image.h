@@ -18,5 +18,6 @@
 
 void image_render(char *, int, int);
 void image_getSize(char *, int*, int *);
+int image_illegal(char *path);
 
 #endif
