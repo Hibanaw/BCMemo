@@ -16,22 +16,34 @@
 #include "button.h"
 #include "textbox.h"
 #include "imagebox.h"
+#include "file.h"
 
 #define EDITORHEIGHT 680
 #define EDITORWIDTH 800
 
 typedef struct{
-    void *widget[20];
-    enum Memotype type[20];
+    void *widget[25];
+    enum Memotype type[25];
+    MemoBlock *memoBlock[25];
     int count;
+    int focusedBlockCursorLocation;
 } MemoEditorWidgetList;
 
 typedef struct{
+    char *uid;
+    char *filePath;
     MemoBlock *beginMemoBlock;
+    MemoBlock *focusedBlock;
     int posX;
     int posY;
     MemoEditorWidgetList list;
+    Button paragraphButton;
+    Button imageButton;
+    Button checkboxButton;
+    Button saveButton;
 } MemoEditor;
 
-
+MemoEditor memoEditor_new(char *filePath, char *uid);
+int memoEditor_event(MemoEditor *me);
+void memoEditor_updateList(MemoEditor *e);
 #endif
