@@ -20,7 +20,7 @@
 typedef Button ImageBox;
 
 void imageBox_draw(ImageBox *ib);
-void imageBox_event(ImageBox *ib);
+int imageBox_event(ImageBox *ib);
 ImageBox imageBox_new(char *filePath, int x, int y);
 
 #endif

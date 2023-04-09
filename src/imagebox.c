@@ -42,15 +42,15 @@ void imageBox_draw(ImageBox *ib){
     }
 }
 
-void imageBox_event(ImageBox *ib){
-    button_event(ib);
+int imageBox_event(ImageBox *ib){
+    return button_event(ib);
 }
 
 ImageBox imageBox_new(char *filePath, int x, int y){
     ImageBox ib;
     int w, h;
-    image_getSize(filePath, w, h);
-    ib = button_newButton(x, y, x + w, y + h, filePath, memoEditor_drawImageBox);
+	image_getSize(filePath, &w, &h);
+	ib = button_new(x, y, x + w, y + h, filePath, imageBox_draw);
     ib.status = -1;
     return ib;
 }
