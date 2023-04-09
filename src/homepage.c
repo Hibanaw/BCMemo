@@ -28,7 +28,6 @@ void homepage(){
 		//draw
         mouse_hide();
 		debug(LOG, "Homepage starts.");
-       // ani1
         setfillstyle(1, hexaa3f00);
         bar(0, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpbg.bin", 0, 0);
@@ -57,7 +56,7 @@ void homepage(){
                 signal = -1;
                 break;
             }
-			if(bs||tbs){
+			if(bs||(tbs == 1)){
                 //uid check
                 debug(DEBUG, "UID check.");
 				if(strlen(t.textbox.content) < 3){
@@ -75,8 +74,7 @@ void homepage(){
         switch (signal){
         case 1:
             debug(DEBUG, "Jump to app.");
-			app_data()->uid = t.textbox.content;
-            app();
+            app(t.textbox.content);
             break;
         case -1:
             debug(DEBUG, "EXIT.");

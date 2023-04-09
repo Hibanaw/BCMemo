@@ -11,7 +11,7 @@
 #ifndef __LOG_H__
 #define __LOG_H__
 
-#define LOGLEVEL 1
+#define LOGLEVEL 3
 
 #include <stdio.h>
 #include <conio.h>
