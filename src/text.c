@@ -26,8 +26,8 @@ void text_display(Text t){
             //ascii
             s[0] = *p;
             p++;
-            if(w && tx+d > x+w){
-                if(h && ty+ d + rd > h){
+            if(w && tx > x+w){
+                if(h && ty + fs + rd > y + h){
                     return;
                 }
                 tx = x;
@@ -46,8 +46,8 @@ void text_display(Text t){
             p++;
             s[1] = *p;
             p++;
-            if(w && tx+d > x+w){
-                if(h && ty+ d + rd > h){
+            if(w && tx > x+w){
+                if(h && ty + fs + rd > y + h){
                     return;
                 }
                 tx = x;
@@ -63,7 +63,7 @@ void text_display(Text t){
             s[1] = *p;
             p++;
             if(w && tx+d > x+w){
-                if(h && ty+ d + rd > y){
+                if(h && ty + fs + rd > y){
                     return;
                 }
                 tx = x;
@@ -92,11 +92,12 @@ int text_getLength(char *s){
 }
 
 int text_getHeight(Text t){
-    int w = text_getLength(t.content);
+    int l = text_getLength(t.content);
+    int w = t.width;
     int rm = (w % (t.font.fontSize + t.font.spacing) / t.font.fontSize) + w / (t.font.fontSize + t.font.spacing);
-    int c = CEILING((float) w / rm);
-    if(!w) c = 1;
-    return c * (t.font.fontSize+t.font.rowSpacing);
+    int c = CEILING((float) l / rm);
+    if(!strlen(t.content)) c = 1;
+    return c*(t.font.fontSize + t.font.rowSpacing);
 }
 
 char *text_getNthChar(char *s, int n){
