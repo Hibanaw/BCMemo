@@ -25,15 +25,13 @@ enum imeStatus{
 
 typedef struct
 {
-    int posX;
-    int posY;
     enum imeStatus status;
 
     Button button;
 }Ime;
 
 void ime_init();
-int ime_input(char *s);
+int ime_input(char *s, int x, int y);
 int ime_en(char *s);
 void ime_check();
 void ime_next();

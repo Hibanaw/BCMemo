@@ -24,8 +24,9 @@ int hzinput(int x,int y, char *s)
 	int return_value = 0;
 	memset(str, 0, sizeof(str));
 	memset(py, 0, sizeof(py));
+	x = MIN(x, MAXWIDTH - 220);
+	y = MIN(y, MAXHEIGHT - 60);
 	settextjustify(LEFT_TEXT,CENTER_TEXT);
-	//mouse_hide();
 	value=bioskey(1);
 	/*进入汉字输入法*/
 	asc=value&0xff;
@@ -44,9 +45,11 @@ int hzinput(int x,int y, char *s)
 		barx2=x+200;
 		bary1=y;
 		bary2=y+40;
+		mouse_hide();
 		getimage(barx1,bary1,barx2,bary2,image);
 		pyFrm(barx1,bary1,barx2,bary2);
 		setfillstyle(1,color);
+		mouse_show();
 		ST=input_method(barx1,bary1,str,value,py);
 		switch(ST)
 		{
@@ -65,7 +68,9 @@ int hzinput(int x,int y, char *s)
 				return_value = 0;
 				break;
 		}
+		mouse_hide();
 		putimage(barx1,bary1,image,0);
+		mouse_show();
 		free(image);
 	}
 	else{
@@ -121,7 +126,7 @@ int hzinput(int x,int y, char *s)
 				fc = "：";
 				break;
 			case '`':
-				fc = "~";
+				fc = "·";
 				break;
 			case '"':
 				fc = "“”";
@@ -169,9 +174,15 @@ int input_method(int x,int y,char *str,int value,char *py)
 	strcpy(pypath,"etc\\pinyin\\");
 	while(1)
 	{
+		mouse_update();
+		if(mouse_isClickedInBox(x, y, x+200, y+40) == -1){
+			if(oldfp) fclose(oldfp);
+			if(fp) fclose(fp);
+			break;
+		}
+		digitalClock_getTime();
 		if(trigger||kbhit())//第一次进入自动触发 以后均需键盘
 		{
-			mouse_hide();
 			trigger=0;
 			if(kbhit()) value=bioskey(0);
 			asc=value&0xff;
@@ -266,6 +277,7 @@ int input_method(int x,int y,char *str,int value,char *py)
 				fposition=0;
 				hznow=0;
 			}
+			mouse_hide();
 			pyFrm(x,y,x+200,y+40);
 			setfillstyle(1,_WHITE);
 			settextstyle(1,0,2);
@@ -315,6 +327,7 @@ int input_method(int x,int y,char *str,int value,char *py)
 				}
 				hz_puthzold(HzStartx+hznow*50+16,HzStarty,temphz[hznow],16,16,hexff7f00);//显示选中汉字
 			}
+		mouse_show();
 		}
 		strcpy(pypath,ABpath);          //绝对路径复原（不可少）
 		value=0;

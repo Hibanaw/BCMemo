@@ -21,7 +21,7 @@ Ime *ime(){
  * @param s Inputed string.
  * @return int as string length. -1 if backspace.
  */
-int ime_input(char *s){
+int ime_input(char *s, int x, int y){
     int k = bioskey(1);
     if(keybord_isControlOn()){
         return;
@@ -36,7 +36,7 @@ int ime_input(char *s){
             return ime_en(s);
             break;
         case IMEPINYIN:
-            return hzinput(300, 300, s);
+            return hzinput(x, y, s);
             break;
         case IMEEMOJI:
             break;
