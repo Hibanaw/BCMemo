@@ -1,3 +1,4 @@
 *.SWP
 *.DSK
-.vscode/settings.json
+settings.json
+*.mem
