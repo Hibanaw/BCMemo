@@ -26,7 +26,7 @@ typedef struct MemoBlock
 {
     Memotype type;
     int checkBoxisChecked;
-    char content[500];
+    char content[310];
     struct MemoBlock *next;
     char lastEditUser[20];
 } MemoBlock; // 备忘录的信息块
@@ -40,7 +40,7 @@ typedef struct Memo
 
 Memo *memo();
 
-MemoBlock *memo_addBlock(MemoBlock *a);
+void *memo_addBlock(MemoBlock *a);
 
 MemoBlock *memo_insertBlock(MemoBlock *p, MemoBlock *a);
 
@@ -52,4 +52,8 @@ MemoBlock *memo_deleteBlock(MemoBlock *p);
 MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content);
 
 MemoBlock *memo_preBlock(MemoBlock *p);
+
+int memo_getBlockSum();
+
+int memo_getBlockNum(MemoBlock *mb);
 #endif

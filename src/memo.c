@@ -1,6 +1,6 @@
 /**
  * @file memo.c
- * @author wywgwt (2504133124@qq.com)
+ * @author wywgwt (2504133124@qq.com), Hibanaw Hu (hibanaw@qq.com)
  * @brief 
  * @date 2023-04-03
  * 
@@ -15,12 +15,12 @@ Memo *memo()
 	return &m;
 }
 
-MemoBlock *memo_addBlock(MemoBlock *a)
+void *memo_addBlock(MemoBlock *a)
 {
 	MemoBlock *h = memo()->head;
 	if (h == NULL)
 	{
-		h = a;
+		memo()->head = a;
 	}
 	else
 	{
@@ -48,11 +48,16 @@ MemoBlock *memo_deleteBlock(MemoBlock *p)
 	MemoBlock *head = memo()->head;
 	MemoBlock *q;
 	q = head;
+	if(q == p){
+		memo()->head = p->next;
+		free(p);
+		return (q->next);
+	}
 	while (q != NULL && (q->next) != p)
 	{
 		q = q->next;
 	}
-	q->next = q->next->next;
+	q->next = p->next;
 	free(p);
 	return (q->next);
 }
@@ -62,9 +67,11 @@ MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content)
 {
 	MemoBlock *q, *t;
 	q = (MemoBlock *)malloc(sizeof(MemoBlock));
+	memset(q, 0, sizeof(MemoBlock));
 	if (q == NULL)
 	{
 		printf("no enough memory");
+		delay(5000);
 		exit(1);
 	}
 	else
@@ -80,10 +87,30 @@ MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content)
 MemoBlock *memo_preBlock(MemoBlock *p)
 {
 	MemoBlock *head = memo()->head;
-	MemoBlock *q;
-	while((q!=NULL)&&(q->next)!=p)
+	MemoBlock *q = head;
+	while((q->next!=NULL)&&(q->next)!=p)
 	{
 		q=q->next;
 	}
 	return(q);
+}
+
+int memo_getBlockSum(){
+	int s = 0;
+	MemoBlock *p = memo()->head;
+	while(p != NULL){
+		p = p->next;
+		s++;
+	}
+	return s;
+}
+
+int memo_getBlockNum(MemoBlock *mb){
+	int s = 0;
+	MemoBlock *p = memo()->head;
+	while(p != NULL && p != mb){
+		p = p->next;
+		s++;
+	}
+	return s;
 }
