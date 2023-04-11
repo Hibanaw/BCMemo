@@ -31,6 +31,9 @@ typedef struct Button{
     int posY2;
     char *content;
     enum ButtonStatus status;
+    clock_t animationStartTime;
+    int animationTick;
+    int animationDrawedTick;
 	void (*draw)();
 }Button;
 

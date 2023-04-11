@@ -123,5 +123,6 @@ Button button_new(int x1, int y1, int x2, int y2, char *s, void (*f)()){
     b.posY2 = y2;
     b.content = s;
     b.draw = f;
+    b.animationDrawedTick = 0;
     return b;
 }
