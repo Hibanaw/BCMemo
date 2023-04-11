@@ -26,7 +26,6 @@ typedef struct{
     enum Memotype type[25];
     MemoBlock *memoBlock[25];
     int count;
-    int focusedBlockCursorLocation;
 } MemoEditorWidgetList;
 
 typedef struct{
@@ -34,6 +33,7 @@ typedef struct{
     char *filePath;
     MemoBlock *beginMemoBlock;
     MemoBlock *focusedBlock;
+    int focusedBlockCursorLocation;
     int posX;
     int posY;
     MemoEditorWidgetList list;
@@ -42,6 +42,11 @@ typedef struct{
     Button checkboxButton;
     Button saveButton;
 } MemoEditor;
+
+typedef struct{
+    Button checkbox;
+    Textbox textbox;
+} MemoEditor_Checkbox;
 
 MemoEditor memoEditor_new(char *filePath, char *uid);
 int memoEditor_event(MemoEditor *me);

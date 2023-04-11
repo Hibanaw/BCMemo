@@ -65,15 +65,18 @@ int memoEditor_event(MemoEditor *me){
         switch (k){
             case KEYUP:
                 bioskey(0);
-                me->beginMemoBlock = memo_preBlock(me->beginMemoBlock);
-                memoEditor_updateList(me);
+                
+                if(me->beginMemoBlock != memo()->head){
+                    me->beginMemoBlock = memo_preBlock(me->beginMemoBlock);
+                    memoEditor_updateList(me);
+                }
                 break;
             case KEYDOWN:
                 bioskey(0);
-                if(me->beginMemoBlock->next)
+                if(me->beginMemoBlock->next){
                     me->beginMemoBlock = me->beginMemoBlock->next;
-                else me->beginMemoBlock = memo()->head;
-                memoEditor_updateList(me);
+                    memoEditor_updateList(me);
+                }
         }
         if(button_event(&me->paragraphButton)){
             MemoBlock *mb = memo_newBlock(PARAGRAPH, 0, "");
@@ -98,6 +101,39 @@ int memoEditor_event(MemoEditor *me){
         }
     }
     else{
+        switch (k){
+            case KEYUP:
+                bioskey(0);
+                if(me->focusedBlock != me->beginMemoBlock){
+                    me->focusedBlock = memo_preBlock(me->focusedBlock);
+                    me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                    memoEditor_updateList(me);
+                }
+                else{
+                    if(me->beginMemoBlock != memo()->head){
+                        me->beginMemoBlock = memo_preBlock(me->beginMemoBlock);
+                        me->focusedBlock = memo_preBlock(me->focusedBlock);
+                        me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                        memoEditor_updateList(me);
+                    }
+                }
+                break;
+            case KEYDOWN:
+                bioskey(0);
+                if(me->focusedBlock != me->list.memoBlock[me->list.count-1]){
+                    me->focusedBlock = me->focusedBlock->next;
+                    me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                    memoEditor_updateList(me);
+                }
+                else{
+                    if(me->beginMemoBlock != memo_preBlock(memo()->head)){
+                        me->beginMemoBlock = me->beginMemoBlock->next;
+                        me->focusedBlock = (me->focusedBlock->next == NULL ? me->focusedBlock->next : me->focusedBlock);
+                        me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                        memoEditor_updateList(me);
+                    }
+                }
+        }
         if(button_event(&me->paragraphButton)){
             me->focusedBlock->type = PARAGRAPH;
             strcpy(me->focusedBlock->lastEditUser, me->uid);
@@ -112,6 +148,7 @@ int memoEditor_event(MemoEditor *me){
         }
         if(button_event(&me->checkboxButton)){
             me->focusedBlock->type = CHECKBOX;
+            me->focusedBlock->checkBoxisChecked = 0;
             strcpy(me->focusedBlock->lastEditUser, me->uid);
             memoEditor_updateList(me);
             return 0;
@@ -122,7 +159,9 @@ int memoEditor_event(MemoEditor *me){
 		int lh;
         int ls;
         ImageBox *ib;
+        MemoEditor_Checkbox *cb;
         int trigger;
+        int trigger2;
         switch (me->list.type[i]){
             case PARAGRAPH:
                 tb = me->list.widget[i];
@@ -134,7 +173,7 @@ int memoEditor_event(MemoEditor *me){
                 }
                 if(tb->status == TextboxSelected){
                     me->focusedBlock = me->list.memoBlock[i];
-                    me->list.focusedBlockCursorLocation = tb->cursorLocation;
+                    me->focusedBlockCursorLocation = tb->cursorLocation;
                 }
 				if(tb->status == TextboxSelected && lh != text_getHeight(textbox_convert2text(*tb))){
                     memoEditor_updateList(me);
@@ -146,18 +185,17 @@ int memoEditor_event(MemoEditor *me){
                     strcpy(sn, text_getNthChar(tb->content, tb->cursorLocation));
                     mb = memo_newBlock(PARAGRAPH, 0, sn);
                     *text_getNthChar(tb->content, tb->cursorLocation) = 0;
-                    me->list.focusedBlockCursorLocation = 0;
+                    me->focusedBlockCursorLocation = 0;
                     me->focusedBlock = memo_insertBlock(me->list.memoBlock[i], mb);
                     strcpy(me->focusedBlock->lastEditUser, me->uid);
                     memoEditor_updateList(me);
                     return 0;
-                    break;
                 }
                 if(trigger == -1){
                     if(me->focusedBlock != memo()->head){
                         MemoBlock *mb = memo_preBlock(me->list.memoBlock[i]);
                         if(text_getLength(mb->content) + text_getLength(me->list.memoBlock[i]) <= 150){
-                            me->list.focusedBlockCursorLocation = text_getLength(mb->content);
+                            me->focusedBlockCursorLocation = text_getLength(mb->content);
                             strcat(mb->content, tb->content);
                             me->focusedBlock = mb;
                             memo_deleteBlock(me->list.memoBlock[i]);
@@ -165,7 +203,6 @@ int memoEditor_event(MemoEditor *me){
                             return 0;
                         }
                     }
-                    break;
                 }
                 if(me->list.memoBlock[i] == me->focusedBlock && tb->status != TextboxSelected){
                     me->focusedBlock = NULL;
@@ -175,7 +212,7 @@ int memoEditor_event(MemoEditor *me){
                 ib = me->list.widget[i];
                 if(imageBox_event(ib)){
                     me->focusedBlock = me->list.memoBlock[i];
-                    me->list.focusedBlockCursorLocation = 1;
+                    me->focusedBlockCursorLocation = 1;
                 }
 				if(me->focusedBlock == me->list.memoBlock[i] && mouse_isClickedInBox(ib->posX1, ib->posY1, ib->posX2, ib->posY2) == -1 && mouse_isClickedInBox(me->posX, me->posY + 3, me->posX + 126, me->posY + 35) != 1){
                     me->focusedBlock = NULL;
@@ -186,7 +223,7 @@ int memoEditor_event(MemoEditor *me){
                         case KEYBACKSPACE:
                             bioskey(0);
                             me->focusedBlock->type = PARAGRAPH;
-                            me->list.focusedBlockCursorLocation = text_getLength(me->focusedBlock->content);
+                            me->focusedBlockCursorLocation = text_getLength(me->focusedBlock->content);
                             strcpy(me->focusedBlock->lastEditUser, me->uid);
                             memoEditor_updateList(me);
                             return 0;
@@ -194,13 +231,52 @@ int memoEditor_event(MemoEditor *me){
                         case KEYENTER:
                             bioskey(0);
                             mb = memo_newBlock(PARAGRAPH, 0, "");
-                            me->list.focusedBlockCursorLocation = 0;
+                            me->focusedBlockCursorLocation = 0;
                             me->focusedBlock = memo_insertBlock(me->list.memoBlock[i], mb);
                             strcpy(me->focusedBlock->lastEditUser, me->uid);
                             memoEditor_updateList(me);
                             return 0;
                             break;
                     }
+                }
+                break;
+            case CHECKBOX:
+                cb = me->list.widget[i];
+                ls = cb->textbox.status;
+                tb = &cb->textbox;
+                trigger = button_checkboxEvent(&cb->checkbox);
+                trigger2 = textbox_event(&cb->textbox);
+                if(ls == TextboxSelected && tb->status == TextboxDefault && mouse_isClickedInBox(me->posX, me->posY + 3, me->posX + 126, me->posY + 35) == 1){
+                    tb->status = TextboxSelected;
+                }
+                if(tb->status == TextboxSelected){
+                    me->focusedBlock = me->list.memoBlock[i];
+                    me->focusedBlockCursorLocation = tb->cursorLocation;
+                }
+				if(tb->status == TextboxSelected && lh != text_getHeight(textbox_convert2text(*tb))){
+                    memoEditor_updateList(me);
+                    return 0;
+                }
+                if(trigger){
+                    me->list.memoBlock[i]->checkBoxisChecked = (int)cb->checkbox.content;
+                }
+                if (trigger2 == 1){
+                        MemoBlock *mb;
+                        char sn[310];
+                        strcpy(sn, text_getNthChar(tb->content, tb->cursorLocation));
+                        mb = memo_newBlock(CHECKBOX, 0, sn);
+                        *text_getNthChar(tb->content, tb->cursorLocation) = 0;
+                        me->focusedBlockCursorLocation = 0;
+                        me->focusedBlock = memo_insertBlock(me->list.memoBlock[i], mb);
+                        strcpy(me->focusedBlock->lastEditUser, me->uid);
+                        memoEditor_updateList(me);
+                        return 0;
+                }
+                if(trigger2 == -1){
+                    me->focusedBlock->type = PARAGRAPH;
+                    strcpy(me->focusedBlock->lastEditUser, me->uid);
+                    memoEditor_updateList(me);
+                    return 0;
                 }
                 break;
         }
@@ -230,6 +306,7 @@ void memoEditor_updateList(MemoEditor *e){
     while(i < 25 && y < 700 && p != NULL){
         Textbox *tb;
         ImageBox *ib;
+        MemoEditor_Checkbox *cb;
         e->list.type[i] = p->type;
         e->list.memoBlock[i] = p;
         switch (p->type){
@@ -240,11 +317,8 @@ void memoEditor_updateList(MemoEditor *e){
 			dy = text_getHeight(textbox_convert2text(*tb));
             tb->posY2 = y + dy;
             if(p == e->focusedBlock){
-                if(e->list.focusedBlockCursorLocation == -1){
-                    e->list.focusedBlockCursorLocation = text_getLength(tb->content);
-                }
                 tb->status = TextboxSelected;
-                tb->cursorLocation = e->list.focusedBlockCursorLocation;
+                tb->cursorLocation = e->focusedBlockCursorLocation;
             }
             textbox_draw(tb);
             y += dy;
@@ -264,7 +338,29 @@ void memoEditor_updateList(MemoEditor *e){
             imageBox_draw(ib);
             break;
         case CHECKBOX:
-            
+            cb = malloc(sizeof(MemoEditor_Checkbox));
+			e->list.widget[i] = cb;
+            cb->checkbox = button_new(x+20, y, x+44, y+24, 0, button_checkboxDraw);
+            switch (p->checkBoxisChecked)
+            {
+                case 0:
+                    cb->checkbox.content = 0;
+                break;
+                case 1:
+                    cb->checkbox.content = 1;
+                break;
+            }
+            cb->textbox = textbox_newDefault("新的任务", x + 50, y, MAXWIDTH - 20, y, p->content);
+            cb->textbox.maxLength = 20;
+			dy = text_getHeight(textbox_convert2text(cb->textbox));
+            cb->textbox.posY2 = y + dy;
+            if(p == e->focusedBlock){
+                cb->textbox.status = TextboxSelected;
+                cb->textbox.cursorLocation = e->focusedBlockCursorLocation;
+            }
+            textbox_draw(&cb->textbox);
+            button_draw(&cb->checkbox);
+            y += dy;
             break;
         }
         p = p->next;
