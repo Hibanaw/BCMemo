@@ -8,7 +8,7 @@
  * 
  */
 
-#include "textinput.h"
+#include "textipt.h"
 
 
 void textinput_drawDefault(TextInput *ti)
