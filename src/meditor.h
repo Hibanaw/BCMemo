@@ -17,14 +17,15 @@
 #include "textbox.h"
 #include "imagebox.h"
 #include "file.h"
+#include "scroll.h"
 
 #define EDITORHEIGHT 680
 #define EDITORWIDTH 800
 
 typedef struct{
-    void *widget[25];
-    enum Memotype type[25];
-    MemoBlock *memoBlock[25];
+    void *widget[30];
+    enum Memotype type[30];
+    MemoBlock *memoBlock[30];
     int count;
 } MemoEditorWidgetList;
 
@@ -41,6 +42,7 @@ typedef struct{
     Button imageButton;
     Button checkboxButton;
     Button saveButton;
+    ScrollBar scrollBar;
 } MemoEditor;
 
 typedef struct{

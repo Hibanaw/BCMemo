@@ -15,21 +15,17 @@ MemoEditor memoEditor_new(char *filePath, char *uid){
     Memo *m = memo();
     *m = memofile_read(filePath);
     memset(&me, 0, sizeof(me));
-    if(m->head == NULL){
-        MemoBlock *mb = memo_newBlock(PARAGRAPH, 0, "");
-		strcpy(mb->lastEditUser, uid);
-        memo_addBlock(mb);
-    }
     me.filePath = filePath;
-    me.beginMemoBlock = m->head;
-    me.posX = 75;
-    me.posY = 30;
-    me.focusedBlock = memo_preBlock(m->head);
+    me.beginMemoBlock   = m->head;
+    me.posX             = 75;
+    me.posY             = 30;
+    me.focusedBlock     = memo_preBlock(m->head);
     me.paragraphButton  = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawDefault);
     me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", button_drawDefault);
     me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", button_drawDefault);
     me.saveButton       = button_new(MAXWIDTH - 40, me.posY+3, MAXWIDTH - 8, me.posY + 35, "", button_drawDefault);
-    me.uid = uid;
+    me.uid              = uid;
+    me.scrollBar        = scrollBar_new(MAXWIDTH - 20, me.posY + 50, MAXHEIGHT - (me.posY + 60));
     mouse_hide();
     setfillstyle(1, hexfffbf0);
 	bar(me.posX, me.posY, MAXWIDTH, me.posY+40);
@@ -44,6 +40,11 @@ MemoEditor memoEditor_new(char *filePath, char *uid){
     button_draw(&me.checkboxButton);
     button_draw(&me.saveButton);
     mouse_show();
+	if(memo()->head == NULL){
+		MemoBlock *mb = memo_newBlock(PARAGRAPH, 0, "");
+        strcpy(mb->lastEditUser, uid);
+		memo_addBlock(mb);
+    }
     memoEditor_updateList(&me);
     return me;
 }
@@ -58,8 +59,25 @@ int memoEditor_event(MemoEditor *me){
 	MemoBlock *p = me->beginMemoBlock;
     int k = bioskey(1);
     int i;
+    int ss;
     if(button_event(&me->saveButton)){
         memofile_write(me->filePath, memo());
+    }
+    ss = scrollBar_event(&me->scrollBar);
+    switch (ss)
+    {
+        case -1:
+            if(me->beginMemoBlock != memo()->head){
+                me->beginMemoBlock = memo_preBlock(me->beginMemoBlock);
+                memoEditor_updateList(me);
+            }
+            break;
+        case 1:
+			if(me->list.memoBlock[me->list.count-1]->next){
+                me->beginMemoBlock = me->beginMemoBlock->next;
+                memoEditor_updateList(me);
+            }
+            break;
     }
     if(me->focusedBlock == NULL){
         switch (k){
@@ -106,14 +124,14 @@ int memoEditor_event(MemoEditor *me){
                 bioskey(0);
                 if(me->focusedBlock != me->beginMemoBlock){
                     me->focusedBlock = memo_preBlock(me->focusedBlock);
-                    me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                    me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock->content));
                     memoEditor_updateList(me);
                 }
                 else{
                     if(me->beginMemoBlock != memo()->head){
                         me->beginMemoBlock = memo_preBlock(me->beginMemoBlock);
                         me->focusedBlock = memo_preBlock(me->focusedBlock);
-                        me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                        me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock->content));
                         memoEditor_updateList(me);
                     }
                 }
@@ -122,14 +140,14 @@ int memoEditor_event(MemoEditor *me){
                 bioskey(0);
                 if(me->focusedBlock != me->list.memoBlock[me->list.count-1]){
                     me->focusedBlock = me->focusedBlock->next;
-                    me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                    me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock->content));
                     memoEditor_updateList(me);
                 }
                 else{
                     if(me->beginMemoBlock != memo_preBlock(memo()->head)){
                         me->beginMemoBlock = me->beginMemoBlock->next;
                         me->focusedBlock = (me->focusedBlock->next == NULL ? me->focusedBlock->next : me->focusedBlock);
-                        me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock));
+                        me->focusedBlockCursorLocation = MIN(me->focusedBlockCursorLocation, text_getLength(me->focusedBlock->content));
                         memoEditor_updateList(me);
                     }
                 }
@@ -244,6 +262,7 @@ int memoEditor_event(MemoEditor *me){
                 cb = me->list.widget[i];
                 ls = cb->textbox.status;
                 tb = &cb->textbox;
+                lh = text_getHeight(textbox_convert2text(*tb));
                 trigger = button_checkboxEvent(&cb->checkbox);
                 trigger2 = textbox_event(&cb->textbox);
                 if(ls == TextboxSelected && tb->status == TextboxDefault && mouse_isClickedInBox(me->posX, me->posY + 3, me->posX + 126, me->posY + 35) == 1){
@@ -292,18 +311,25 @@ void memoEditor_updateList(MemoEditor *e){
     int sum = memo_getBlockSum();
     int no = memo_getBlockNum(e->beginMemoBlock);
     MemoBlock *p = e->beginMemoBlock;
+	if(memo()->head == NULL){
+		MemoBlock *mb = memo_newBlock(PARAGRAPH, 0, "");
+		memo_addBlock(mb);
+    }
     if(p == NULL){
         p = e->beginMemoBlock = memo()->head;
     }
-    for(i = 0; i < e->list.count && e->list.widget[i] != NULL; i++){
-        free(e->list.widget[i]);
+    for(i = 0; i < e->list.count; i++){
+        if(e->list.widget[i] != NULL){
+            free(e->list.widget[i]);
+            e->list.widget[i] = NULL;
+        }
     }
     mouse_hide();
     setfillstyle(1, _WHITE);
-    bar(x+5, y, MAXWIDTH, MAXHEIGHT);
+    bar(x+5, y, MAXWIDTH-20, MAXHEIGHT);
     e->list.count = 0;
     i = 0;
-    while(i < 25 && y < 700 && p != NULL){
+    while(i < 25 && y < MAXHEIGHT && p != NULL){
         Textbox *tb;
         ImageBox *ib;
         MemoEditor_Checkbox *cb;
@@ -350,7 +376,7 @@ void memoEditor_updateList(MemoEditor *e){
                     cb->checkbox.content = 1;
                 break;
             }
-            cb->textbox = textbox_newDefault("新的任务", x + 50, y, MAXWIDTH - 20, y, p->content);
+            cb->textbox = textbox_newDefault("新的任务", x + 50, y, MAXWIDTH - 30, y, p->content);
             cb->textbox.maxLength = 20;
 			dy = text_getHeight(textbox_convert2text(cb->textbox));
             cb->textbox.posY2 = y + dy;
@@ -365,16 +391,26 @@ void memoEditor_updateList(MemoEditor *e){
         }
         p = p->next;
         i++;
-        y+= 15;
+        y+= 10;
     }
     e->list.count = i;
-    if(i < sum){
-        int y1, y2, l;
-        l = (MAXHEIGHT - e->posY - 80) * i / sum;
-        y1 = (MAXHEIGHT - e->posY - 80) * no / sum + e->posY + 60;
-        y2 = y1+l;
-        setfillstyle(1, hex555f55);
-        bar(MAXWIDTH - 10, y1, MAXWIDTH - 5, y2);
-    }
+    e->scrollBar.ithItem = no;
+    e->scrollBar.sumItem = sum;
+    e->scrollBar.inScreenItem = i;
+    scrollBar_event(&e->scrollBar);
+	scrollBar_draw(&e->scrollBar);
     mouse_show();
+}
+
+void memoEditor_distruct(MemoEditor *me){
+    int i = 0;
+    for(i = 0; i < 25; i++){
+        if(me->list.widget[i] != NULL){
+            free(me->list.widget[i]);
+            me->list.widget[i] = NULL;
+        }
+    }
+    while(memo()->head != NULL){
+        memo_deleteBlock(memo()->head);
+    }
 }
