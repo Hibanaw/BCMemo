@@ -8,7 +8,7 @@ typedef struct
     unsigned int count;
 } Memos; // 所有备忘录，备忘录的链表结构，记录了头结点和总个数。
 Memos *memos();
-Memo *memo_insert(Memo *p, Memo *a);
-Memo *memo_delete(Memo *p);
-Memo *memo_makeTop(Memo *p);
+Memo *memos_insertMemo(Memo *p, Memo *a);
+Memo *memos_deleteMemo(Memo *p);
+Memo *memos_makeTopMemo(Memo *p);
 #endif

@@ -4,7 +4,7 @@ Memos *memos()
 	static Memos m;
 	return &m;
 }
-Memo *memo_insert(Memo *p, Memo *a)
+Memo *memos_insertMemo(Memo *p, Memo *a)
 {
 	Memo *t;
 	t = p->next;
@@ -12,7 +12,7 @@ Memo *memo_insert(Memo *p, Memo *a)
 	a->next = t;
 	return (a);
 }
-Memo *memo_delete(Memo *p)
+Memo *memos_deleteMemo(Memo *p)
 {
 	Memo *h = memos()->head;
 	Memo *q = h;
@@ -24,7 +24,7 @@ Memo *memo_delete(Memo *p)
 	free(p);
 	return (q->next);
 }
-Memo *memo_makeTop(Memo *p)
+Memo *memos_makeTopMemo(Memo *p)
 {
 	MemoBlock *t;
 	int a;
@@ -39,7 +39,7 @@ Memo *memo_makeTop(Memo *p)
 	}
 	q->next = q->next->next;
 	q = h;
-	memo_insert(h, p);
+	memos_insertMemo(h, p);
 	t = p->head;
 	p->head = h->head;
 	h->head = t;
