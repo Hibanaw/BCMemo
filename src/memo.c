@@ -67,7 +67,6 @@ MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content)
 {
 	MemoBlock *q, *t;
 	q = (MemoBlock *)malloc(sizeof(MemoBlock));
-	memset(q, 0, sizeof(MemoBlock));
 	if (q == NULL)
 	{
 		printf("no enough memory");
@@ -76,11 +75,12 @@ MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content)
 	}
 	else
 	{
+		memset(q, 0, sizeof(MemoBlock));
 		q->type = type;
 		q->checkBoxisChecked = checkBoxisChecked;
 		strcpy(q->content, content);
 	}
-	return (q);
+	return q;
 }
 //ÐÂ½¨
 
