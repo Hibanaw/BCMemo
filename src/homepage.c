@@ -13,6 +13,9 @@
 void homepage(){
     char textInputBuffer[50];
     memset(textInputBuffer, 0, sizeof(textInputBuffer));
+	setfillstyle(1, _BLACK);
+	bar(0, 0, MAXWIDTH, MAXHEIGHT);
+	delay(1000);
     while(1){
         int signal = 0;
         Button b = button_new(550, 500,
@@ -27,11 +30,11 @@ void homepage(){
         t.textbox.maxLength = 10;
 		//draw
         mouse_hide();
-		debug(LOG, "Homepage starts.");
+	    animation_homepage1(); 
         setfillstyle(1, hexaa3f00);
         bar(0, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpbg.bin", 0, 0);
-        //ani2
+        animation_homepage2();
         setfillstyle(1, hexd4bfaa);
         bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
@@ -74,7 +77,8 @@ void homepage(){
         switch (signal){
         case 1:
             debug(DEBUG, "Jump to app.");
-            app(t.textbox.content);
+            appData()->uid = t.textbox.content;
+            app();
             break;
         case -1:
             debug(DEBUG, "EXIT.");
