@@ -20,9 +20,20 @@
 #include "image.h"
 #include "anim.h"
 #include "meditor.h"
+#include "router.h"
 
-void app(char *uid);
+enum{
+    AppRouterExpand = 1,
+    AppExit
+};
 
-void _app_init();
+typedef struct
+{
+    char *uid;
+}AppData;
+
+AppData *appData();
+
+void app();
 
 #endif

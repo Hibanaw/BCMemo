@@ -9,13 +9,19 @@
  */
 #include "app.h"
 
-void app(char *uid){
+AppData *appData(){
+    static ad;
+    return &ad;
+}
+
+void app(){
+    Router r = router_new();
+    MemoEditor me = r.me;
+    animation_login();
     while(1){
         int signal = 0;
-        MemoEditor me;
 		mouse_hide();
 		debug(LOG, "Main app starts.");
-        // animation_login();
 		setfillstyle(1, _WHITE);
 		bar(0, 0, MAXWIDTH, MAXHEIGHT);
         setfillstyle(1, hexfffbf0);
@@ -24,40 +30,41 @@ void app(char *uid){
         setfillstyle(1, hexfffbf0);
 		bar(0, 0, 75, MAXHEIGHT);
         setcolor(hexd4dfff);
-        setlinestyle(0, 0, 5);
+        setlinestyle(0, 1, 2);
         line(73, 0, 73, MAXHEIGHT);
         ime_draw();
+        router_draw(&r);
         mouse_show();
         digitalClock_getTime();
-        me = memoEditor_new("etc/1.mem", uid);
-        while(1){
+        
+	    me = memoEditor_new("data/1.mem", appData()->uid);
+        while(!signal){
             int k = bioskey(1);
             int mes = 0;
             Mouse *m = mouse();
+            int rs;
             keybord_eat();
             mouse_update();
             ime_check();
             digitalClock_getTime();
             mes = memoEditor_event(&me);
+            rs = router_event(&r);
             if(keybord_isESCAPE(k)){
                 bioskey(0);
-                signal = -1;
-                break;
+                signal = AppExit;
             }
-            switch (mes){
-				case 1:
-                    signal = 1;
-                    break;
-            
-                default:
-                    break;
+            if(rs == RouterExpand){
+                signal = AppRouterExpand;
             }
         }
         switch(signal){
-        case -1:
-            return 0;
-			break;
-            
+            case AppExit:
+                memoEditor_distruct(&me);
+                return 0;
+                break;
+            case AppRouterExpand:
+                router_expand();
+                break;
         }
     }
 }
