@@ -153,11 +153,14 @@ void button_checkboxAnimation(Button *cb){
                 cb->animationDrawedTick = t;
             }
         }
-        else if(cb->animationDrawedTick < 0.5 * CLK_TCK){
+        else if(cb->animationDrawedTick < 0.2 * CLK_TCK){
+            mouse_hide();
             setlinestyle(0, 1, 3);
             setcolor(_WHITE);
             line(x1+5, y1 + 12, x1+8, y1 + 18);
             line(x1+8, y1 + 18, x1+19, y1 + 6);
+            mouse_show();
+            cb->animationDrawedTick = t;
         }
     }
 }
@@ -203,22 +206,22 @@ void button_checkboxDraw(Button *cb){
             }
             setfillstyle(1, c1);
             setcolor(c1);
-            bar(x1+3, y1, x2-3, y2);
-            bar(x1, y1+3, x2, y2-3);
-            pieslice(x1 + 3, y1 + 3, 90, 180, 3);
-            pieslice(x1 + 3, y2 - 3, 180, 270, 3);
-            pieslice(x2 - 3, y1 + 3, 0, 90, 3);
-            pieslice(x2 - 3, y2 - 3, 270, 360, 3);
+            bar(x1+5, y1, x2-5, y2);
+            bar(x1, y1+5, x2, y2-5);
+            pieslice(x1 + 5, y1 + 5, 90, 180, 5);
+            pieslice(x1 + 5, y2 - 5, 180, 270, 5);
+            pieslice(x2 - 5, y1 + 5, 0, 90, 5);
+            pieslice(x2 - 5, y2 - 5, 270, 360, 5);
             setcolor(c0);
             setlinestyle(0, 1, 2);
-            line(x1 + 3, y1, x2 - 3, y1);
-            line(x1 + 3, y2, x2 - 3, y2);
-            line(x1, y1 + 3, x1, y2 - 3);
-            line(x2, y1 + 3, x2, y2 - 3);
-            arc(x1 + 3, y1 + 3, 90, 180, 3);
-            arc(x1 + 3, y2 - 3, 180, 270, 3);
-            arc(x2 - 3, y1 + 3, 0, 90, 3);
-            arc(x2 - 3, y2 - 3, 270, 360, 3);
+            line(x1 + 5, y1, x2 - 5, y1);
+            line(x1 + 5, y2, x2 - 5, y2);
+            line(x1, y1 + 5, x1, y2 - 5);
+            line(x2, y1 + 5, x2, y2 - 3);
+            arc(x1 + 5, y1 + 5, 90, 180, 5);
+            arc(x1 + 5, y2 - 5, 180, 270, 5);
+            arc(x2 - 5, y1 + 5, 0, 90, 5);
+            arc(x2 - 5, y2 - 5, 270, 360, 5);
             break;
 		case 1:
             switch (cb->status)
@@ -238,18 +241,17 @@ void button_checkboxDraw(Button *cb){
             }
             setfillstyle(1, c0);
             setcolor(c0);
-            bar(x1+3, y1, x2-3, y2);
-            bar(x1, y1+3, x2, y2-3);
-            pieslice(x1 + 3, y1 + 3, 90, 180, 3);
-            pieslice(x1 + 3, y2 - 3, 180, 270, 3);
-            pieslice(x2 - 3, y1 + 3, 0, 90, 3);
-            pieslice(x2 - 3, y2 - 3, 270, 360, 3);
-            if(cb->animationDrawedTick > 0.5*CLK_TCK){
+            bar(x1+5, y1, x2-5, y2);
+            bar(x1, y1+5, x2, y2-5);
+            pieslice(x1 + 5, y1 + 5, 90, 180, 5);
+            pieslice(x1 + 5, y2 - 5, 180, 270, 5);
+            pieslice(x2 - 5, y1 + 5, 0, 90, 5);
+            pieslice(x2 - 5, y2 - 5, 270, 360, 5);
+            if(cb->animationDrawedTick > 0.15*CLK_TCK){
                 setcolor(c2);
                 setlinestyle(0, 1, 3);
                 line(x1+5, y1 + 12, x1+8, y1 + 18);
                 line(x1+8, y1 + 18, x1+19, y1 + 6);
             }
-		;
     }
 }
