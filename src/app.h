@@ -38,4 +38,5 @@ AppData *appData();
 void app();
 
 void sidebar_draw();
+
 #endif
