@@ -13,7 +13,7 @@ void textbox_draw(Textbox *tb)
 {
     int x1 = tb->posX1, y1 = tb->posY1,
         x2 = tb->posX2, y2 = tb->posY2;
-    setfillstyle(1, _WHITE);
+    setfillstyle(1, tb->bgColor);
     bar(x1, y1, x2, y2);
     if(strlen(tb->content)){
         Text t;
@@ -46,7 +46,7 @@ void textbox_draw(Textbox *tb)
         c = loc - r*wpl;
         ly = r * (tb->font.fontSize+tb->font.rowSpacing) + tb->posY1;
         lx = c * (tb->font.fontSize+tb->font.spacing) + tb->font.spacing / 2 + tb->posX1;
-        setcolor(tb->cursorStatus ? _BLACK : _WHITE);
+        setcolor(tb->cursorStatus ? tb->font.fontColor : tb->bgColor);
         setlinestyle(0, 1, 5);
         line(lx, ly+2, lx, ly+tb->font.fontSize-2);
     }
@@ -227,7 +227,7 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffe
     tb.cursorStatus = 0;
     tb.defaultContent = ds;
     tb.content = buffer;
-    tb.maxLength = 150;
+    tb.maxLength = 75;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,
     tb.font.spacing = 2;
@@ -236,6 +236,9 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffe
     tb.posX2 = x2;
     tb.posY1 = y1;
     tb.posY2 = y2;
+    tb.hint = '*';
+    tb.type = TextboxText;
+    tb.bgColor = _WHITE;
     return tb;
 }
 

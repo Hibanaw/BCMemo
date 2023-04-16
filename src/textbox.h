@@ -46,7 +46,7 @@ typedef struct{
 	clock_t cursorLastBlink;
     enum TextboxType type;
     char hint;
-
+    char bgColor;
 }Textbox;
 
 void textbox_draw(Textbox *tb);

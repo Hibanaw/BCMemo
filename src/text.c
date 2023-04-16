@@ -34,10 +34,21 @@ void text_display(Text t){
                 ty += fs + rd;
             }
             setcolor(c);
-            settextstyle(SANS_SERIF_FONT, HORIZ_DIR, fs/8);
+            settextstyle(SANS_SERIF_FONT, HORIZ_DIR, fs/9);
             settextjustify(LEFT_TEXT,2);
             setwritemode(COPY_PUT);
-            outtextxy(tx+fs/2, ty-fs/4, s);
+            switch (fs)
+            {
+            case 16:
+                outtextxy(tx+fs/4, ty-6, s);
+                break;
+            case 24:
+                outtextxy(tx+fs/4, ty-2, s);
+                break;
+            default:
+                outtextxy(tx+fs/4, ty-fs/7, s);
+                break;
+            }
             tx+=d;
         }
         if((unsigned)*p > 0xA0){
@@ -122,8 +133,21 @@ Text text_newDefault(char *s, int x1, int y1, int x2, int y2){
         t.hight = y2-y1;
     else t.hight = 0;
     t.font.fontSize = 24;
-    t.font.fontColor = _BLACK,
+    t.font.fontColor = _BLACK;
     t.font.spacing = 2;
 	t.font.rowSpacing = 0;
+    return t;
+}
+
+Text text_newSmall(char *s, int x, int y){
+    Text t;
+    t.content = s;
+    t.posX = x;
+    t.posY = y;
+    t.width = 160;
+    t.hight = 0;
+    t.font.fontSize = 16;
+    t.font.spacing = 0;
+	t.font.fontColor = _DARKGRAY;
     return t;
 }
