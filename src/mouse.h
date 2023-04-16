@@ -60,7 +60,6 @@ void mouse_update();
 void mouse_show();
 void mouse_hide();
 int mouse_isClickedInBox(int, int, int, int);
-void mouse_setVisibility(bool);
 
 void _mouse_draw(int, int);
 void _mouse_read(int *,int *,int *);

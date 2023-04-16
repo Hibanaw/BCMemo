@@ -60,6 +60,7 @@ void mouse_init()
 	m->posX=xmax/2;
 	m->posY=ymax/2;
 	m->_flag=1;
+	m->visibility = 1;
 	_mouse_saveBackground(m->posX,m->posY);
 }
 
@@ -78,9 +79,11 @@ void mouse_update()
 	m->click = buttonsn;
 	if(xn == x0 && yn == y0 && buttonsn == buttons0)
 		return;
-	_mouse_clrmous(x0,y0);
-	_mouse_saveBackground(xn, yn);
-	_mouse_drawmous(xn, yn);
+	if(m->visibility){
+		_mouse_clrmous(x0,y0);
+		_mouse_saveBackground(xn, yn);
+		_mouse_drawmous(xn, yn);
+	}
 	
 }
 
