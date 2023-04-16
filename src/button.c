@@ -50,8 +50,8 @@ void button_drawWithText(Button *b){
 		x2 = b->posX2, y2 = b->posY2;
     Text t;
     t.content = b->content;
-    t.posX = b->posX1+110;
-    t.posY = b->posY1+15;
+    t.posX = b->posX1+(x2-x1-text_getLength(b->content)*(24+2))/2;
+    t.posY = y1 + (y2-y1-24)/2;
     t.width = 0,
     t.hight = 0,
     t.font.fontSize = 24;

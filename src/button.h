@@ -27,8 +27,8 @@ typedef struct Button{
     char *content;
     enum ButtonStatus status;
     clock_t animationStartTime;
-    int animationTick;
-    int animationDrawedTick;
+    clock_t animationTick;
+    clock_t animationDrawedTick;
 	void (*draw)();
 }Button;
 
