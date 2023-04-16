@@ -13,6 +13,7 @@
 
 
 void image_render(char *, int, int);
+void image_renderZoom(char * filePath, int x, int y, float scale);
 void image_getSize(char *, int*, int *);
 int image_illegal(char *path);
 
