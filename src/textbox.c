@@ -31,7 +31,7 @@ void textbox_draw(Textbox *tb)
         int lx , ly;
         int loc = tb->cursorLocation;
         int w = tb->posX2 - tb->posX1;
-        int wpl = (w % (tb->font.fontSize + tb->font.spacing) / tb->font.fontSize) + w / (tb->font.fontSize + tb->font.spacing);
+        int wpl = ((w % (tb->font.fontSize + tb->font.spacing) > tb->font.fontSize) ? 1 : 0) + w / (tb->font.fontSize + tb->font.spacing);
         r = (loc-1) / wpl;
         c = loc - r*wpl;
         ly = r * (tb->font.fontSize+tb->font.rowSpacing) + tb->posY1;

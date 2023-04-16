@@ -26,7 +26,7 @@ void text_display(Text t){
             //ascii
             s[0] = *p;
             p++;
-            if(w && tx > x+w){
+            if(w && tx + fs > x+w){
                 if(h && ty + fs + rd > y + h){
                     return;
                 }
@@ -46,7 +46,7 @@ void text_display(Text t){
             p++;
             s[1] = *p;
             p++;
-            if(w && tx > x+w){
+            if(w && tx+fs > x+w){
                 if(h && ty + fs + rd > y + h){
                     return;
                 }

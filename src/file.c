@@ -16,47 +16,44 @@ FILE **memofile_current(){
 }
 
 void memofile_write(char* filePath, Memo *m){
-	FILE **fp = memofile_current();
-	MemoBlock *h=m->head;
+	FILE *fp;
 	MemoBlock *p;
-	if ((*fp=fopen(filePath,"wb"))==NULL)
+	if ((fp=fopen(filePath,"wb"))==NULL)
 	{
 	  printf("the file can not be open!");
 	  getch();
 	  exit(1);
 	}
-	p=h;
-	if(h==NULL)
+	p=m->head;
+	if(p==NULL)
 	{
 		printf("error!");
 		getch();
 		exit(1);
 	}
 	else{
+		fwrite(m, 1, sizeof(Memo), fp);
 		while(p!=NULL)
 		{
-			memofile_writeBlock(p);
+			fwrite(p, sizeof(MemoBlock), 1, fp);
 			p=p->next;
 		}
 	}
-	fclose(*fp);
+	fflush(fp);
+	fclose(fp);
 }
 
-void memofile_writeBlock(MemoBlock *p)
-{
-	FILE *fp = *memofile_current();
-	fwrite(p, sizeof(MemoBlock), 1, fp);
-}
 MemoBlock *memofile_readBlock()
 {
-	FILE *fp=*memofile_current();
+	FILE **fp=memofile_current();
 	char t;
 	MemoBlock *p;
-	if(feof(fp)){
+	p=(MemoBlock *)malloc(sizeof(MemoBlock));
+	fread(p, sizeof(MemoBlock), 1, *fp);
+	if(feof(*fp)){
+		free(p);
 		return NULL;
 	}
-	p=(MemoBlock *)malloc(sizeof(MemoBlock));
-	fread(p, sizeof(MemoBlock), 1, fp);
 	return p;
  } 
  
@@ -65,13 +62,12 @@ Memo memofile_read(char *filePath)
 	FILE **fp = memofile_current();
 	Memo m;
 	MemoBlock *p;
-
+	memset(&m, 0, sizeof(m));
  	if ((*fp=fopen(filePath,"rb"))==NULL)
 	{
-		*fp = fopen(filePath, "wb");
-		fclose(fp);
-		*fp=fopen(filePath,"rb");
+		return m;
 	}
+	fread(&m, sizeof(Memo), 1, *fp);
 	m.head = p = memofile_readBlock();
 	while(p)
 	{

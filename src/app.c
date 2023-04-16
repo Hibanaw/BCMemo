@@ -10,13 +10,14 @@
 #include "app.h"
 
 AppData *appData(){
-    static ad;
+    static AppData ad;
     return &ad;
 }
 
 void app(){
     Router r = router_new();
-    MemoEditor me = r.me;
+    MemoEditor me = r.memoEditor;
+    me = memoEditor_new("data/2.mem", appData()->uid);
     animation_login();
     while(1){
         int signal = 0;
@@ -34,10 +35,9 @@ void app(){
         line(73, 0, 73, MAXHEIGHT);
         ime_draw();
         router_draw(&r);
+        memoEditor_draw(&me);
         mouse_show();
         digitalClock_getTime();
-        
-	    me = memoEditor_new("data/1.mem", appData()->uid);
         while(!signal){
             int k = bioskey(1);
             int mes = 0;
@@ -63,7 +63,7 @@ void app(){
                 return 0;
                 break;
             case AppRouterExpand:
-                router_expand();
+				router_expand(&r);
                 break;
         }
     }

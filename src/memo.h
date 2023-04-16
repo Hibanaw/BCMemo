@@ -35,7 +35,7 @@ typedef struct Memo
 {
     MemoBlock *head;
     struct Memo *next;
-    int id;
+    char title[30];
 } Memo; // 备忘录的节点
 
 Memo *memo();

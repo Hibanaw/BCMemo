@@ -77,7 +77,8 @@ void homepage(){
         switch (signal){
         case 1:
             debug(DEBUG, "Jump to app.");
-            appData()->uid = t.textbox.content;
+            strcpy(appData()->uid[0], t.textbox.content);
+            appData()->currentUser = appData()->uid[0];
             app();
             break;
         case -1:

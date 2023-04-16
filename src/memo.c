@@ -79,6 +79,7 @@ MemoBlock *memo_newBlock(Memotype type, int checkBoxisChecked, char *content)
 		q->type = type;
 		q->checkBoxisChecked = checkBoxisChecked;
 		strcpy(q->content, content);
+		q->next = NULL;
 	}
 	return q;
 }
