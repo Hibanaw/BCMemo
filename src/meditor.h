@@ -60,4 +60,5 @@ void memoEditor_distruct(MemoEditor *me);
 #include "textbox.h"
 #include "imagebox.h"
 #include "file.h"
+#include "app.h"
 #endif

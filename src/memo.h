@@ -26,7 +26,7 @@ typedef struct MemoBlock
 {
     Memotype type;
     int checkBoxisChecked;
-    char content[310];
+    char content[160];
     struct MemoBlock *next;
     char lastEditUser[20];
 } MemoBlock; // 备忘录的信息块
