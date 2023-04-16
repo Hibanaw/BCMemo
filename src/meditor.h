@@ -18,9 +18,12 @@
 #include "imagebox.h"
 #include "file.h"
 #include "scroll.h"
+#include "textipt.h"
 
 #define EDITORHEIGHT 680
 #define EDITORWIDTH 800
+
+#define BLOCKMAX 30
 
 typedef struct{
     void *widget[30];
@@ -42,6 +45,7 @@ typedef struct{
     Button imageButton;
     Button checkboxButton;
     Button saveButton;
+    TextInput titleBar;
     ScrollBar scrollBar;
 } MemoEditor;
 
@@ -51,6 +55,8 @@ typedef struct{
 } MemoEditor_Checkbox;
 
 MemoEditor memoEditor_new(char *filePath, char *uid);
+void memoEditor_draw(MemoEditor *e);
 int memoEditor_event(MemoEditor *me);
 void memoEditor_updateList(MemoEditor *e);
+void memoEditor_distruct(MemoEditor *me);
 #endif

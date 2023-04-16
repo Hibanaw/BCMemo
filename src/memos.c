@@ -43,8 +43,5 @@ Memo *memos_makeTopMemo(Memo *p)
 	t = p->head;
 	p->head = h->head;
 	h->head = t;
-	a = p->id;
-	p->id = h->id;
-	h->id = a;
 	memos()->head = p;
 }

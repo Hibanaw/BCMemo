@@ -13,16 +13,18 @@
 
 #include <bios.h>
 #include "memos.h"
+#include "meditor.h"
 #include "keyboard.h"
 #include "button.h"
 #include "app.h"
-#include "meditor.h"
+#include "digclock.h"
 
-typedef struct
-{
+typedef struct{
     Memos list;
     Button expandButton;
-    MemoEditor me;
+    Button newMemoButton;
+    char memoFilePath[50];
+    MemoEditor memoEditor;
 }Router;
 
 enum {
@@ -31,7 +33,7 @@ enum {
 
 Router router_new();
 void router_draw(Router *r);
-int router_expand();
+int router_expand(Router *r);
 int router_event(Router *r);
 
 #endif

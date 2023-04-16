@@ -20,8 +20,7 @@
 #include "image.h"
 #include "anim.h"
 #include "meditor.h"
-#include "router.h"
-#include"userpage.h"
+
 enum{
     AppRouterExpand = 1,
     AppExit
@@ -29,14 +28,13 @@ enum{
 
 typedef struct
 {
-    char uid[6][20];
-    int current_editor;
+    char uid[10][20];
+    char *currentUser;
 }AppData;
 
 AppData *appData();
 
 void app();
 
-void sidebar_draw();
-
+#include "router.h"
 #endif
