@@ -27,7 +27,7 @@ void homepage(){
             550, 400,
             850, 450,
             textInputBuffer);
-        t.textbox.maxLength = 10;
+        t.textbox.maxLength = 8;
 		//draw
         mouse_hide();
 	    animation_homepage1(); 
@@ -53,7 +53,7 @@ void homepage(){
             keybord_eat();
 			k = bioskey(1);
 			bs = button_event(&b);
-            tbs = textbox_event(&t.textbox);
+            tbs = textinput_event(&t);
             if(keybord_isESCAPE(k)){
                 bioskey(0);
                 signal = -1;
