@@ -14,13 +14,15 @@
 
 enum{
     AppRouterExpand = 1,
-    AppExit
+    AppExit,
+    AppRedraw
 };
 
 typedef struct
 {
-    char uid[10][20];
+    char uid[6][20];
     char *currentUser;
+    char displayLastEditUser;
 }AppData;
 
 AppData *appData();
@@ -37,4 +39,5 @@ void app();
 #include "anim.h"
 #include "meditor.h"
 #include "router.h"
+#include "drawpad.h"
 #endif
