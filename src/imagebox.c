@@ -19,7 +19,13 @@ void imageBox_draw(ImageBox *ib){
     //     y2 = y1 + 64;
     // }
     if(ib->status == -1){
-        image_render(path, x1, y1);
+        int w, h;
+        float k = 1;
+		image_getSize(path, &w, &h);
+        if(w>400 || h > 500){
+            k = MIN((float) 400 / w, (float) 500 / h);
+        }
+        image_renderZoom(path, x1, y1, k);
         ib->status = 0;
     }
     switch(ib->status){
@@ -43,14 +49,52 @@ void imageBox_draw(ImageBox *ib){
 }
 
 int imageBox_event(ImageBox *ib){
-    return button_event(ib);
+    int k = button_event(ib);
+    if(k == 1){
+        if(clock() - ib->animationStartTime < 0.5*CLK_TCK){
+            imageBox_fullScreen(ib->content);
+            return 2;
+        }
+        else{
+            ib->animationStartTime = clock();
+        }
+    }
+    return k;
 }
 
 ImageBox imageBox_new(char *filePath, int x, int y){
     ImageBox ib;
     int w, h;
+    float k;
 	image_getSize(filePath, &w, &h);
+    if(w>400 || h > 500){
+        k = MIN((float) 400/w, (float) 500/h);
+        w = k*w;
+        h = k*h;
+    }
 	ib = button_new(x, y, x + w, y + h, filePath, imageBox_draw);
     ib.status = -1;
     return ib;
+}
+
+void imageBox_fullScreen(char *filePath){
+    int x, y;
+    int w, h;
+    image_getSize(filePath, &w, &h);
+    x = (MAXWIDTH - w) /2;
+    y = (MAXHEIGHT - h) /2;
+    mouse_hide();
+    setfillstyle(1, hex2a1f00);
+    bar(0, 0, MAXWIDTH, MAXHEIGHT);
+    image_renderZoom(filePath, x, y, 1.0);
+    mouse_show();
+    while(1){
+        int k = bioskey(1);
+        keybord_eat();
+        mouse_update();
+        if(keybord_isESCAPE(k)){
+            bioskey(0);
+            return;
+        }
+    }
 }

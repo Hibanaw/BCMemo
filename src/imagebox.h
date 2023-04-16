@@ -19,9 +19,10 @@ typedef Button ImageBox;
 void imageBox_draw(ImageBox *ib);
 int imageBox_event(ImageBox *ib);
 ImageBox imageBox_new(char *filePath, int x, int y);
-
+void imageBox_fullScreen(char *filePath);
 
 #include <graphics.h>
 #include <svga.h>
 #include "image.h"
+#include "keyboard.h"
 #endif
