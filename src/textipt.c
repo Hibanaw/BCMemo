@@ -38,6 +38,8 @@ TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2, char *b
     tb.font.fontColor = _BLACK,
     tb.font.spacing = 2;
     tb.font.rowSpacing = 0;
+    tb.hint = '*';
+    tb.type = TextboxText;
     tb.posX1 = x1+5;
     tb.posX2 = x2-5;
     tb.posY1 = y1+10;

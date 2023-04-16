@@ -11,10 +11,6 @@
 #ifndef __IME_H__
 #define __IME_H__
 
-#include <bios.h>
-#include <time.h>
-#include "text.h"
-#include "hzinput.h"
 #include "button.h"
 
 enum imeStatus{
@@ -26,14 +22,20 @@ enum imeStatus{
 typedef struct
 {
     enum imeStatus status;
-
+    int pw;
     Button button;
 }Ime;
 
+Ime *ime();
 void ime_init();
 int ime_input(char *s, int x, int y);
 int ime_en(char *s);
 void ime_check();
 void ime_next();
 void ime_draw();
+
+#include <bios.h>
+#include <time.h>
+#include "text.h"
+#include "hzinput.h"
 #endif

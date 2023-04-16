@@ -10,11 +10,8 @@
 #ifndef __TEXTBOX_H__
 #define __TEXTBOX_H__
 
-#include <string.h>
-#include <time.h>
 #include "global.h"
 #include "text.h"
-#include "ime.h"
 
 enum TextboxStatus{
     TextboxDefault,
@@ -26,6 +23,11 @@ enum TextboxMouseStatus{
 	TextboxMouseDefault,
     TextboxMouseFocused,
     TextboxMouseClicked
+};
+
+enum TextboxType{
+    TextboxText,
+    TextboxPassword
 };
 
 typedef struct{
@@ -42,6 +44,9 @@ typedef struct{
     int cursorLocation;
     int cursorStatus;
 	clock_t cursorLastBlink;
+    enum TextboxType type;
+    char hint;
+
 }Textbox;
 
 void textbox_draw(Textbox *tb);
@@ -51,4 +56,8 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffe
 Text textbox_convert2text(Textbox tb);
 int textbox_getCursorPositionX(Textbox t);
 int textbox_getCursorPositionY(Textbox t);
+
+#include <string.h>
+#include <time.h>
+#include "ime.h"
 #endif

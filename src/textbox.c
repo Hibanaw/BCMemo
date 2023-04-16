@@ -16,7 +16,17 @@ void textbox_draw(Textbox *tb)
     setfillstyle(1, _WHITE);
     bar(x1, y1, x2, y2);
     if(strlen(tb->content)){
-        Text t = text_newDefault(tb->content, x1, y1, x2, y2);
+        Text t;
+        char s[200];
+        memset(s, tb->hint, sizeof(s));
+        if(tb->type == TextboxPassword){
+            int l = text_getLength(tb->content);
+            s[l] = 0;
+            t = text_newDefault(s, x1, y1, x2, y2);
+        }
+        else{
+            t = text_newDefault(tb->content, x1, y1, x2, y2);
+        }
         t.font = tb->font;
         text_display(t);
     }
@@ -55,6 +65,12 @@ int textbox_event(Textbox *tb)
         mouse_hide();
         textbox_draw(tb);
         mouse_show();
+    }
+    if(tb->type == TextboxPassword){
+        if(tb->status == TextboxSelected)
+            ime()->pw = 1;
+        else
+            ime()->pw = 0;
     }
     //cursor blink
     if (tb->status == TextboxSelected){

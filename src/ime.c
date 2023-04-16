@@ -32,7 +32,6 @@ int ime_input(char *s, int x, int y){
     }
     switch(ime()->status){
         case IMEOFF:
-            debug(DEBUG, "imeoff, get input");
             return ime_en(s);
             break;
         case IMEPINYIN:
@@ -45,6 +44,10 @@ int ime_input(char *s, int x, int y){
 }
 
 void ime_check(){
+    if(ime()->pw){
+        ime()->status = IMEOFF;
+        return;
+    }
     // ¼à²â¿ì½Ý¼üÇÐ»»
     if(bioskey(2)&0x04){
         if(bioskey(1) == KEYSPACE){
