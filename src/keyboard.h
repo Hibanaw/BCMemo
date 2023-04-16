@@ -10,8 +10,6 @@
 #ifndef __KEYBOARD_H__
 #define __KEYBOARD_H__
 
-#include<bios.h>
-
 enum spicalkey{
     KEYESCAPE = 0x011b,
     KEYBACKSPACE = 0xe08,
@@ -36,5 +34,9 @@ int keybord_isESCAPE(unsigned);
 int keybord_isBACKSPACE(unsigned);
 int keybord_isControlOn();
 void keybord_eat();
+
+
+#include<bios.h>
+
 
 #endif

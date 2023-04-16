@@ -11,15 +11,6 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-#include <graphics.h>
-#include "svga.h"
-#include "keyboard.h"
-#include "mouse.h"
-#include "global.h"
-#include "textbox.h"
-#include "image.h"
-#include "anim.h"
-#include "meditor.h"
 
 enum{
     AppRouterExpand = 1,
@@ -36,5 +27,14 @@ AppData *appData();
 
 void app();
 
+#include <graphics.h>
+#include "svga.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "global.h"
+#include "textbox.h"
+#include "image.h"
+#include "anim.h"
+#include "meditor.h"
 #include "router.h"
 #endif

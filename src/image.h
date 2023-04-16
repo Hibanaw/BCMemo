@@ -11,13 +11,15 @@
 #ifndef __IMAGE_H__
 #define __IMAGE_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <graphics.h>
-#include "global.h"
 
 void image_render(char *, int, int);
 void image_getSize(char *, int*, int *);
 int image_illegal(char *path);
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <graphics.h>
+#include "global.h"
 
 #endif

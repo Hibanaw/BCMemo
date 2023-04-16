@@ -11,9 +11,6 @@
 #ifndef __IMAGEBOX_H__
 #define __IMAGEBOX_H__
 
-#include <graphics.h>
-#include <svga.h>
-#include "image.h"
 #include "button.h"
 
 
@@ -23,4 +20,8 @@ void imageBox_draw(ImageBox *ib);
 int imageBox_event(ImageBox *ib);
 ImageBox imageBox_new(char *filePath, int x, int y);
 
+
+#include <graphics.h>
+#include <svga.h>
+#include "image.h"
 #endif

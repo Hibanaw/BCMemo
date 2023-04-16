@@ -11,7 +11,9 @@
 #ifndef __HOMEPAGE_H__
 #define __HOMEPAGE_H__
 
-#include <time.h>
+
+void homepage();
+
 #include "image.h"
 #include "keyboard.h"
 #include "mouse.h"
@@ -20,7 +22,4 @@
 #include "textbox.h"
 #include "text.h"
 #include "textipt.h"
-
-void homepage();
-
 #endif

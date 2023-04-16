@@ -11,10 +11,6 @@
 #ifndef __TEXT_H__
 #define __TEXT_H__
 
-#include <graphics.h>
-#include "svga.h"
-#include "hz.h"
-#include "debug.h"
 
 typedef struct{
     int fontSize;
@@ -39,4 +35,10 @@ int text_getLength(char *s);
 Text text_newDefault(char *s, int x1, int y1, int x2, int y2);
 char *text_getNthChar(char *s, int n);
 int text_getHeight(Text t);
+
+
+#include <graphics.h>
+#include "svga.h"
+#include "hz.h"
+#include "debug.h"
 #endif

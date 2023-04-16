@@ -10,8 +10,6 @@
 
 #ifndef __FILE_H__
 #define __FILE_H__
-#include<stdio.h>
-#include<string.h>
 #include"memos.h" 
 #include"memo.h"
 
@@ -24,5 +22,9 @@ void memofile_writeBlock(MemoBlock *p);
 MemoBlock *memofile_readBlock();
 
 Memo memofile_read(char *filePath);
- 
+
+
+#include<stdio.h>
+#include<string.h>
+
 #endif

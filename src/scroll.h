@@ -11,12 +11,6 @@
 #ifndef __SCROLL_H__
 #define __SCROLL_H__
 
-#include <graphics.h>
-#include "stdlib.h"
-#include "global.h"
-#include "mouse.h"
-#include "svga.h"
-
 
 enum ScrollBarStatus{
     ScrollBarDefault,
@@ -45,4 +39,11 @@ typedef struct
 ScrollBar scrollBar_new(int x, int y, int h);
 int scrollBar_event(ScrollBar *sb);
 void scrollBar_draw(ScrollBar *sb);
+
+
+#include <graphics.h>
+#include "stdlib.h"
+#include "global.h"
+#include "mouse.h"
+#include "svga.h"
 #endif

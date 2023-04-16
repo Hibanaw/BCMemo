@@ -11,13 +11,9 @@
 #ifndef __ROUTER_H__
 #define __ROUTER_H__
 
-#include <bios.h>
 #include "memos.h"
 #include "meditor.h"
-#include "keyboard.h"
 #include "button.h"
-#include "app.h"
-#include "digclock.h"
 
 typedef struct{
     Memos list;
@@ -36,4 +32,9 @@ void router_draw(Router *r);
 int router_expand(Router *r);
 int router_event(Router *r);
 
+
+#include <bios.h>
+#include "keyboard.h"
+#include "app.h"
+#include "digclock.h"
 #endif

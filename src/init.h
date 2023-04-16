@@ -11,11 +11,12 @@
 #ifndef __INIT_H__
 #define __INIT_H__
 
-#include "svga.h"
-#include "mouse.h"
-#include "ime.h"
 
 void init();
 void destruct();
+
+#include "svga.h"
+#include "mouse.h"
+#include "ime.h"
 
 #endif

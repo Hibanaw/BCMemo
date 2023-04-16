@@ -11,12 +11,7 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
-#include <graphics.h>
-#include "global.h"
-#include "svga.h"
-#include "mouse.h"
-#include "button.h"
-#include "text.h"
+#include <time.h>
 
 enum ButtonStatus{
     ButtonDefault,
@@ -46,4 +41,11 @@ int button_event(Button *);
 void button_checkboxAnimation(Button *cb);
 int button_checkboxEvent(Button *cb);
 void button_checkboxDraw(Button *cb);
+
+#include <graphics.h>
+#include "global.h"
+#include "svga.h"
+#include "mouse.h"
+#include "button.h"
+#include "text.h"
 #endif

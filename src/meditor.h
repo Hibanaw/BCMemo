@@ -12,11 +12,7 @@
 #define __MEMOEDITOR_H__
 
 #include "memo.h"
-#include "image.h"
 #include "button.h"
-#include "textbox.h"
-#include "imagebox.h"
-#include "file.h"
 #include "scroll.h"
 #include "textipt.h"
 
@@ -59,4 +55,9 @@ void memoEditor_draw(MemoEditor *e);
 int memoEditor_event(MemoEditor *me);
 void memoEditor_updateList(MemoEditor *e);
 void memoEditor_distruct(MemoEditor *me);
+
+
+#include "textbox.h"
+#include "imagebox.h"
+#include "file.h"
 #endif

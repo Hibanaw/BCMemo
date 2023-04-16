@@ -11,12 +11,13 @@
 #ifndef __DIGCLOCK_H__
 #define __DIGCLOCK_H__
 
+
+void digitalClock_getTime();
+
 #include <time.h>
 #include <graphics.h>
 #include "svga.h"
 #include "text.h"
 #include "mouse.h"
-
-void digitalClock_getTime();
 
 #endif
