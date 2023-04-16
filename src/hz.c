@@ -26,7 +26,8 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 					 char mat[32];   //16*16的汉字需要32个字节的数组来存储
 					int y0=y;
 					int x0=x;
-					 hzk_p = fopen("ETC\\HZK\\HZ16","rb");            //使用相对路径
+					//  hzk_p = fopen("ETC\\HZK\\HZ16","rb");            //使用相对路径
+					hzk_p = fopen("ETC\\HZK\\dx16","rb"); 
 					 if(hzk_p==NULL)
 					 {
 						settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
@@ -83,7 +84,8 @@ void hz_puthz(char *s, int x, int y, int flag, int part, int color)
 					char mat[72];   //24*24矩阵要72个字节来存储
 					 int y0=y;
 					 int x0=x;
-					hzk_p = fopen("ETC\\HZK\\Hzk24k","rb");
+					// hzk_p = fopen("ETC\\HZK\\Hzk24k","rb");
+					hzk_p = fopen("ETC\\HZK\\dx24","rb");
 					if (hzk_p==NULL)
 					{
 						settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
