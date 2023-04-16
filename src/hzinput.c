@@ -33,7 +33,7 @@ int hzinput(int x,int y, char *s)
 	if(asc>=97&&asc<=122)
 	{
 		bioskey(0);
-		image=malloc(8241);
+		image=ime()->buffer;
 		if(image==NULL)
 		{
 			closegraph();
@@ -71,7 +71,7 @@ int hzinput(int x,int y, char *s)
 		mouse_hide();
 		putimage(barx1,bary1,image,0);
 		mouse_show();
-		free(image);
+		// free(image);
 	}
 	else{
 		char *fc = s;
