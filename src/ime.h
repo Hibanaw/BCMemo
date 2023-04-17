@@ -23,7 +23,7 @@ typedef struct
 {
     enum imeStatus status;
     int pw;
-    char buffer[8241];
+    char buffer[8300];
     Button button;
 }Ime;
 
