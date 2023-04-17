@@ -16,7 +16,7 @@ ScrollBar scrollBar_new(int x, int y, int h){
     sb.posX = x;
     sb.posY = y;
     sb.status = 0;
-    sb.width = 20;
+    sb.width = 15;
     sb.height = h;
     sb.length = 0;
     sb.inScreenItem = sb.sumItem = 0;
@@ -96,7 +96,7 @@ void scrollBar_draw(ScrollBar *sb){
     if(sb->inScreenItem == sb->sumItem){
         return;
     }
-    x = sb->posX + sb->width/2;
+    x = sb->posX + 5;
     switch (sb->status)
     {
     case ScrollBarDefault:
