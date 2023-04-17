@@ -37,7 +37,7 @@ void button_draw(Button *);
 void button_drawDefault(Button *);
 void button_drawWithText(Button *);
 int button_event(Button *);
-
+void button_drawWINUIAccent(Button *b);
 void button_checkboxAnimation(Button *cb);
 int button_checkboxEvent(Button *cb);
 void button_checkboxDraw(Button *cb);

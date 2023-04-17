@@ -45,9 +45,63 @@ void button_drawDefault(Button *b){
     }
 }
 
+void button_drawWINUIAccent(Button *b){
+    int c0, c1, ct;
+    int x1 = b->posX1, y1 = b->posY1,
+        x2 = b->posX2, y2 = b->posY2;
+    Text t;
+    t.content = b->content;
+    t.posX = b->posX1+(x2-x1-text_getLength(b->content)*(24+2))/2;
+    t.posY = y1 + (y2-y1-24)/2;
+    t.width = 0,
+    t.hight = 0,
+    t.font.fontSize = 24;
+    t.font.fontColor = _BLACK,
+    t.font.spacing = 2;
+    t.font.rowSpacing = 0;
+    switch (b->status)
+    {
+        case ButtonDefault:
+            c1 = hexff7f00;
+            c0 = hex808080;
+            ct = _WHITE;
+            break;
+        case ButtonFocused:
+            c1 = hexff9f00;
+            c0 = hex808080;
+            ct = _WHITE;
+            break;
+        case ButtonSelected:
+            c0 = hexc0c0c0;
+            c1 = hexd47f00;
+            ct = hexfffbf0;
+            break;
+    }
+    setfillstyle(1, c1);
+    setcolor(c1);
+    bar(x1+5, y1, x2-5, y2);
+    bar(x1, y1+5, x2, y2-5);
+    pieslice(x1 + 5, y1 + 5, 90, 180, 5);
+    pieslice(x1 + 5, y2 - 5, 180, 270, 5);
+    pieslice(x2 - 5, y1 + 5, 0, 90, 5);
+    pieslice(x2 - 5, y2 - 5, 270, 360, 5);
+    setcolor(c0);
+    setlinestyle(0, 1, 2);
+    line(x1 + 5, y1, x2 - 5, y1);
+    line(x1 + 5, y2, x2 - 5, y2);
+    line(x1, y1 + 5, x1, y2 - 5);
+    line(x2, y1 + 5, x2, y2 - 3);
+    arc(x1 + 5, y1 + 5, 90, 180, 5);
+    arc(x1 + 5, y2 - 5, 180, 270, 5);
+    arc(x2 - 5, y1 + 5, 0, 90, 5);
+    arc(x2 - 5, y2 - 5, 270, 360, 5);
+    t.font.fontColor = ct;
+    text_display(t);
+}
+
 void button_drawWithText(Button *b){
     int x1 = b->posX1, y1 = b->posY1,
-		x2 = b->posX2, y2 = b->posY2;
+        x2 = b->posX2, y2 = b->posY2;
     Text t;
     t.content = b->content;
     t.posX = b->posX1+(x2-x1-text_getLength(b->content)*(24+2))/2;

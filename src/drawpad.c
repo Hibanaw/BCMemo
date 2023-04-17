@@ -16,10 +16,11 @@ int drawPad(char *saveFilePath){
     int color1 = _BLACK;
     int isDrawing = 0;
     int x0, y0;
-    Button saveButton = button_new(680, 450, 780, 480, "±£¥Ê", button_drawWithText);
+    short w = 480, h = 360;
+    Button saveButton = button_new(680, 450, 780, 490, "≤Â»Î", button_drawWINUIAccent);
     mouse_hide();
     setfillstyle(1, hexfffbf0);
-    bar(300, 70, 800, 500);
+    bar(300, 72, 800, 500);
     setfillstyle(1, hexd4dfff);
     bar(308, 78, 792, 442);
     setfillstyle(1, _WHITE);
@@ -70,7 +71,6 @@ int drawPad(char *saveFilePath){
     case 1:
         {
             FILE *fp;
-            short w = 480, h = 360;
             int i, j;
 			sprintf(saveFilePath, "data/img%05ld.bin", time(NULL)%100000);
             fp = fopen(saveFilePath, "wb");
