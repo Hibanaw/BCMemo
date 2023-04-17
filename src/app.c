@@ -16,9 +16,9 @@ AppData *appData(){
 
 void app(){
     Router r = router_new();
-    MemoEditor me = r.memoEditor;
+    MemoEditor me;
     appData()->displayLastEditUser = 0;
-    me = memoEditor_new("data/2.mem", appData()->uid);
+    me = memoEditor_new(r.memoFilePath, appData()->currentUser);
     animation_login();
     while(1){
         int signal = 0;
@@ -64,10 +64,15 @@ void app(){
         switch(signal){
             case AppExit:
                 memoEditor_distruct(&me);
+                router_distrcut();
                 return 0;
                 break;
             case AppRouterExpand:
-				router_expand(&r);
+				signal = router_expand(&r);
+                if(signal == RouterChangeMemo){
+                    memoEditor_distruct(&me);
+                    me = memoEditor_new(r.memoFilePath, appData()->currentUser);
+                }
                 break;
             case AppRedraw:
                 break;

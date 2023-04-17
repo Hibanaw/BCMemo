@@ -15,7 +15,8 @@
 enum{
     AppRouterExpand = 1,
     AppExit,
-    AppRedraw
+    AppRedraw,
+    AppChangeMemo
 };
 
 typedef struct
