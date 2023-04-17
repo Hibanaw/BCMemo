@@ -37,7 +37,7 @@ typedef struct{
     int posX;
     int posY;
     MemoEditorWidgetList list;
-    Button paragraphButton;
+    Button drawButton;
     Button imageButton;
     Button checkboxButton;
     Button saveButton;
@@ -61,4 +61,5 @@ void memoEditor_distruct(MemoEditor *me);
 #include "imagebox.h"
 #include "file.h"
 #include "app.h"
+#include "drawpad.h"
 #endif

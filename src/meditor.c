@@ -19,9 +19,9 @@ void memoEditor_draw(MemoEditor *e){
     setcolor(hexd4dfff);
     setfillstyle(1, _WHITE);
     arc(me.posX+6, me.posY+47, 90, 180, 7);
-    setlinestyle(0, 1, hexd4dfff);
+    setlinestyle(0, 1, 2);
     line(me.posX+6, me.posY+40, MAXWIDTH, me.posY+40);
-    button_draw(&me.paragraphButton);
+    button_draw(&me.drawButton);
     button_draw(&me.imageButton);
     button_draw(&me.checkboxButton);
     button_draw(&me.saveButton);
@@ -42,7 +42,7 @@ MemoEditor memoEditor_new(char *filePath, char *uid){
     me.posX             = 75;
     me.posY             = 30;
     me.focusedBlock     = memo_preBlock(m->head);
-    me.paragraphButton  = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawDefault);
+    me.drawButton  = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawDefault);
     me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", button_drawDefault);
     me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", button_drawDefault);
     me.saveButton       = button_new(MAXWIDTH - 40, me.posY+3, MAXWIDTH - 8, me.posY + 35, "", button_drawDefault);
@@ -66,6 +66,7 @@ int memoEditor_event(MemoEditor *me){
     int i;
     int ss;
     int sum = memo_getBlockSum();
+    MemoBlock *mb;
     if(button_event(&me->saveButton)){
         memofile_write(me->filePath, memo());
     }
@@ -86,6 +87,58 @@ int memoEditor_event(MemoEditor *me){
             }
             break;
     }
+    // button
+    if(button_event(&me->drawButton)){
+        int tg;
+        char path[100];
+        if(sum >= BLOCKMAX)
+            return 0;
+        tg = drawPad(path);
+        if(tg == 0){
+            mb = memo_newBlock(IMAGE, 0, path);
+            strcpy(mb->lastEditUser, me->uid);
+            if(me->focusedBlock == NULL){
+                memo_addBlock(mb);
+            }
+            else{
+                memo_insertBlock(me->focusedBlock, mb);
+            }
+        }
+        memoEditor_updateList(me);
+        return 0;
+    }
+    if(button_event(&me->imageButton)){
+        if(sum >= BLOCKMAX)
+            return 0;
+        mb = memo_newBlock(IMAGE, 0, "");
+        strcpy(mb->lastEditUser, me->uid);
+        memo_addBlock(mb);
+        memoEditor_updateList(me);
+        return 0;
+    }
+    if(button_event(&me->checkboxButton)){
+        if(me->focusedBlock == NULL){
+            if(sum >= BLOCKMAX)
+                return 0;
+            mb = memo_newBlock(CHECKBOX, 0, "");
+            strcpy(mb->lastEditUser, me->uid);
+            memo_addBlock(mb);
+            memoEditor_updateList(me);
+            return 0;
+        }
+        else{
+            if(me->focusedBlock->type == CHECKBOX){
+                me->focusedBlock->type = PARAGRAPH;
+            }
+            else{
+                me->focusedBlock->type = CHECKBOX;
+            }
+            strcpy(me->focusedBlock->lastEditUser, me->uid);
+            memoEditor_updateList(me);
+            return 0;
+        }
+    }
+    //page move
     if(me->focusedBlock == NULL){
         MemoBlock *mb;
         switch (k){
@@ -104,33 +157,7 @@ int memoEditor_event(MemoEditor *me){
                     memoEditor_updateList(me);
                 }
         }
-        if(button_event(&me->paragraphButton)){
-            if(sum >= BLOCKMAX)
-                return 0;
-            mb = memo_newBlock(PARAGRAPH, 0, "");
-            strcpy(mb->lastEditUser, me->uid);
-            memo_addBlock(mb);
-            memoEditor_updateList(me);
-            return 0;
-        }
-        if(button_event(&me->imageButton)){
-            if(sum >= BLOCKMAX)
-                return 0;
-            mb = memo_newBlock(IMAGE, 0, "");
-            strcpy(mb->lastEditUser, me->uid);
-            memo_addBlock(mb);
-            memoEditor_updateList(me);
-            return 0;
-        }
-        if(button_event(&me->checkboxButton)){
-            if(sum >= BLOCKMAX)
-                return 0;
-            mb = memo_newBlock(CHECKBOX, 0, "");
-            strcpy(mb->lastEditUser, me->uid);
-            memo_addBlock(mb);
-            memoEditor_updateList(me);
-            return 0;
-        }
+        
     }
     else{
         switch (k){
@@ -165,25 +192,6 @@ int memoEditor_event(MemoEditor *me){
                         memoEditor_updateList(me);
                     }
                 }
-        }
-        if(button_event(&me->paragraphButton)){
-            me->focusedBlock->type = PARAGRAPH;
-            strcpy(me->focusedBlock->lastEditUser, me->uid);
-            memoEditor_updateList(me);
-            return 0;
-        }
-        if(button_event(&me->imageButton)){
-            me->focusedBlock->type = IMAGE;
-            strcpy(me->focusedBlock->lastEditUser, me->uid);
-            memoEditor_updateList(me);
-            return 0;
-        }
-        if(button_event(&me->checkboxButton)){
-            me->focusedBlock->type = CHECKBOX;
-            me->focusedBlock->checkBoxisChecked = 0;
-            strcpy(me->focusedBlock->lastEditUser, me->uid);
-            memoEditor_updateList(me);
-            return 0;
         }
     }
     for(i = 0; i < me->list.count; i++){
@@ -359,7 +367,7 @@ void memoEditor_updateList(MemoEditor *e){
     }
     mouse_hide();
     setfillstyle(1, _WHITE);
-    bar(e->posX+5, y, MAXWIDTH-20, MAXHEIGHT);
+    bar(e->posX+5, y-18, MAXWIDTH-20, MAXHEIGHT);
     e->list.count = 0;
     i = 0;
     while(i < 25 && y < MAXHEIGHT && p != NULL){
