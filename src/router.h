@@ -16,25 +16,29 @@
 #include "button.h"
 
 typedef struct{
-    Memos list;
+    Memo *topMemo;
     Button expandButton;
     Button newMemoButton;
-    char memoFilePath[50];
-    MemoEditor memoEditor;
+    Button memoButton[10];
+    char memoFilePath[20];
 }Router;
 
 enum {
-	RouterExpand = 1
+	RouterExpand = 1,
+    RouterChangeMemo
 };
 
 Router router_new();
 void router_draw(Router *r);
 int router_expand(Router *r);
 int router_event(Router *r);
-
+void router_button_drawMemoList(Button *b);
+void router_distrcut();
+void router_refresh(Router *r);
 
 #include <bios.h>
 #include "keyboard.h"
 #include "app.h"
 #include "digclock.h"
+#include "scroll.h"
 #endif

@@ -36,6 +36,7 @@ typedef struct Memo
     MemoBlock *head;
     struct Memo *next;
     char title[30];
+    char filePath[20];
 } Memo; // 备忘录的节点
 
 Memo *memo();
