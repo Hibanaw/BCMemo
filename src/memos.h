@@ -13,10 +13,12 @@ Memo *memos_insertMemo(Memo *p, Memo *a);
 Memo *memos_deleteMemo(Memo *p);
 Memo *memos_makeTopMemo(Memo *p);
 void memos_reset();
-Memos *memos_getList();
+Memos *memos_getList(char *uid);
 
 Memo *memos_preMemo(Memo *p);
 int memos_getSum();
 int memos_getNum(Memo *mb);
+
+#include "auth.h"
 #include <dir.h>
 #endif

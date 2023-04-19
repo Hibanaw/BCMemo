@@ -77,7 +77,7 @@ void memos_reset(){
 	return;
 }
 
-Memos *memos_getList(){
+Memos *memos_getList(char *uid){
 	Memos *ms = memos();
 	struct ffblk ffblk;
 	int done;
@@ -89,13 +89,19 @@ Memos *memos_getList(){
 		FILE *fp;
 		Memo *m = malloc(sizeof(Memo));
 		char path[100];
+		char name[10];
+		char *dot = strchr(ffblk.ff_name, '.');	
+		strncpy(name, ffblk.ff_name, dot - ffblk.ff_name);
+		name[dot - ffblk.ff_name] = '\0';
 		sprintf(path, "data\\%s",ffblk.ff_name);
-		fp = fopen(path, "rb");
-		if(fp == NULL) continue;
-		fread(m, sizeof(Memo), 1, fp);
-		fclose(fp);
-		strcpy(m->filePath, path);
-		memos_add(m);
+		if(auth_check(name, uid)){
+			fp = fopen(path, "rb");
+			if(fp == NULL) continue;
+			fread(m, sizeof(Memo), 1, fp);
+			fclose(fp);
+			strcpy(m->fileName, name);
+			memos_add(m);
+		}
 		done = findnext(&ffblk);
 	}
 
