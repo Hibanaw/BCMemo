@@ -363,3 +363,36 @@ void button_checkboxDraw(Button *cb){
             }
     }
 }
+
+void button_drawExitButton(Button *b){
+	int px = b->posX1 + (b->posX2 - b->posX1)/2;
+    int py = b->posY1 + (b->posY2 - b->posY1)/2;
+    int r = (b->posX2 - b->posX1)/2;
+    
+    setfillstyle(1, hex7f0000);
+    setcolor(hex7f0000);
+    pieslice(px, py, 0, 360, r);
+    switch (b->status)
+    {
+    case ButtonDefault:
+        setfillstyle(1, hexff5f55);
+        setcolor(hexff5f55);
+        pieslice(px, py, 0, 360, r-2);
+        break;
+    
+    case ButtonFocused:
+        setfillstyle(1, hexd43f55);
+        setcolor(hexd43f55);
+        pieslice(px, py, 0, 360, r-2);
+        break;
+    case ButtonSelected:
+        setfillstyle(1, hexaa1f00);
+        setcolor(hexaa1f00);
+        pieslice(px, py, 0, 360, r-2);
+        break;
+    }
+}
+Button button_newExitButton(){
+    Button b = button_new(15, 5, 35, 25, "", button_drawExitButton);
+    return b;
+}

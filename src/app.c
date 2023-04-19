@@ -18,10 +18,11 @@ void app(){
     Router r = router_new();
     MemoEditor me;
     appData()->displayLastEditUser = 0;
-    me = memoEditor_new(r.memoFilePath, appData()->currentUser);
+    me = memoEditor_new(r.memoName, appData()->currentUser);
     animation_login();
     while(1){
         int signal = 0;
+        Button eb = button_newExitButton();
 		mouse_hide();
 		debug(LOG, "Main app starts.");
 		setfillstyle(1, _WHITE);
@@ -36,6 +37,7 @@ void app(){
         line(73, 0, 73, MAXHEIGHT);
         ime_draw();
         router_draw(&r);
+        button_draw(&eb);
         memoEditor_draw(&me);
         mouse_show();
         digitalClock_getTime();
@@ -44,18 +46,28 @@ void app(){
             int mes = 0;
             Mouse *m = mouse();
             int rs;
+            int ebs;
             keybord_eat();
             mouse_update();
             ime_check();
             digitalClock_getTime();
             mes = memoEditor_event(&me);
             rs = router_event(&r);
+            ebs = button_event(&eb);
             if(keybord_isESCAPE(k)){
                 bioskey(0);
                 signal = AppExit;
             }
+            if(ebs){
+                signal = AppExit;
+            }
             if(rs == RouterExpand){
                 signal = AppRouterExpand;
+            }
+            if(rs == RouterChangeMemo){
+                memoEditor_distruct(&me);
+                me = memoEditor_new(r.memoName, appData()->currentUser);
+                signal = AppRedraw;
             }
             if(mes == 1){
                 signal = AppRedraw;
@@ -71,7 +83,7 @@ void app(){
 				signal = router_expand(&r);
                 if(signal == RouterChangeMemo){
                     memoEditor_distruct(&me);
-                    me = memoEditor_new(r.memoFilePath, appData()->currentUser);
+                    me = memoEditor_new(r.memoName, appData()->currentUser);
                 }
                 break;
             case AppRedraw:

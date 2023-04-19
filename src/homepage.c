@@ -15,13 +15,14 @@ void homepage(){
     memset(textInputBuffer, 0, sizeof(textInputBuffer));
 	setfillstyle(1, _BLACK);
 	bar(0, 0, MAXWIDTH, MAXHEIGHT);
-	delay(1000);
+	delay(3000);
     while(1){
         int signal = 0;
+        Button eb = button_newExitButton();
         Button b = button_new(550, 500,
             850, 550,
 			"登 录",
-			button_drawWithText);
+			button_drawWINUI);
 		TextInput t = textinput_newDefault(
             "请输入用户名", 
             550, 400,
@@ -33,19 +34,22 @@ void homepage(){
 	    animation_homepage1(); 
         setfillstyle(1, hexaa3f00);
         bar(0, 0, MAXWIDTH, MAXHEIGHT);
+        button_draw(&eb);
         image_render("res\\img\\hpbg.bin", 0, 0);
+        button_draw(&eb);
         animation_homepage2();
         setfillstyle(1, hexd4bfaa);
         bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
 		button_draw(&b);
+        button_draw(&eb);
         textinput_drawDefault(&t);
         ime_draw();
         mouse_show();
         digitalClock_getTime();
         //event
-        while(1){
-			int k, bs, tbs;
+        while(!signal){
+			int k, bs, tbs, ebs;
             Mouse *m = mouse();
             mouse_update();
             digitalClock_getTime();
@@ -54,10 +58,13 @@ void homepage(){
 			k = bioskey(1);
 			bs = button_event(&b);
             tbs = textinput_event(&t);
+            ebs = button_event(&eb);
             if(keybord_isESCAPE(k)){
                 bioskey(0);
                 signal = -1;
-                break;
+            }
+            if(ebs){
+                signal = -1;
             }
 			if(bs||(tbs == 1)){
                 //uid check
@@ -66,11 +73,9 @@ void homepage(){
                     Text tw = text_newDefault("用户名过短！", 550, 460, 0, 0);
                     tw.font.fontColor = _RED;
                     text_display(tw);
-                    continue;
                 }
                 else{
                     signal = 1;
-                    break;
                 }
             }
         }

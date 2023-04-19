@@ -42,7 +42,8 @@ void button_drawWINUI(Button *b);
 void button_checkboxAnimation(Button *cb);
 int button_checkboxEvent(Button *cb);
 void button_checkboxDraw(Button *cb);
-
+void button_drawExitButton(Button *b);
+Button button_newExitButton();
 #include <graphics.h>
 #include "global.h"
 #include "svga.h"
