@@ -72,7 +72,10 @@ int drawPad(char *saveFilePath){
         {
             FILE *fp;
             int i, j;
-			sprintf(saveFilePath, "data/img%05ld.bin", time(NULL)%100000);
+            char p[20];
+            mkdir(saveFilePath);
+            sprintf(p, "/%06ld.bin", time(NULL)%100000);
+            strcat(saveFilePath, p);
             fp = fopen(saveFilePath, "wb");
             fwrite(&w, sizeof(short), 1, fp);
             fwrite(&h, sizeof(short), 1, fp);

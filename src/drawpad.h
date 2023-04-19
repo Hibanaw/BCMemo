@@ -19,5 +19,5 @@ int drawPad(char *saveFilePath);
 #include <text.h>
 #include <bios.h>
 #include "keyboard.h"
-
+#include "dir.h"
 #endif
