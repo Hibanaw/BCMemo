@@ -107,7 +107,7 @@ TextInput textinput_newTitle(char *ds, int x1, int y1, int x2, int y2, char *buf
     tb.cursorStatus = 0;
     tb.defaultContent = ds;
     tb.content = buffer;
-    tb.maxLength = 15;
+    tb.maxLength = 14;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,
     tb.font.spacing = 2;
