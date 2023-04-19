@@ -41,11 +41,8 @@ void textbox_draw(Textbox *tb)
         int lx , ly;
         int loc = tb->cursorLocation;
         int w = tb->posX2 - tb->posX1;
-        int wpl = ((w % (tb->font.fontSize + tb->font.spacing) > tb->font.fontSize) ? 1 : 0) + w / (tb->font.fontSize + tb->font.spacing);
-        r = (loc-1) / wpl;
-        c = loc - r*wpl;
-        ly = r * (tb->font.fontSize+tb->font.rowSpacing) + tb->posY1;
-        lx = c * (tb->font.fontSize+tb->font.spacing) + tb->font.spacing / 2 + tb->posX1;
+        lx = textbox_getCursorPositionX(*tb);
+        ly = textbox_getCursorPositionY(*tb);
         setcolor(tb->cursorStatus ? tb->font.fontColor : tb->bgColor);
         setlinestyle(0, 1, 5);
         line(lx, ly+2, lx, ly+tb->font.fontSize-2);
@@ -230,7 +227,7 @@ Textbox textbox_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffe
     tb.maxLength = 75;
     tb.font.fontSize = 24;
     tb.font.fontColor = _BLACK,
-    tb.font.spacing = 2;
+    tb.font.spacing = 1;
     tb.font.rowSpacing = 2;
     tb.posX1 = x1;
     tb.posX2 = x2;
