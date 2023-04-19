@@ -13,7 +13,7 @@
 Router router_new(){
 	Router r;
     memset(&r, 0, sizeof(r));
-    r.expandButton = button_new(10, 35, 65, 65, "", button_drawDefault);
+    r.expandButton = button_new(10, 35, 65, 65, "", router_button_drawExpandButton);
     r.newMemoButton = button_new(20, 600, 55, 635, "", button_drawDefault);
 	sprintf(r.memoFilePath, "data\\%06ld.MEM", time(NULL)%1000000);
     router_refresh(&r);
@@ -154,7 +154,7 @@ void router_button_drawMemoList(Button *b){
     char *path = ((Memo *)(b->content))->filePath;
     Text t;
     t.content = ((Memo *)(b->content))->title;
-    t.content = ((*t.content == 0) ? "ÎÞ±êÌâ" : t.content);
+    t.content = ((*t.content == 0) ? "éƒçŠ³çˆ£æ£°ï¿½" : t.content);
     t.width = 0,
     t.hight = 0,
     t.font.fontSize = 16;
@@ -259,4 +259,39 @@ void router_distrcut(){
 void router_refresh(Router *r){
     memos_getList();
 	r->topMemo = memos()->head;
+}
+
+void router_button_drawExpandButton(Button *b){
+    int x1 = b->posX1, x2 = b->posX2,
+        y1 = b->posY1, y2 = b->posY2;
+    int lx1, ly1, lw, lh;
+    setfillstyle(1, hexfffbf0);
+    bar(x1, y1, x2, y2);
+    if(b->status == ButtonSelected || b->status == ButtonFocused){
+        setcolor(hexd4dfff);
+        setlinestyle(0, 1, 2);
+        line(x1 + 5, y1, x2 - 5, y1);
+        line(x1 + 5, y2, x2 - 5, y2);
+        line(x1, y1 + 5, x1, y2 - 5);
+        line(x2, y1 + 5, x2, y2 - 3);
+        arc(x1 + 5, y1 + 5, 90, 180, 5);
+        arc(x1 + 5, y2 - 5, 180, 270, 5);
+        arc(x2 - 5, y1 + 5, 0, 90, 5);
+        arc(x2 - 5, y2 - 5, 270, 360, 5);
+    }
+    if(b->status == ButtonDefault || b->status == ButtonFocused){
+        lw = 25;
+        lh = 10;
+        
+    }
+    else{
+        lw = 15;
+        lh = 10;
+    }
+    lx1 = b->posX1 + (b->posX2 - b->posX1 - lw)/2;
+    ly1 = b->posY1 + (b->posY2 - b->posY1 - lh)/2;
+    setcolor(_GRAY);
+    line(lx1, ly1, lx1+lw, ly1);
+    line(lx1, ly1+lh/2, lx1+lw, ly1+lh/2);
+    line(lx1, ly1+lh, lx1+lw, ly1+lh);
 }
