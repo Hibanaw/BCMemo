@@ -159,18 +159,33 @@ void router_button_drawMemoList(Button *b){
     int x1 = b->posX1, y1 = b->posY1,
         x2 = b->posX2, y2 = b->posY2;
     char *name = ((Memo *)(b->content))->fileName;
+    char *owner = ((Memo *)(b->content))->owner;
     Text t, t2;
     t.content = ((Memo *)(b->content))->title;
     t.content = ((*t.content == 0) ? "ÎÞ±êÌâ" : t.content);
     t.width = 0,
     t.hight = 0,
-    t.font.fontSize = 16;
     t.font.fontColor = _BLACK,
-    t.font.spacing = 2;
     t.font.rowSpacing = 0;
     t.posY = y1 + 10;
-    t.posX = x2-text_getLength(t.content)*(16+2)-10;
     t2 = t;
+    t2.content = owner;
+	t2.posY = y1 + 35;
+    t2.font.spacing = 0;
+    t2.font.fontSize = 16;
+    t2.posX = x2-text_getLength(t2.content)*(16)-10;
+    if(text_getLength(t.content) > 10){
+        t.font.fontSize = 16;
+        t.font.spacing = 0;
+        t.posX = x2-text_getLength(t.content)*(16)-10;
+        t.posY = y1 + 15;
+    }
+    else{
+        t.font.fontSize = 24;
+        t.font.spacing = -2;
+        t.posX = x2-text_getLength(t.content)*(24-2)-10;
+    }
+    
     if(!strcmp(name, memo()->fileName)){
         switch (b->status)
         {
@@ -209,7 +224,9 @@ void router_button_drawMemoList(Button *b){
         arc(x2 - 5, y1 + 5, 0, 90, 5);
         arc(x2 - 5, y2 - 5, 270, 360, 5);
         t.font.fontColor = ct;
+        t2.font.fontColor = ct;
         text_display(t);
+        text_display(t2);
     }
     else{
         switch (b->status)
@@ -249,7 +266,9 @@ void router_button_drawMemoList(Button *b){
         arc(x2 - 5, y1 + 5, 0, 90, 5);
         arc(x2 - 5, y2 - 5, 270, 360, 5);
         t.font.fontColor = ct;
+        t2.font.fontColor = ct;
         text_display(t);
+        text_display(t2);
     }
 }
 
