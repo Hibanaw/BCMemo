@@ -197,7 +197,7 @@ void textbox_determinState(Textbox *tb)
     if(ltb.mstatus == TextboxMouseClicked && mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) != 1){
         tb->mstatus = TextboxMouseFocused;
     }
-    // �ڿ���㣬��Ҫ�ı�༭�����λ��
+    // 鍦ㄦ�嗛噷鐐癸紝闇€瑕佹敼鍙樼紪杈戝櫒鍏夋爣浣嶇疆
     if (mouse_isClickedInBox(tb->posX1, tb->posY1, tb->posX2, tb->posY2) == 1 && tb->mstatus != TextboxMouseClicked)
     {
         int x = tb->posX1, y = tb -> posY1;
@@ -244,7 +244,7 @@ int textbox_getCursorPositionX(Textbox t){
     int w = t.posX2 - t.posX1;
     int rm = (w % (t.font.fontSize + t.font.spacing) / t.font.fontSize) + w / (t.font.fontSize + t.font.spacing);
     int r = p % rm ? p % rm : rm;
-    if(!strlen(t.content)) r = 0;
+    if(p==0) r = 0;
     return t.posX1 + r * (t.font.fontSize + t.font.spacing);
 }
 
@@ -253,7 +253,7 @@ int textbox_getCursorPositionY(Textbox t){
     int w = t.posX2 - t.posX1;
     int rm = (w % (t.font.fontSize + t.font.spacing) / t.font.fontSize) + w / (t.font.fontSize + t.font.spacing);
     int c = CEILING((float) p / rm)-1;
-    if(!strlen(t.content)) c = 0;
+    if(p==0) c = 0;
     return t.posY1 +  c*(t.font.fontSize + t.font.rowSpacing);
 }
 
