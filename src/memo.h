@@ -33,10 +33,11 @@ typedef struct MemoBlock
 
 typedef struct Memo
 {
+    char owner[20];
     MemoBlock *head;
     struct Memo *next;
     char title[30];
-    char filePath[20];
+    char fileName[20];
 } Memo; // 备忘录的节点
 
 Memo *memo();

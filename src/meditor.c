@@ -12,7 +12,6 @@
 
 void memoEditor_draw(MemoEditor *e){
     MemoEditor me = *e;
-    
     setfillstyle(1, hexfffbf0);
     bar(me.posX, me.posY, MAXWIDTH, me.posY+40);
     bar(me.posX, me.posY, me.posX+7, me.posY+7);
@@ -31,26 +30,29 @@ void memoEditor_draw(MemoEditor *e){
     me.titleBar.draw(&me.titleBar);
 }
 
-MemoEditor memoEditor_new(char *filePath, char *uid){
+MemoEditor memoEditor_new(char *fileName, char *uid){
     MemoEditor me;
     Memo *m = memo();
+    char filePath[20];
     memset(m, 0, sizeof(m));
+	sprintf(filePath, "data\\%s.MEM", fileName);
     *m = memofile_read(filePath);
     memset(&me, 0, sizeof(me));
-    me.filePath         = filePath;
+    me.fileName         = fileName;
     me.beginMemoBlock   = m->head;
     me.posX             = 75;
     me.posY             = 30;
     me.focusedBlock     = memo_preBlock(m->head);
-    me.drawButton  = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawDefault);
+    me.drawButton       = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawDefault);
     me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", button_drawDefault);
     me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", button_drawDefault);
     me.saveButton       = button_new(MAXWIDTH - 40, me.posY+3, MAXWIDTH - 8, me.posY + 35, "", button_drawDefault);
     me.uid              = uid;
-    me.scrollBar        = scrollBar_new(MAXWIDTH - 20, me.posY + 50, MAXHEIGHT - (me.posY + 60));
+    me.scrollBar        = scrollBar_new(MAXWIDTH - 15, me.posY + 50, MAXHEIGHT - (me.posY + 60));
     me.titleBar         = textinput_newTitle("ÎÞ±êÌâ", 300, 35, 794, 65, memo()->title);
+    me.unSaved          = 1;
     me.titleBar.textbox.bgColor = hexfffbf0;
-    
+    strcpy(memo()->fileName, me.fileName);
     return me;
 }
 
@@ -58,7 +60,7 @@ MemoEditor memoEditor_new(char *filePath, char *uid){
  * @brief 
  * 
  * @param me 
- * @return int 1 for exit.
+ * @return 
  */
 int memoEditor_event(MemoEditor *me){
 	MemoBlock *p = me->beginMemoBlock;
@@ -68,7 +70,7 @@ int memoEditor_event(MemoEditor *me){
     int sum = memo_getBlockSum();
     MemoBlock *mb;
     if(button_event(&me->saveButton)){
-        memofile_write(me->filePath, memo());
+		memoEditor_save(me);
     }
     ss = scrollBar_event(&me->scrollBar);
     textinput_event(&me->titleBar);
@@ -93,15 +95,26 @@ int memoEditor_event(MemoEditor *me){
         char path[100];
         if(sum >= BLOCKMAX)
             return 0;
+        sprintf(path, "data/%s", memo()->fileName);
         tg = drawPad(path);
         if(tg == 0){
-            mb = memo_newBlock(IMAGE, 0, path);
-            strcpy(mb->lastEditUser, me->uid);
             if(me->focusedBlock == NULL){
+                mb = memo_newBlock(IMAGE, 0, path);
+                strcpy(mb->lastEditUser, me->uid);
                 memo_addBlock(mb);
             }
             else{
-                memo_insertBlock(me->focusedBlock, mb);
+                if(*(me->focusedBlock->content) == 0){
+                    strcpy(me->focusedBlock->content, path);
+                    me->focusedBlock->type = IMAGE;
+                    strcpy(me->focusedBlock->lastEditUser, me->uid);
+                }
+                else{
+                    mb = memo_newBlock(IMAGE, 0, path);
+                    strcpy(mb->lastEditUser, me->uid);
+                    memo_insertBlock(me->focusedBlock, mb);
+                    me->focusedBlock = mb;
+                }
             }
         }
         memoEditor_updateList(me);
@@ -462,8 +475,14 @@ void memoEditor_distruct(MemoEditor *me){
         }
     }
     while(memo()->head != NULL){
-        printf("%d",memo()->head );
         memo_deleteBlock(memo()->head);
-        
     }
+    memset(memo(), 0, sizeof(Memo));
+}
+
+void memoEditor_save(MemoEditor *me){
+    char filePath[20];
+    sprintf(filePath, "data//%s.MEM", me->fileName);
+    memofile_write(filePath, memo());
+    auth_set(me->fileName, memo()->owner, AUTHPRIVATE);
 }

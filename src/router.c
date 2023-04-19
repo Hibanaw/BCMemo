@@ -14,14 +14,15 @@ Router router_new(){
 	Router r;
     memset(&r, 0, sizeof(r));
     r.expandButton = button_new(10, 35, 65, 65, "", router_button_drawExpandButton);
-    r.newMemoButton = button_new(20, 600, 55, 635, "", button_drawDefault);
-	sprintf(r.memoFilePath, "data\\%06ld.MEM", time(NULL)%1000000);
+    r.newMemoButton = button_new(20, 600, 55, 635, "", router_button_drawNewMemoButton);
+	sprintf(r.memoName, "%06ld", time(NULL)%1000000);
     router_refresh(&r);
     return r;
 }
 
 void router_draw(Router *r){
 	button_draw(&r->expandButton);
+    button_draw(&r->newMemoButton);
 }
 
 int router_expand(Router *r){
@@ -31,6 +32,7 @@ int router_expand(Router *r){
     int i;
     int lc = 0;
     ScrollBar sb = scrollBar_new(333, 100, 435);
+    sb.bgColor = hexfffbf0;
     router_refresh(r);
     while(1){
         int signal = 0;
@@ -43,8 +45,9 @@ int router_expand(Router *r){
         ep = memos_preMemo(p);
         lc = i;
         sb.inScreenItem = lc;
+		scrollBar_event(&sb);
         mouse_hide();
-        setfillstyle(1, _WHITE);
+        setfillstyle(1, hexfffbf0);
         bar(0, 0, 350, MAXHEIGHT);
         setcolor(hexd4dfff);
         setlinestyle(0, 1, 2);
@@ -67,7 +70,7 @@ int router_expand(Router *r){
                 int k;
                 k = button_event(mb+i);
                 if(k){
-                    jumpPath = ((Memo *)((mb+i)->content))->filePath;
+                    jumpPath = ((Memo *)((mb+i)->content))->fileName;
                     signal = 3;
                 }
             }
@@ -113,12 +116,12 @@ int router_expand(Router *r){
             return 0;
             break;
         case 2:
-			sprintf(r->memoFilePath, "data\\%06ld.mem", time(NULL)%1000000);
+			sprintf(r->memoName, "%06ld", time(NULL)%1000000);
             return RouterChangeMemo;
             break;
         case 3:
-            if(strcmp(r->memoFilePath, jumpPath)){
-                strcpy(r->memoFilePath, jumpPath);
+            if(strcmp(r->memoName, jumpPath)){
+                strcpy(r->memoName, jumpPath);
                 return RouterChangeMemo;
             }
             else{
@@ -136,6 +139,10 @@ int router_event(Router *r){
     int k;
     if(button_event(&r->expandButton))
         return RouterExpand;
+    if(button_event(&r->newMemoButton)){
+        sprintf(r->memoName, "%06ld", time(NULL)%1000000);
+        return RouterChangeMemo;
+    }
     return 0;
 }
 
@@ -151,10 +158,10 @@ void router_button_drawMemoList(Button *b){
     int c0, c1, ct;
     int x1 = b->posX1, y1 = b->posY1,
         x2 = b->posX2, y2 = b->posY2;
-    char *path = ((Memo *)(b->content))->filePath;
-    Text t;
+    char *name = ((Memo *)(b->content))->fileName;
+    Text t, t2;
     t.content = ((Memo *)(b->content))->title;
-    t.content = ((*t.content == 0) ? "éƒçŠ³çˆ£æ£°ï¿½" : t.content);
+    t.content = ((*t.content == 0) ? "ÎÞ±êÌâ" : t.content);
     t.width = 0,
     t.hight = 0,
     t.font.fontSize = 16;
@@ -163,7 +170,8 @@ void router_button_drawMemoList(Button *b){
     t.font.rowSpacing = 0;
     t.posY = y1 + 10;
     t.posX = x2-text_getLength(t.content)*(16+2)-10;
-    if(!strcmp(path, memo()->filePath)){
+    t2 = t;
+    if(!strcmp(name, memo()->fileName)){
         switch (b->status)
         {
             case ButtonDefault:
@@ -257,7 +265,7 @@ void router_distrcut(){
 }
 
 void router_refresh(Router *r){
-    memos_getList();
+    memos_getList(appData()->currentUser);
 	r->topMemo = memos()->head;
 }
 
@@ -294,4 +302,28 @@ void router_button_drawExpandButton(Button *b){
     line(lx1, ly1, lx1+lw, ly1);
     line(lx1, ly1+lh/2, lx1+lw, ly1+lh/2);
     line(lx1, ly1+lh, lx1+lw, ly1+lh);
+}
+
+void router_button_drawNewMemoButton(Button *b){
+    int x1 = b->posX1, x2 = b->posX2,
+        y1 = b->posY1, y2 = b->posY2;
+    int lx1, ly1, lw, lh;
+    setfillstyle(1, hexfffbf0);
+    bar(x1, y1, x2, y2);
+    if(b->status == ButtonSelected || b->status == ButtonFocused){
+        setcolor(hexd4dfff);
+        setlinestyle(0, 1, 2);
+        line(x1 + 5, y1, x2 - 5, y1);
+        line(x1 + 5, y2, x2 - 5, y2);
+        line(x1, y1 + 5, x1, y2 - 5);
+        line(x2, y1 + 5, x2, y2 - 3);
+        arc(x1 + 5, y1 + 5, 90, 180, 5);
+        arc(x1 + 5, y2 - 5, 180, 270, 5);
+        arc(x2 - 5, y1 + 5, 0, 90, 5);
+        arc(x2 - 5, y2 - 5, 270, 360, 5);
+    }
+    setcolor(_GRAY);
+    setlinestyle(0, 1, 2);
+    line((x1+x2)/2, (y1+y2)/2-10, (x1+x2)/2, (y1+y2)/2+10);
+    line((x1+x2)/2-10, (y1+y2)/2, (x1+x2)/2+10, (y1+y2)/2);
 }

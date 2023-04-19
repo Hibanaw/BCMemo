@@ -15,6 +15,7 @@
 #include "button.h"
 #include "scroll.h"
 #include "textipt.h"
+#include "auth.h"
 
 #define EDITORHEIGHT 680
 #define EDITORWIDTH 800
@@ -30,7 +31,7 @@ typedef struct{
 
 typedef struct{
     char *uid;
-    char *filePath;
+    char *fileName;
     MemoBlock *beginMemoBlock;
     MemoBlock *focusedBlock;
     int focusedBlockCursorLocation;
@@ -43,6 +44,8 @@ typedef struct{
     Button saveButton;
     TextInput titleBar;
     ScrollBar scrollBar;
+    int unSaved;
+    enum AuthType authType;
 } MemoEditor;
 
 typedef struct{
@@ -50,16 +53,16 @@ typedef struct{
     Textbox textbox;
 } MemoEditor_Checkbox;
 
-MemoEditor memoEditor_new(char *filePath, char *uid);
+MemoEditor memoEditor_new(char *fileName, char *uid);
 void memoEditor_draw(MemoEditor *e);
 int memoEditor_event(MemoEditor *me);
 void memoEditor_updateList(MemoEditor *e);
 void memoEditor_distruct(MemoEditor *me);
-
+void memoEditor_save(MemoEditor *me);
 
 #include "textbox.h"
 #include "imagebox.h"
-#include "file.h"
+#include "mfile.h"
 #include "app.h"
 #include "drawpad.h"
 #endif

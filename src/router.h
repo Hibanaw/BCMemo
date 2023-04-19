@@ -20,7 +20,7 @@ typedef struct{
     Button expandButton;
     Button newMemoButton;
     Button memoButton[10];
-    char memoFilePath[20];
+    char memoName[20];
 }Router;
 
 enum {
@@ -35,7 +35,8 @@ int router_event(Router *r);
 void router_button_drawMemoList(Button *b);
 void router_distrcut();
 void router_refresh(Router *r);
-
+void router_button_drawExpandButton(Button *b);
+void router_button_drawNewMemoButton(Button *b);
 #include <bios.h>
 #include "keyboard.h"
 #include "app.h"
