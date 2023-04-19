@@ -22,6 +22,7 @@ ScrollBar scrollBar_new(int x, int y, int h){
     sb.inScreenItem = sb.sumItem = 0;
     sb.barPosY1 = sb.barPosY2 = 0;
     sb.mouseLastPosY = 0;
+    sb.bgColor = _WHITE;
     return sb;
 }
 
@@ -91,7 +92,7 @@ int scrollBar_event(ScrollBar *sb){
 
 void scrollBar_draw(ScrollBar *sb){
     int x;
-    setfillstyle(1, _WHITE);
+    setfillstyle(1, sb->bgColor);
     bar(sb->posX, sb->posY, sb->posX+sb->width, sb->posY+sb->height);
     if(sb->inScreenItem == sb->sumItem){
         return;

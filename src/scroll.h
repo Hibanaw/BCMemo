@@ -34,6 +34,7 @@ typedef struct
     int ithItem;
     int lastDrawBarPosY1;
     int lastDrawBarPosY2;
+    int bgColor;
 }ScrollBar;
 
 ScrollBar scrollBar_new(int x, int y, int h);
