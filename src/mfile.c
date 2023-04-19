@@ -1,5 +1,5 @@
 /**
- * @file file.c
+ * @file mfile.c
  * @author wywgwt (2504133124@qq.com), Hibanaw Hu (hibanaw@qq.com)
  * @brief 
  * @date 2023-04-06
@@ -8,7 +8,7 @@
  * 
  */
 
-#include "file.h"
+#include "mfile.h"
 
 FILE **memofile_current(){
 	static FILE *f;
@@ -65,9 +65,10 @@ Memo memofile_read(char *filePath)
 	memset(&m, 0, sizeof(m));
  	if ((*fp=fopen(filePath,"rb"))==NULL)
 	{
+		strcpy(m.owner, appData()->currentUser);
 		return m;
 	}
-	fread(&m, sizeof(Memo), 1, *fp);
+	fread(&m, sizeof(m), 1, *fp);
 	m.head = p = memofile_readBlock();
 	while(p)
 	{

@@ -1,5 +1,5 @@
 /**
- * @file file.h
+ * @file mfile.h
  * @author wywgwt (2504133124@qq.com)
  * @brief 
  * @date 2023-04-06
@@ -26,5 +26,6 @@ Memo memofile_read(char *filePath);
 
 #include<stdio.h>
 #include<string.h>
+#include "app.h"
 
 #endif
