@@ -23,6 +23,7 @@ typedef struct{
     void (*draw)(); 
 }TextInput;
 
+void textinput_draw(TextInput *tb);
 void textinput_drawDefault(TextInput *tb);
 int textinput_event(TextInput *ti);
 TextInput textinput_newDefault(char *ds, int x1, int y1, int x2, int y2, char *buffer);
