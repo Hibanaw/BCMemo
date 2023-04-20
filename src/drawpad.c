@@ -13,11 +13,12 @@
 int drawPad(char *saveFilePath){
     int px = 310, py = 80;
     int signal = 0;
-    int color1 = _BLACK;
+    int color1 = _BLACK, color0 = _WHITE;
     int isDrawing = 0;
     int x0, y0;
     short w = 480, h = 360;
-    Button saveButton = button_new(680, 450, 780, 490, "插入", button_drawWINUIAccent);
+    Button saveButton = button_new(690, 450, 780, 490, "插入", button_drawWINUIAccent);
+    Button exitButton = button_new(580, 450, 670, 490, "取消", button_drawWINUI);
     mouse_hide();
     setfillstyle(1, hexfffbf0);
     bar(300, 72, 800, 500);
@@ -26,6 +27,7 @@ int drawPad(char *saveFilePath){
     setfillstyle(1, _WHITE);
     bar(310, 80, 790, 440);
     button_draw(&saveButton);
+    button_draw(&exitButton);
     mouse_show();
     while(!signal){
         int k = bioskey(1);
@@ -53,10 +55,31 @@ int drawPad(char *saveFilePath){
             x0 = x;
             y0 = y;
         }
+        else if(mouse_isClickedInBox(310, 80, 790, 440) == 3){
+            int x = mouse()->posX;
+            int y = mouse()->posY;
+            if(!isDrawing){
+                isDrawing = 1;
+                mouse()->visibility = 0;
+                mouse_hide();
+            }
+            else{
+                setcolor(color0);
+                setlinestyle(0, 0, 3);
+                line(x0, y0, x, y);
+            }
+            setfillstyle(1, color0);
+            setcolor(color0);
+            x0 = x;
+            y0 = y;
+        }
         else if(isDrawing){
             isDrawing = 0;
             mouse()->visibility = 1;
             mouse_show();
+        }
+        if(button_event(&exitButton)){
+            signal = -1;
         }
         if(button_event(&saveButton)){
             signal = 1;

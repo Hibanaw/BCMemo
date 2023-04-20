@@ -24,6 +24,8 @@ void memoEditor_draw(MemoEditor *e){
     button_draw(&me.imageButton);
     button_draw(&me.checkboxButton);
     button_draw(&me.saveButton);
+    button_draw(&me.shareButton);
+    button_draw(&me.settingsButton);
     mouse_show();
     memoEditor_updateList(e);
     mouse_hide();
@@ -42,11 +44,13 @@ MemoEditor memoEditor_new(char *fileName, char *uid){
     me.beginMemoBlock   = m->head;
     me.posX             = 75;
     me.posY             = 30;
-    me.focusedBlock     = memo_preBlock(m->head);
-    me.drawButton       = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawDefault);
-    me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", button_drawDefault);
-    me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", button_drawDefault);
-    me.saveButton       = button_new(MAXWIDTH - 40, me.posY+3, MAXWIDTH - 8, me.posY + 35, "", button_drawDefault);
+    me.focusedBlock     = NULL;
+    me.drawButton       = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawWINUI);
+    me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", button_drawWINUI);
+    me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", button_drawWINUI);
+    me.shareButton      = button_new(MAXWIDTH - 126, me.posY+3, MAXWIDTH - 94, me.posY + 35, "", button_drawWINUI);
+    me.settingsButton   = button_new(MAXWIDTH - 84, me.posY+3, MAXWIDTH - 52, me.posY + 35, "", button_drawWINUI);
+    me.saveButton       = button_new(MAXWIDTH - 42, me.posY+3, MAXWIDTH - 10, me.posY + 35, "", button_drawWINUIAccent);
     me.uid              = uid;
     me.scrollBar        = scrollBar_new(MAXWIDTH - 15, me.posY + 50, MAXHEIGHT - (me.posY + 60));
     me.titleBar         = textinput_newTitle("ÎÞ±êÌâ", 300, 35, 794, 65, memo()->title);
@@ -121,11 +125,32 @@ int memoEditor_event(MemoEditor *me){
         return 0;
     }
     if(button_event(&me->imageButton)){
+        char path[50];
+        int tg;
+        memset(path, 0, sizeof(path));
         if(sum >= BLOCKMAX)
-            return 0;
-        mb = memo_newBlock(IMAGE, 0, "");
-        strcpy(mb->lastEditUser, me->uid);
-        memo_addBlock(mb);
+                return 0;
+        tg = addImage(path);
+        if(tg == 0){
+            if(me->focusedBlock == NULL){
+                mb = memo_newBlock(IMAGE, 0, path);
+                strcpy(mb->lastEditUser, me->uid);
+                memo_addBlock(mb);
+            }
+            else{
+                if(*(me->focusedBlock->content) == 0){
+                    strcpy(me->focusedBlock->content, path);
+                    me->focusedBlock->type = IMAGE;
+                    strcpy(me->focusedBlock->lastEditUser, me->uid);
+                }
+                else{
+                    mb = memo_newBlock(IMAGE, 0, path);
+                    strcpy(mb->lastEditUser, me->uid);
+                    memo_insertBlock(me->focusedBlock, mb);
+                    me->focusedBlock = mb;
+                }
+            }
+        }
         memoEditor_updateList(me);
         return 0;
     }
@@ -485,100 +510,4 @@ void memoEditor_save(MemoEditor *me){
     sprintf(filePath, "data//%s.MEM", me->fileName);
     memofile_write(filePath, memo());
     auth_set(me->fileName, memo()->owner, AUTHPRIVATE);
-}
-
-void memoEditor_button_drawAddPicture(Button *b)
-{
-    int x1 = b->posX1 + 3, y1 = b->posY1 + 3,
-        x2 = b->posX2 - 3, y2 = b->posY2 - 3;
-    float k = 0.7;
-    int x3, x4, y3, y4, m;
-    button_drawWINUI(b);
-    if (b->status != ButtonSelected)
-    {
-        setcolor(_BLACK);
-        setlinestyle(0, 1, 2);
-        // setfillstyle(1,_WHITE);
-        // bar(x1,y1,x2,y2);
-        line(x1,y1,x2,y1);
-        line(x2,y1,x2,y2);
-        line(x2,y2,x1,y2);
-        line(x1,y2,x1,y1);
-        arc(x1, y2, 0, 90, (x2 - x1) / 2);
-        arc(x2, y2 + (y2 - y1) / 4, 90, 135, 3 * (y2 - y1) / 4);
-        circle((x2 + 3 * x1) / 4, (3 * y1 + y2) / 4, 2);
-    }
-    else
-    {
-        x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
-        x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
-        y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
-        y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
-        setcolor(_BLACK);
-		setlinestyle(0,1,2);
-        // setfillstyle(1,_WHITE);
-        // bar(x3,y3,x4,y4);
-        line(x3,y3,x4,y3);
-        line(x4,y3,x4,y4);
-        line(x4,y4,x3,y4);
-        line(x3,y4,x3,y3);
-        arc(x3, y4, 0, 90, (x4 - x3) / 2);
-        arc(x4, y4 + (y4 - y3) / 4, 90, 135, 3 * (y4 - y3) / 4);
-        circle((x4 + 3 * x3) / 4, (3 * y3 + y4) / 4, 2 * k);
-    }
-}
-void memoEditor_button_drawAddCheckbox(Button *b)
-{
-    int x1 = b->posX1 + 3, y1 = b->posY1 + 3,
-        x2 = b->posX2 - 3, y2 = b->posY2 - 3;
-    int x3, x4, y3, y4, m;
-    float k;
-    button_drawWINUI(b);
-    if (b->status != ButtonSelected)
-    {
-        k = 1;
-    }
-    else
-    {
-        k = 0.7;
-    }
-    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
-    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
-    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
-    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
-    setcolor(_BLACK);
-    setlinestyle(0,1, 2);
-      line(x3,y3,x4,y3);
-        line(x4,y3,x4,y4);
-        line(x4,y4,x3,y4);
-        line(x3,y4,x3,y3);
-    line((3 * x3 + x4) / 4, (y3 + y4) / 2, (x3 + x4) / 2, (3 * y4 + y3) / 4);
-    line((x3 + x4) / 2, (3 * y4 + y3) / 4, (3 * x4 + x3) / 4, (3 * y3 + y4) / 4);
-}
-void memoEditor_button_drawDrawpad(Button *b)
-{
-    int x1 = b->posX1+3, y1 = b->posY1+3,
-        x2 = b->posX2-3, y2 = b->posY2-3;
-    float k=0.7;
-    int x3, x4, y3, y4, m;
-    button_drawWINUI(b);
-     if (b->status != ButtonSelected)
-    {
-        k = 1;
-    }
-    else
-    {
-        k = 0.7;
-    }
-    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
-    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
-    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
-    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
-    setcolor(_BLACK);
-    setlinestyle(0,1,2);
-    line((4*x3+x4)/5,(y3+y4)/2,(x3+x4)/2,(4*y3+y4)/5);
-    line((x3+x4)/2,(4*y3+y4)/5,(x3+x4)/2,(y3+y4)/2);
-    line((x3+x4)/2,(y3+y4)/2,(2*x4+x3)/3,(6*y3+4*y4)/10);
-    line((2*x4+x3)/3,(6*y3+4*y4)/10,(4*x3+6*x4)/10,(3*y4+2*y3)/5);
-    line((4*x3+6*x4)/10,(3*y4+2*y3)/5,(4*x4+x3)/5,(3*y4+2*y3)/5);
 }

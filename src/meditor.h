@@ -41,6 +41,8 @@ typedef struct{
     Button drawButton;
     Button imageButton;
     Button checkboxButton;
+    Button shareButton;
+    Button settingsButton;
     Button saveButton;
     TextInput titleBar;
     ScrollBar scrollBar;
@@ -69,4 +71,5 @@ void memoEditor_button_drawDrawpad(Button *b);
 #include "mfile.h"
 #include "app.h"
 #include "drawpad.h"
+#include "addimage.h"
 #endif
