@@ -22,4 +22,6 @@ void homepage();
 #include "textbox.h"
 #include "text.h"
 #include "textipt.h"
+#include"userpage.h"
+#include<string.h>
 #endif

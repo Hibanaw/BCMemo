@@ -16,29 +16,39 @@ void homepage()
     char textInputBuffer2[50];
     memset(textInputBuffer1, 0, sizeof(textInputBuffer1));
     memset(textInputBuffer2, 0, sizeof(textInputBuffer2));
+    mouse_hide();
     setfillstyle(1, _BLACK);
     bar(0, 0, MAXWIDTH, MAXHEIGHT);
     delay(1000);
+    animation_homepage1();
+    setfillstyle(1, hexaa3f00);
+    bar(0, 0, MAXWIDTH, MAXHEIGHT);
+    image_render("res\\img\\hpbg.bin", 0, 0);
+    animation_homepage2();
+    setfillstyle(1, hexd4bfaa);
+    bar(315, 0, MAXWIDTH, MAXHEIGHT);
+    mouse_show();
     while (1)
     {
         Text tw;
         Text tw1;
         Text tc1, tc2, tc3;
         int signal = 0;
-        Button b = button_new(550, 600,
-                              850, 650,
-                              "登 录",
-                              button_drawWithText);
+        Button b = button_new(640, 550,
+                              760, 600,
+                              "登录",
+                              button_drawWINUI);
         TextInput t = textinput_newDefault(
-            "请输入用户名",
-            550, 400,
-            850, 450,
-            textInputBuffer1);
+                        "请输入用户名",
+                        550, 370,
+                        850, 420,
+                        textInputBuffer1);
         TextInput t1 = textinput_newDefault(
-            "请输入密码",
-            550, 500,
-            850, 550,
-            textInputBuffer2);
+                        "请输入密码",
+                        550, 450,
+                        850, 500,
+                        textInputBuffer2);
+        Button exitButton = button_newExitButton();
         t1.textbox.maxLength = 8;
         t.textbox.maxLength = 8;
         tw = text_newDefault("用户名过短！", 700, 410, 1000, 460);
@@ -53,24 +63,18 @@ void homepage()
         tc3.font.fontColor = _RED;
         // draw
         mouse_hide();
-        animation_homepage1();
-        setfillstyle(1, hexaa3f00);
-        bar(0, 0, MAXWIDTH, MAXHEIGHT);
-        image_render("res\\img\\hpbg.bin", 0, 0);
-        animation_homepage2();
-        setfillstyle(1, hexd4bfaa);
-        bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
         button_draw(&b);
         textinput_drawDefault(&t);
         textinput_drawDefault(&t1);
         ime_draw();
+        button_draw(&exitButton);
         mouse_show();
         digitalClock_getTime();
         // event
         while (!signal)
         {
-            int k, bs, tbs, tbs1, lgs;
+            int k, bs, tbs, tbs1, lgs, ebs;
             int ly = 3;
             Mouse *m = mouse();
             mouse_update();
@@ -81,9 +85,14 @@ void homepage()
             bs = button_event(&b);
             tbs = textbox_event(&t.textbox);
             tbs1 = textbox_event(&t1.textbox);
+            ebs = button_event(&exitButton);
             if (keybord_isESCAPE(k))
             {
                 bioskey(0);
+                signal = -1;
+                break;
+            }
+            if(ebs){
                 signal = -1;
                 break;
             }
