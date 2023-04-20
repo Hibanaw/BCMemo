@@ -51,15 +51,16 @@ void homepage()
         Button exitButton = button_newExitButton();
         t1.textbox.maxLength = 8;
         t.textbox.maxLength = 8;
-        tw = text_newDefault("用户名过短！", 700, 380, 1000, 430);
+        t1.textbox.type = TextboxPassword;
+        tw = text_newDefault("用户名过短", 715, 380, 1000, 430);
         tw.font.fontColor = _RED;
-        tw1 = text_newDefault("密码过短！", 700, 460, 1000, 510);
+        tw1 = text_newDefault("密码过短", 740, 460, 1050, 510);
         tw1.font.fontColor = _RED;
         tc1 = text_newDefault("欢迎登录！", 650, 510, 1050, 560);
         tc1.font.fontColor = _RED;
-        tc2 = text_newDefault("密码错误！", 650, 510, 1050, 560);
+        tc2 = text_newDefault("密码错误", 740, 460, 1050, 510);
         tc2.font.fontColor = _RED;
-        tc3 = text_newDefault("注册成功！", 650, 510, 1050, 560);
+        tc3 = text_newDefault("注册成功", 740, 460, 1050, 510);
         tc3.font.fontColor = _RED;
         // draw
         mouse_hide();
@@ -84,8 +85,8 @@ void homepage()
             keybord_eat();
             k = bioskey(1);
             bs = button_event(&b);
-            tbs = textbox_event(&t.textbox);
-            tbs1 = textbox_event(&t1.textbox);
+            tbs = textinput_event(&t);
+            tbs1 = textinput_event(&t1);
             ebs = button_event(&exitButton);
             if (keybord_isESCAPE(k))
             {
