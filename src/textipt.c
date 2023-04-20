@@ -81,14 +81,19 @@ int textinput_event(TextInput *ti){
             mouse_hide();
             ti->draw(ti);
             mouse_show();
-            return k;
         }
-        else return k;
     }
     else{
         k = textbox_event(&ti->textbox);
     }
     if(ls != ti->textbox.status){
+        mouse_hide();
+        textinput_draw(ti);
+        textbox_draw(&ti->textbox);
+        mouse_show();
+    }
+    if(k){
+        ti->textbox.status = TextboxDefault;
         mouse_hide();
         textinput_draw(ti);
         textbox_draw(&ti->textbox);
