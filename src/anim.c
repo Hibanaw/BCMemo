@@ -57,16 +57,6 @@ void animation_homepage2()
     while ((t - t0) < (k * CLK_TCK))
     {
         t = clock();
-        // if((t-t0)<k*CLK_TCK/8)
-        //{
-        //     setfillstyle(1,hexffffff);
-        //     bar(1024-400*sqrt(4*(t-t0)/(k*CLK_TCK)),0,1024,768);
-        // }
-        // if(((t-t0)>k*CLK_TCK/8)&&((t-t0)<k*CLK_TCK))
-        //{
-        //   setfillstyle(1,hexffffff);
-        // bar(315+426*4*((4*(t-t0)/(k*CLK_TCK)-4)*(4*(t-t0)/(k*CLK_TCK)-4))/15,0,1024,768);
-        //}
         if ((t - t0) < k * 1 * CLK_TCK / 4)
         {
             setfillstyle(1, hexd4bfaa);
@@ -74,7 +64,6 @@ void animation_homepage2()
         }
         if (((t - t0) > k * 1 * CLK_TCK / 4) && ((t - t0) < k * 1 * CLK_TCK))
         {
-            //  printf("%f ",450+((float)(t-t0)/(k*CLK_TCK)-1/4)*531.75);
             setfillstyle(1, hexd4bfaa);
             bar(315 + (1 - ((float)(t - t0) / (k * CLK_TCK))) * 299.109, 0, 1024, 768);
         }
@@ -185,7 +174,7 @@ void animation_login()
     t = t0;
     setfillstyle(1, _BLACK);
     bar(0, 0, 1024, 768);
-    while (((t - t0) < 5 * CLK_TCK))
+    while (((t - t0) < (3 + 1 / l) * CLK_TCK))
     {
         t = clock();
         if ((t - t0) < 3 * CLK_TCK)
@@ -208,8 +197,6 @@ void animation_login()
             {
                 arc(512, 450, 2 * (float)(108 * (t - t0) - (t - t0) * (t - t0) - 62 * 36), 2 * (float)(108 * (t - t0) - (t - t0) * (t - t0) - 62 * 36) + 270, 30);
             }
-            // arc(512,450,100*cos((float)(t-t0)/6),100*cos((float)(t-t0)/6)+270,30);
-            // arc(512, 450, (float)(2 * (t - t0) / 32 - 8 * (t - t0) * (t - t0) * (t - t0) / 192), ((float)(2 * (t - t0) / 32 - 8 * (t - t0) * (t - t0) * (t - t0) / 192)) + 270, 30);
             delay(100);
         }
 
@@ -221,9 +208,6 @@ void animation_login()
         circle(478-l*(512-37.5)*((t-t0-3*CLK_TCK)/CLK_TCK),28+315+l*(650-320)*((t-t0-3*CLK_TCK)/CLK_TCK),60-(60-20)*l*((t-t0-3*CLK_TCK)/CLK_TCK));
         circle(478-l*(512-37.5)*((t-t0-3*CLK_TCK)/CLK_TCK),28+282+l*(644-282)*((t-t0-3*CLK_TCK)/CLK_TCK),15-(15-5)*l*((t-t0-3*CLK_TCK)/CLK_TCK));
         arc(478-l*(512-37.5)*((t-t0-3*CLK_TCK)/CLK_TCK),28+352.5+(667.5-352.5)*l*((t-t0-3*CLK_TCK)/CLK_TCK),28,150,55.5-(55.5-18.5)*l*((t-t0-3*CLK_TCK)/CLK_TCK));
-        //circle(512-l*2*(256-75/4)*((t-t0-3*CLK_TCK)/CLK_TCK)-35,200+300+l*2*(150-75/4)*((t-t0-3*CLK_TCK)/CLK_TCK)-18,40-l*2*(20-75/4)*((t-t0-3*CLK_TCK)/CLK_TCK));
-        //circle(512-l*2*(256-75/4)*(t-t0-3*CLK_TCK)/CLK_TCK-35,200+288+l*2*(144-14*75/80)*(t-t0-3*CLK_TCK)/CLK_TCK-18,10-l*2*(5-5*75/80)*(t-t0-3*CLK_TCK)/CLK_TCK);
-        //arc(512-l*2*(256-75/4)*(t-t0-3*CLK_TCK)/CLK_TCK-35,200+335+l*2*(335-75*75/80)*(t-t0-3*CLK_TCK)/(2*CLK_TCK)-18,28,150,37-l*2*(37-75*37/80)*(t-t0-3*CLK_TCK)/(2*CLK_TCK));
         delay(10);
         }
     }
