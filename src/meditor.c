@@ -45,9 +45,9 @@ MemoEditor memoEditor_new(char *fileName, char *uid){
     me.posX             = 75;
     me.posY             = 30;
     me.focusedBlock     = NULL;
-    me.drawButton       = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", button_drawWINUI);
-    me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", button_drawWINUI);
-    me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", button_drawWINUI);
+    me.drawButton       = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", memoEditor_button_drawDrawpad);
+    me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", memoEditor_button_drawAddPicture);
+    me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", memoEditor_button_drawAddCheckbox);
     me.shareButton      = button_new(MAXWIDTH - 126, me.posY+3, MAXWIDTH - 94, me.posY + 35, "", button_drawWINUI);
     me.settingsButton   = button_new(MAXWIDTH - 84, me.posY+3, MAXWIDTH - 52, me.posY + 35, "", button_drawWINUI);
     me.saveButton       = button_new(MAXWIDTH - 42, me.posY+3, MAXWIDTH - 10, me.posY + 35, "", button_drawWINUIAccent);
@@ -515,9 +515,9 @@ void memoEditor_save(MemoEditor *me){
 
 void memoEditor_button_drawAddPicture(Button *b)
 {
-    int x1 = b->posX1 + 3, y1 = b->posY1 + 3,
-        x2 = b->posX2 - 3, y2 = b->posY2 - 3;
-    float k = 0.7;
+    int x1 = b->posX1 + 5, y1 = b->posY1 + 5,
+        x2 = b->posX2 - 5, y2 = b->posY2 - 5;
+    float k = 0.8;
     int x3, x4, y3, y4, m;
     button_drawWINUI(b);
     if (b->status != ButtonSelected)
@@ -555,8 +555,8 @@ void memoEditor_button_drawAddPicture(Button *b)
 }
 void memoEditor_button_drawAddCheckbox(Button *b)
 {
-    int x1 = b->posX1 + 3, y1 = b->posY1 + 3,
-        x2 = b->posX2 - 3, y2 = b->posY2 - 3;
+    int x1 = b->posX1 + 5, y1 = b->posY1 + 5,
+        x2 = b->posX2 - 5, y2 = b->posY2 - 5;
     int x3, x4, y3, y4, m;
     float k;
     button_drawWINUI(b);
@@ -566,7 +566,7 @@ void memoEditor_button_drawAddCheckbox(Button *b)
     }
     else
     {
-        k = 0.7;
+        k = 0.8;
     }
     x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
     x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
@@ -585,7 +585,7 @@ void memoEditor_button_drawDrawpad(Button *b)
 {
     int x1 = b->posX1+3, y1 = b->posY1+3,
         x2 = b->posX2-3, y2 = b->posY2-3;
-    float k=0.7;
+    float k=0.8;
     int x3, x4, y3, y4, m;
     button_drawWINUI(b);
      if (b->status != ButtonSelected)
@@ -594,7 +594,7 @@ void memoEditor_button_drawDrawpad(Button *b)
     }
     else
     {
-        k = 0.7;
+        k = 0.8;
     }
     x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
     x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
