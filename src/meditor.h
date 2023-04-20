@@ -60,6 +60,10 @@ void memoEditor_updateList(MemoEditor *e);
 void memoEditor_distruct(MemoEditor *me);
 void memoEditor_save(MemoEditor *me);
 
+void memoEditor_button_drawAddPicture(Button *b);
+void memoEditor_button_drawAddCheckbox(Button *b);
+void memoEditor_button_drawDrawpad(Button *b);
+
 #include "textbox.h"
 #include "imagebox.h"
 #include "mfile.h"
