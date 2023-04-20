@@ -51,15 +51,15 @@ void homepage()
         Button exitButton = button_newExitButton();
         t1.textbox.maxLength = 8;
         t.textbox.maxLength = 8;
-        tw = text_newDefault("ÓÃ»§Ãû¹ý¶Ì£¡", 700, 410, 1000, 460);
+        tw = text_newDefault("ÓÃ»§Ãû¹ý¶Ì£¡", 700, 380, 1000, 430);
         tw.font.fontColor = _RED;
-        tw1 = text_newDefault("ÃÜÂë¹ý¶Ì£¡", 700, 510, 1000, 560);
+        tw1 = text_newDefault("ÃÜÂë¹ý¶Ì£¡", 700, 460, 1000, 510);
         tw1.font.fontColor = _RED;
-        tc1 = text_newDefault("»¶Ó­µÇÂ¼£¡", 600, 560, 1000, 610);
+        tc1 = text_newDefault("»¶Ó­µÇÂ¼£¡", 650, 510, 1050, 560);
         tc1.font.fontColor = _RED;
-        tc2 = text_newDefault("ÃÜÂë´íÎó£¡", 600, 560, 1000, 610);
+        tc2 = text_newDefault("ÃÜÂë´íÎó£¡", 650, 510, 1050, 560);
         tc2.font.fontColor = _RED;
-        tc3 = text_newDefault("×¢²á³É¹¦£¡", 600, 560, 1000, 610);
+        tc3 = text_newDefault("×¢²á³É¹¦£¡", 650, 510, 1050, 560);
         tc3.font.fontColor = _RED;
         // draw
         mouse_hide();
@@ -67,6 +67,7 @@ void homepage()
         button_draw(&b);
         textinput_drawDefault(&t);
         textinput_drawDefault(&t1);
+        // text_display(tc2);
         ime_draw();
         button_draw(&exitButton);
         mouse_show();
@@ -107,18 +108,20 @@ void homepage()
                         switch (lgs)
                         {
                         case 4:
-                            text_display(tc1);
+                           // text_display(tc1);
                             delay(100);
                             strcpy(appData()->uid[0],t.textbox.content);
                             appData()->currentUser = appData()->uid[0];
                             signal = 1;
                             break;
                         case 5:
-                            text_display(tc2);
-                            delay(100);
+                        if(!(textbox_event(&t))&&!(textbox_event(&t1)))
+                        {
+                             text_display(tc2);
+                        }
                             break;
                         case 6:
-                            text_display(tc3);
+                             text_display(tc3);
                             user_login(t.textbox.content,t1.textbox.content,1);
                             strcpy(appData()->uid[0],t.textbox.content);
                             appData()->currentUser = appData()->uid[0];
@@ -126,7 +129,7 @@ void homepage()
                             signal = 1;
                             break;
                         }
-                        break;
+                        
                     }
                 }
             }
@@ -164,6 +167,10 @@ void homepage()
         case -1:
             debug(DEBUG, "EXIT.");
             return;
+            break;
+        case 2:
+            text_display(tc2);
+            delay(100);
             break;
         }
     }
