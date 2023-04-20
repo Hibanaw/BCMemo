@@ -511,3 +511,100 @@ void memoEditor_save(MemoEditor *me){
     memofile_write(filePath, memo());
     auth_set(me->fileName, memo()->owner, AUTHPRIVATE);
 }
+
+
+void memoEditor_button_drawAddPicture(Button *b)
+{
+    int x1 = b->posX1 + 3, y1 = b->posY1 + 3,
+        x2 = b->posX2 - 3, y2 = b->posY2 - 3;
+    float k = 0.7;
+    int x3, x4, y3, y4, m;
+    button_drawWINUI(b);
+    if (b->status != ButtonSelected)
+    {
+        setcolor(_BLACK);
+        setlinestyle(0, 1, 2);
+        // setfillstyle(1,_WHITE);
+        // bar(x1,y1,x2,y2);
+        line(x1,y1,x2,y1);
+        line(x2,y1,x2,y2);
+        line(x2,y2,x1,y2);
+        line(x1,y2,x1,y1);
+        arc(x1, y2, 0, 90, (x2 - x1) / 2);
+        arc(x2, y2 + (y2 - y1) / 4, 90, 135, 3 * (y2 - y1) / 4);
+        circle((x2 + 3 * x1) / 4, (3 * y1 + y2) / 4, 2);
+    }
+    else
+    {
+        x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+        x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+        y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+        y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+        setcolor(_BLACK);
+		setlinestyle(0,1,2);
+        // setfillstyle(1,_WHITE);
+        // bar(x3,y3,x4,y4);
+        line(x3,y3,x4,y3);
+        line(x4,y3,x4,y4);
+        line(x4,y4,x3,y4);
+        line(x3,y4,x3,y3);
+        arc(x3, y4, 0, 90, (x4 - x3) / 2);
+        arc(x4, y4 + (y4 - y3) / 4, 90, 135, 3 * (y4 - y3) / 4);
+        circle((x4 + 3 * x3) / 4, (3 * y3 + y4) / 4, 2 * k);
+    }
+}
+void memoEditor_button_drawAddCheckbox(Button *b)
+{
+    int x1 = b->posX1 + 3, y1 = b->posY1 + 3,
+        x2 = b->posX2 - 3, y2 = b->posY2 - 3;
+    int x3, x4, y3, y4, m;
+    float k;
+    button_drawWINUI(b);
+    if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.7;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    setcolor(_BLACK);
+    setlinestyle(0,1, 2);
+      line(x3,y3,x4,y3);
+        line(x4,y3,x4,y4);
+        line(x4,y4,x3,y4);
+        line(x3,y4,x3,y3);
+    line((3 * x3 + x4) / 4, (y3 + y4) / 2, (x3 + x4) / 2, (3 * y4 + y3) / 4);
+    line((x3 + x4) / 2, (3 * y4 + y3) / 4, (3 * x4 + x3) / 4, (3 * y3 + y4) / 4);
+}
+void memoEditor_button_drawDrawpad(Button *b)
+{
+    int x1 = b->posX1+3, y1 = b->posY1+3,
+        x2 = b->posX2-3, y2 = b->posY2-3;
+    float k=0.7;
+    int x3, x4, y3, y4, m;
+    button_drawWINUI(b);
+     if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.7;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    line((4*x3+x4)/5,(y3+y4)/2,(x3+x4)/2,(4*y3+y4)/5);
+    line((x3+x4)/2,(4*y3+y4)/5,(x3+x4)/2,(y3+y4)/2);
+    line((x3+x4)/2,(y3+y4)/2,(2*x4+x3)/3,(6*y3+4*y4)/10);
+    line((2*x4+x3)/3,(6*y3+4*y4)/10,(4*x3+6*x4)/10,(3*y4+2*y3)/5);
+    line((4*x3+6*x4)/10,(3*y4+2*y3)/5,(4*x4+x3)/5,(3*y4+2*y3)/5);
+}
