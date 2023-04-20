@@ -24,6 +24,7 @@ typedef struct
     char uid[6][20];
     char *currentUser;
     char displayLastEditUser;
+    int userCount;
 }AppData;
 
 AppData *appData();
