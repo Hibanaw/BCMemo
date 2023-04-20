@@ -108,6 +108,7 @@ void homepage()
                         switch (lgs)
                         {
                         case 4:
+                        //text_display(tc1);
                             delay(100);
                             strcpy(appData()->uid[0],t.textbox.content);
                             appData()->currentUser = appData()->uid[0];
