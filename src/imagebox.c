@@ -80,21 +80,51 @@ ImageBox imageBox_new(char *filePath, int x, int y){
 void imageBox_fullScreen(char *filePath){
     int x, y;
     int w, h;
+    float scale = 1;
     image_getSize(filePath, &w, &h);
-    x = (MAXWIDTH - w) /2;
-    y = (MAXHEIGHT - h) /2;
-    mouse_hide();
-    setfillstyle(1, hex2a1f00);
-    bar(0, 0, MAXWIDTH, MAXHEIGHT);
-    image_renderZoom(filePath, x, y, 1.0);
-    mouse_show();
     while(1){
-        int k = bioskey(1);
-        keybord_eat();
-        mouse_update();
-        if(keybord_isESCAPE(k)){
-            bioskey(0);
-            return;
+        char percentage[5];
+        Button eb = button_newExitButton();
+        Button greater = button_new(50, 5, 75, 30, "+", button_drawWINUI);
+        Button smaller = button_new(90, 5, 115, 30, "-", button_drawWINUI);
+        Text pt = text_newDefault(percentage, MAXWIDTH - 120, MAXHEIGHT - 50, MAXWIDTH, MAXHEIGHT);
+        int signal = 0;
+        sprintf(percentage, "%d%%", (int)(scale*100));
+        pt.font.fontColor = _WHITE;
+		x = (MAXWIDTH - scale*w) /2;
+		y = (MAXHEIGHT - scale*h) /2;
+        mouse_hide();
+        setfillstyle(1, hex2a1f00);
+        bar(0, 0, MAXWIDTH, MAXHEIGHT);
+		image_renderZoom(filePath, x, y, scale);
+        button_draw(&eb);
+        button_draw(&greater);
+        button_draw(&smaller);
+        text_display(pt);
+        mouse_show();
+        while(1){
+            int k = bioskey(1);
+            keybord_eat();
+            mouse_update();
+            if(button_event(&eb)){
+                return;
+            }
+            if(keybord_isESCAPE(k)){
+                bioskey(0);
+                return;
+            }
+            if(button_event(&greater)){
+                if(scale <= 3){
+                    scale *= 1.2;
+                    break;
+                }
+            }
+            if(button_event(&smaller)){
+                if(scale >= 0.3){
+                    scale /= 1.2;
+                    break;
+                }
+            }
         }
     }
 }
