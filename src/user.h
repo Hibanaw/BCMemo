@@ -1,3 +1,12 @@
+/**
+ * @file user.h
+ * @author wywgwt (2504133124@qq.com)
+ * @brief 
+ * @date 2023-04-20
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef __USER_H__
 #define __USER_H__
 #include<stdio.h>

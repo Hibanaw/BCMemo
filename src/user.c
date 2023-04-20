@@ -1,3 +1,12 @@
+/**
+ * @file user.c
+ * @author wywgwt (2504133124@qq.com)
+ * @brief 
+ * @date 2023-04-20
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "user.h"
 
 int length_judge(char *p, char *q)
