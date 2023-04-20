@@ -511,7 +511,3 @@ void memoEditor_save(MemoEditor *me){
     memofile_write(filePath, memo());
     auth_set(me->fileName, memo()->owner, AUTHPRIVATE);
 }
-
-void memoEditor_button_drawAddPicture(Button *b){
-    button_drawWINUI(b);
-}

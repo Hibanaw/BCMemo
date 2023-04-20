@@ -1,6 +1,6 @@
 /**
  * @file homepage.h
- * @author Hibanaw Hu (hibanaw@qq.com)
+ * @author wywgwt (2504133124@qq.com), Hibanaw Hu (hibanaw@qq.com)
  * @brief 
  * @date 2023-02-12
  * 
@@ -22,4 +22,6 @@ void homepage();
 #include "textbox.h"
 #include "text.h"
 #include "textipt.h"
+#include"userpage.h"
+#include<string.h>
 #endif

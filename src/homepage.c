@@ -1,89 +1,164 @@
 /**
  * @file homepage.c
- * @author Hibanaw Hu (hibanaw@qq.com)
- * @brief 
+ * @author wywgwt (2504133124@qq.com), Hibanaw Hu (hibanaw@qq.com)
+ * @brief
  * @date 2023-02-12
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 
 #include "homepage.h"
 
-void homepage(){
-    char textInputBuffer[50];
-    memset(textInputBuffer, 0, sizeof(textInputBuffer));
-	setfillstyle(1, _BLACK);
-	bar(0, 0, MAXWIDTH, MAXHEIGHT);
-	delay(3000);
-    while(1){
+void homepage()
+{
+    char textInputBuffer1[50];
+    char textInputBuffer2[50];
+    memset(textInputBuffer1, 0, sizeof(textInputBuffer1));
+    memset(textInputBuffer2, 0, sizeof(textInputBuffer2));
+    mouse_hide();
+    setfillstyle(1, _BLACK);
+    bar(0, 0, MAXWIDTH, MAXHEIGHT);
+    delay(1000);
+    animation_homepage1();
+    setfillstyle(1, hexaa3f00);
+    bar(0, 0, MAXWIDTH, MAXHEIGHT);
+    image_render("res\\img\\hpbg.bin", 0, 0);
+    animation_homepage2();
+    setfillstyle(1, hexd4bfaa);
+    bar(315, 0, MAXWIDTH, MAXHEIGHT);
+    mouse_show();
+    while (1)
+    {
+        Text tw;
+        Text tw1;
+        Text tc1, tc2, tc3;
         int signal = 0;
-        Button eb = button_newExitButton();
-        Button b = button_new(550, 500,
-            850, 550,
-			"登 录",
-			button_drawWINUI);
-		TextInput t = textinput_newDefault(
-            "请输入用户名", 
-            550, 400,
-            850, 450,
-            textInputBuffer);
+        Button b = button_new(640, 550,
+                              760, 600,
+                              "登录",
+                              button_drawWINUI);
+        TextInput t = textinput_newDefault(
+                        "请输入用户名",
+                        550, 370,
+                        850, 420,
+                        textInputBuffer1);
+        TextInput t1 = textinput_newDefault(
+                        "请输入密码",
+                        550, 450,
+                        850, 500,
+                        textInputBuffer2);
+        Button exitButton = button_newExitButton();
+        t1.textbox.maxLength = 8;
         t.textbox.maxLength = 8;
-		//draw
+        tw = text_newDefault("用户名过短！", 700, 410, 1000, 460);
+        tw.font.fontColor = _RED;
+        tw1 = text_newDefault("密码过短！", 700, 510, 1000, 560);
+        tw1.font.fontColor = _RED;
+        tc1 = text_newDefault("欢迎登录！", 600, 560, 1000, 610);
+        tc1.font.fontColor = _RED;
+        tc2 = text_newDefault("密码错误！", 600, 560, 1000, 610);
+        tc2.font.fontColor = _RED;
+        tc3 = text_newDefault("注册成功！", 600, 560, 1000, 610);
+        tc3.font.fontColor = _RED;
+        // draw
         mouse_hide();
-	    animation_homepage1(); 
-        setfillstyle(1, hexaa3f00);
-        bar(0, 0, MAXWIDTH, MAXHEIGHT);
-        button_draw(&eb);
-        image_render("res\\img\\hpbg.bin", 0, 0);
-        button_draw(&eb);
-        animation_homepage2();
-        setfillstyle(1, hexd4bfaa);
-        bar(315, 0, MAXWIDTH, MAXHEIGHT);
         image_render("res\\img\\hpf.bin", 0, 0);
-		button_draw(&b);
-        button_draw(&eb);
+        button_draw(&b);
         textinput_drawDefault(&t);
+        textinput_drawDefault(&t1);
         ime_draw();
+        button_draw(&exitButton);
         mouse_show();
         digitalClock_getTime();
-        //event
-        while(!signal){
-			int k, bs, tbs, ebs;
+        // event
+        while (!signal)
+        {
+            int k, bs, tbs, tbs1, lgs, ebs;
+            int ly = 3;
             Mouse *m = mouse();
             mouse_update();
             digitalClock_getTime();
             ime_check();
             keybord_eat();
-			k = bioskey(1);
-			bs = button_event(&b);
-            tbs = textinput_event(&t);
-            ebs = button_event(&eb);
-            if(keybord_isESCAPE(k)){
+            k = bioskey(1);
+            bs = button_event(&b);
+            tbs = textbox_event(&t.textbox);
+            tbs1 = textbox_event(&t1.textbox);
+            ebs = button_event(&exitButton);
+            if (keybord_isESCAPE(k))
+            {
                 bioskey(0);
                 signal = -1;
+                break;
             }
             if(ebs){
                 signal = -1;
+                break;
             }
-			if(bs||(tbs == 1)){
-                //uid check
-                debug(DEBUG, "UID check.");
-				if(strlen(t.textbox.content) < 3){
-                    Text tw = text_newDefault("用户名过短！", 550, 460, 0, 0);
-                    tw.font.fontColor = _RED;
+            if (bs || ((tbs == 1) && (tbs1 == 1)))
+            {
+                if (bs)
+                {
+                    ly = length_judge(t.textbox.content, t1.textbox.content);
+                    if (ly == 3)
+                    {
+                        lgs = user_login(t.textbox.content, t1.textbox.content,0);
+                        switch (lgs)
+                        {
+                        case 4:
+                            text_display(tc1);
+                            delay(100);
+                            strcpy(appData()->uid[0],t.textbox.content);
+                            appData()->currentUser = appData()->uid[0];
+                            signal = 1;
+                            break;
+                        case 5:
+                            text_display(tc2);
+                            delay(100);
+                            break;
+                        case 6:
+                            text_display(tc3);
+                            user_login(t.textbox.content,t1.textbox.content,1);
+                            strcpy(appData()->uid[0],t.textbox.content);
+                            appData()->currentUser = appData()->uid[0];
+                            delay(100);
+                            signal = 1;
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+            switch (ly)
+            {
+            case 0:
+                if (!(textbox_event(&t)))
+                {
                     text_display(tw);
                 }
-                else{
-                    signal = 1;
+                if (!(textbox_event(&t1)))
+                {
+                    text_display(tw1);
                 }
+                break;
+            case 1:
+                if (!(textbox_event(&t)))
+                {
+                    text_display(tw);
+                }
+                break;
+            case 2:
+                if (!(textbox_event(&t1)))
+                {
+                    text_display(tw1);
+                }
+                break;
             }
         }
-        switch (signal){
+        switch (signal)
+        {
         case 1:
-            debug(DEBUG, "Jump to app.");
-            strcpy(appData()->uid[0], t.textbox.content);
-            appData()->currentUser = appData()->uid[0];
             app();
             break;
         case -1:
@@ -92,5 +167,4 @@ void homepage(){
             break;
         }
     }
-    
 }
