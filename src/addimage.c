@@ -51,7 +51,7 @@ int addImage(char *path){
             if(bbs){
                 signal = -1;
             }
-            if(bs || ts){
+            if(bs || ts==1){
                 if(image_illegal(path)){
                     text_display(terror);
                     continue;

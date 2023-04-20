@@ -92,7 +92,7 @@ int textinput_event(TextInput *ti){
         textbox_draw(&ti->textbox);
         mouse_show();
     }
-    if(k){
+    if(k==1){
         ti->textbox.status = TextboxDefault;
         mouse_hide();
         textinput_draw(ti);
