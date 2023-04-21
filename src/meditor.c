@@ -54,7 +54,7 @@ MemoEditor memoEditor_new(char *fileName, char *uid){
     me.uid              = uid;
     me.scrollBar        = scrollBar_new(MAXWIDTH - 15, me.posY + 50, MAXHEIGHT - (me.posY + 60));
     me.titleBar         = textinput_newTitle("ÎÞ±êÌâ", 300, 35, 794, 65, memo()->title);
-    me.unSaved          = 1;
+    me.unSaved          = 0;
     me.titleBar.textbox.bgColor = hexfffbf0;
     me.authType = auth_get(fileName).type;
     strcpy(memo()->fileName, me.fileName);
@@ -419,7 +419,6 @@ void memoEditor_updateList(MemoEditor *e){
 	if(memo()->head == NULL){
 		MemoBlock *mb = memo_newBlock(PARAGRAPH, 0, "");
         strcpy(mb->lastEditUser, e->uid);
-		e->unSaved = 1;
 		memo_addBlock(mb);
     }
     if(p == NULL){
