@@ -48,14 +48,15 @@ MemoEditor memoEditor_new(char *fileName, char *uid){
     me.drawButton       = button_new(me.posX + 10, me.posY+3, me.posX + 42, me.posY + 35, "", memoEditor_button_drawDrawpad);
     me.imageButton      = button_new(me.posX + 52, me.posY+3, me.posX + 84, me.posY + 35, "", memoEditor_button_drawAddPicture);
     me.checkboxButton   = button_new(me.posX + 94, me.posY+3, me.posX + 126, me.posY + 35, "", memoEditor_button_drawAddCheckbox);
-    me.shareButton      = button_new(MAXWIDTH - 126, me.posY+3, MAXWIDTH - 94, me.posY + 35, "", button_drawWINUI);
-    me.settingsButton   = button_new(MAXWIDTH - 84, me.posY+3, MAXWIDTH - 52, me.posY + 35, "", button_drawWINUI);
-    me.saveButton       = button_new(MAXWIDTH - 42, me.posY+3, MAXWIDTH - 10, me.posY + 35, "", button_drawWINUIAccent);
+    me.shareButton      = button_new(MAXWIDTH - 126, me.posY+3, MAXWIDTH - 94, me.posY + 35, "", memoEditor_button_drawSharebutton);
+    me.settingsButton   = button_new(MAXWIDTH - 84, me.posY+3, MAXWIDTH - 52, me.posY + 35, "", memoEditor_button_drawEditbutton);
+    me.saveButton       = button_new(MAXWIDTH - 42, me.posY+3, MAXWIDTH - 10, me.posY + 35, "", memoEditor_button_drawSavebutton);
     me.uid              = uid;
     me.scrollBar        = scrollBar_new(MAXWIDTH - 15, me.posY + 50, MAXHEIGHT - (me.posY + 60));
     me.titleBar         = textinput_newTitle("ÎÞ±êÌâ", 300, 35, 794, 65, memo()->title);
     me.unSaved          = 1;
     me.titleBar.textbox.bgColor = hexfffbf0;
+    me.authType = auth_get(fileName).type;
     strcpy(memo()->fileName, me.fileName);
     return me;
 }
@@ -78,8 +79,13 @@ int memoEditor_event(MemoEditor *me){
         memoEditor_updateList(me);
         return 0;
     }
+    if(button_event(&me->settingsButton)){
+        mset_page(me);
+        memoEditor_updateList(me);
+        return 0;
+    }
     if(button_event(&me->saveButton)){
-		memoEditor_save(me);
+        memoEditor_save(me);
     }
     ss = scrollBar_event(&me->scrollBar);
     textinput_event(&me->titleBar);
@@ -650,51 +656,14 @@ void memoEditor_button_drawSharebutton(Button *b)
     y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
     setcolor(_BLACK);
     setlinestyle(0,1,2);
-    arc((5*x4+3*x3)/8,(6*x4+2*x3)/8,90,180,3*(y4-y3)/8);
+    arc((5*x4+3*x3)/8,(6*y4+2*y3)/8,90,180,3*(y4-y3)/8);
     arc((5*x4+3*x3)/8,(33*y4-y1)/32,90,157.38,13*(y4-y3)/32);
     line((5*x4+3*x3)/8,(5*y3+3*y4)/8,(5*x4+3*x3)/8,(7*y3+y4)/8);
     line((5*x4+3*x3)/8,(5*y4+3*y3)/8,(5*x4+3*x3)/8,(7*y4+y3)/8);
     line((5*x4+3*x3)/8,(7*y3+y4)/8,(7*x4+x3)/8,(y3+y4)/2);
     line((5*x4+3*x3)/8,(7*y4+y3)/8,(7*x4+x3)/8,(y3+y4)/2);
 }
-void memoEditor_button_drawSetbutton(Button *b)
-{
-     int x1 = b->posX1+3, y1 = b->posY1+3,
-        x2 = b->posX2-3, y2 = b->posY2-3;
-    float k=0.8;
-    float r;
-    int x3, x4, y3, y4, m;
-    button_drawWINUI(b);
-     if (b->status != ButtonSelected)
-    {
-        k = 1;
-    }
-    else
-    {
-        k = 0.8;
-    }
-    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
-    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
-    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
-    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
-    r=(y4-y3)/(2*20);
-    setcolor(_BLACK);
-    setlinestyle(0,1,2);
-    arc((x3+x4)/2, (y3+y4)/2, 20, 40, 20*r);
-    arc((x3+x4)/2, (y3+y4)/2, 80, 100, 20*r);
-    arc((x3+x4)/2, (y3+y4)/2, 140, 160, 20*r);
-    arc((x3+x4)/2, (y3+y4)/2, 200, 220, 20*r);
-    arc((x3+x4)/2, (y3+y4)/2, 260, 280, 20*r);
-    arc((x3+x4)/2, (y3+y4)/2, 320, 340, 20*r);
-    arc((x3+x4)/2, (y3+y4)/2, 50, 70, 12*r);
-    arc((x3+x4)/2, (y3+y4)/2, 110, 130, 12*r);
-    arc((x3+x4)/2, (y3+y4)/2, 170, 190, 12*r);
-    arc((x3+x4)/2, (y3+y4)/2, 230, 250, 12*r);
-    arc((x3+x4)/2, (y3+y4)/2, 290, 310, 12*r);
-    arc((x3+x4)/2, (y3+y4)/2, 350, 370, 12*r);
-    // line()
-    // arc(375,(y3+y4)/2,)
-}
+
 void memoEditor_button_drawEditbutton(Button *b)
 {
      int x1 = b->posX1+3, y1 = b->posY1+3,
@@ -728,11 +697,11 @@ void memoEditor_button_drawEditbutton(Button *b)
 }
 void memoEditor_button_drawSavebutton(Button *b)
 {
-     int x1 = b->posX1+3, y1 = b->posY1+3,
-        x2 = b->posX2-3, y2 = b->posY2-3;
+     int x1 = b->posX1+5, y1 = b->posY1+6,
+        x2 = b->posX2-5, y2 = b->posY2-5;
     float k=0.8;
     int x3, x4, y3, y4, m;
-    button_drawWINUI(b);
+    button_drawWINUIAccent(b);
      if (b->status != ButtonSelected)
     {
         k = 1;

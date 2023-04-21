@@ -23,12 +23,12 @@ typedef struct
 {
     AuthUser owner;
     enum AuthType type;
-    
 }Auth;
 
 int auth_check(char *filename, char *uid);
 int auth_set(char *filename, char * uid, enum AuthType type);
-
+int auth_addWhiteList(char *filename, char *uid);
+Auth auth_get(char *filename);
 #include <stdio.h>
 #include <string.h>
 

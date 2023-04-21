@@ -16,7 +16,7 @@ void share_page(char *memoName){
     char shareCodeBuffer[20];
     ShareRadioBoxArea sr;
     memset(strBuffer, 0, sizeof(strBuffer));
-    sr = share_newRadioBoxArea(strBuffer);
+    share_newRadioBoxArea(&sr, strBuffer);
     while(1){
         Button exitButton = button_new(690, 300, 780, 340, "关闭", button_drawWINUI);
         Button shareButton = button_new(320, 230, 410, 270, "获取", button_drawWINUI);
@@ -58,10 +58,10 @@ void share_page(char *memoName){
             }
             if(sbs){
                 time_t nowTime = time(NULL);
-                time_t expireTime;
+                time_t expireTime = -1;
                 Text shareCodeText = text_newDefault(shareCodeBuffer, 430, 230, 650, 270);
                 char *p;
-                switch (ras)
+                switch (selecetMode)
                 {
                 case 1:
                     expireTime = 0;
@@ -77,20 +77,31 @@ void share_page(char *memoName){
                         if(*p < '0' || *p > '9'){
                             Text errorT = text_newSmall(
                                 "内容不合法",
-                                600, 185
+                                575, 190
                             );
+                            errorT.font.fontColor = _RED;
                             text_display(errorT);
                             break;
                         }
                     }
+                    if(strlen(strBuffer) == 0){
+                        Text errorT = text_newSmall(
+                            "内容不合法",
+                            575, 190
+                        );
+                        errorT.font.fontColor = _RED;
+                        text_display(errorT);
+                        break;
+                    }
                     expireTime = nowTime + 60*atoi(strBuffer);
                     break;
                 }
-                if(!share_add(memoName, shareCodeBuffer, expireTime)){
-                    setfillstyle(1, hexfffbf0);
-                    bar(430, 230, 650, 270);
-                    text_display(shareCodeText);
-                }
+                if(expireTime != -1)
+                    if(!share_add(memoName, shareCodeBuffer, expireTime)){
+                        setfillstyle(1, hexfffbf0);
+                        bar(430, 230, 650, 270);
+                        text_display(shareCodeText);
+                    }
             }
         }
         switch (signal)
@@ -137,23 +148,45 @@ int share_add(char *memoName, char *shareCodeBuffer, time_t expireTime){
 }
 
 int share_determine(char *shareCode, char *uid){
+    FILE *fp;
+    fp = fopen("data/share.dat", "rb");
+    if(fp == NULL){
+        return 1;
+    }
+    while(!feof(fp)){
+        Share s;
+        fread(&s, sizeof(Share), 1, fp);
+        if(!strcmp(s.code, shareCode)){
+            int t = auth_addWhiteList(s.memoName, uid);
+            if(t == 0){
+                fclose(fp);
+                return 0;
+            }
+            else{
+                fclose(fp);
+                return 1;
+            }
+        }
+    }
+    fclose(fp);
+    return 1;
 
 }
 
-ShareRadioBoxArea share_newRadioBoxArea(char *buffer){
-    ShareRadioBoxArea ra;
+share_newRadioBoxArea(ShareRadioBoxArea *ra, char *buffer){
     int i;
     for(i = 0; i < 3; i++){
-        ra.radioBox[i] = button_new(360+i*144, 150, 380+i*144, 170, 0, button_checkboxDraw);
+        ra->radioBox[i] = button_new(360+i*144, 150, 380+i*144, 170, 0, button_checkboxDraw);
     }
-    ra.radioBox[3] = button_new(360, 190, 380, 210, 0, button_checkboxDraw);
-    ra.radioBox[0].content = 1;
+    ra->radioBox[3] = button_new(360, 190, 380, 210, 0, button_checkboxDraw);
+    ra->radioBox[0].content = 1;
     buffer[0] = 0;
-    ra.textInput = textinput_newDefault("自定义（分钟）", 460, 185, 660, 215, buffer);
-    ra.textInput.textbox.font.fontSize = 16;
-    ra.textInput.textbox.posY1 = 190;
-    ra.textInput.textbox.posY2 = 210;
-    return ra;
+    ra->textInput = textinput_newDefault("自定义（分钟）", 460, 185, 660, 215, buffer);
+    ra->textInput.textbox.maxLength = 4;
+    ra->textInput.textbox.font.fontSize = 16;
+    ra->textInput.textbox.posY1 = 190;
+    ra->textInput.textbox.posY2 = 210;
+    return 0;
 }
 
 void share_drawRadioBoxArea(ShareRadioBoxArea *sr){
@@ -166,7 +199,7 @@ void share_drawRadioBoxArea(ShareRadioBoxArea *sr){
 
 int share_radioBoxAreaEvent(ShareRadioBoxArea *sr){
     int k = 0;
-    int lf, nf;
+    int lf, nf = -1;
     int i;
     int tls = sr->textInput.textbox.status;
     for(i = 0; i < 4; i++){
