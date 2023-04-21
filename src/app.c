@@ -18,6 +18,7 @@ void app(){
     Router r = router_new();
     MemoEditor me;
     appData()->displayLastEditUser = 0;
+     appData()->currentUser=appData()->uid[0];
     me = memoEditor_new(r.memoName, appData()->currentUser);
     appData()->userCount = 1;
     animation_login();
