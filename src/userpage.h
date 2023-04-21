@@ -29,14 +29,14 @@
 #include<string.h>
 #include"user.h"
 #include"button.h"
-void userpage();
+int userpage();
 
 int userpage_login(int j);
 
 int userpage_deleteuser(int j,int k);
-void memoeditor_button_draw1(Button *b);
-void memoeditor_button_draw2(Button *b);
-void memoeditor_button_draw3(Button *b);
+void userpage_button_draw1(Button *b);
+void userpage_button_draw2(Button *b);
+void userpage_button_draw3(Button *b);
 //userpage_addUser()
 
 //userpage_deleteUser()
