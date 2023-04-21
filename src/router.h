@@ -19,13 +19,15 @@ typedef struct{
     Memo *topMemo;
     Button expandButton;
     Button newMemoButton;
+    Button userButton;
     Button memoButton[10];
     char memoName[20];
 }Router;
 
 enum {
 	RouterExpand = 1,
-    RouterChangeMemo
+    RouterChangeMemo,
+    RouterUserPage
 };
 
 Router router_new();

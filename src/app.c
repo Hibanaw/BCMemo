@@ -19,6 +19,7 @@ void app(){
     MemoEditor me;
     appData()->displayLastEditUser = 0;
     me = memoEditor_new(r.memoName, appData()->currentUser);
+    appData()->userCount = 1;
     animation_login();
     while(1){
         int signal = 0;
@@ -61,13 +62,19 @@ void app(){
             if(ebs){
                 signal = AppExit;
             }
-            if(rs == RouterExpand){
+            switch (rs)
+            {
+            case RouterExpand:
                 signal = AppRouterExpand;
-            }
-            if(rs == RouterChangeMemo){
+                break;
+			case RouterChangeMemo:
                 memoEditor_distruct(&me);
                 me = memoEditor_new(r.memoName, appData()->currentUser);
                 signal = AppRedraw;
+                break;
+            case RouterUserPage:
+                signal = AppUserPage;
+                break;
             }
             if(mes == 1){
                 signal = AppRedraw;
@@ -85,8 +92,14 @@ void app(){
                     memoEditor_distruct(&me);
                     me = memoEditor_new(r.memoName, appData()->currentUser);
                 }
+                if(signal == RouterUserPage){
+                    userpage();
+                }
                 break;
             case AppRedraw:
+                break;
+            case AppUserPage:
+                userpage();
                 break;
         }
     }
