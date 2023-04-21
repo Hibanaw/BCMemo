@@ -255,10 +255,13 @@ int userpage_login(int j)
     }
 }
 
+/// @brief 
+/// @return 
 int userpage()
 {
     char textInputBuffer[50];
     int n = 1;
+    int s=0;
     memset(textInputBuffer, 0, sizeof(textInputBuffer));
     while (1)
     { 
@@ -330,18 +333,6 @@ int userpage()
                     bar(650, 385 + 30 * p, 670, 405 + 30 * p);
                       bar(610, 385 + 30 * p, 630, 405 + 30 * p);
         }
-        //  for (p = 0; (p < j)&&(j!=1); p++)
-        // {
-        //     button_draw(d+p);
-        //     button_draw(e+p);
-        // }
-        //  else
-        //  {
-        //     for(p=0;p<j;p++)
-        //     {
-        //         text_display(b[p]);
-        //     }
-        //  }
         mouse_show();
         digitalClock_getTime();
         while (!signal)
@@ -408,7 +399,7 @@ int userpage()
                  {
                      p1=p;
                      userpage_changeuser(p1);
-                     return 1;
+                     s=1;
                      signal =2;
                  }
                 //  else
@@ -417,25 +408,6 @@ int userpage()
                 //      bar(610, 385 + 30 * p, 630, 405 + 30 * p);
                 //  }
             }
-            // if(p1+1)
-            // {
-            // j1=userpage_deleteuser(j,p1);
-            // j=j1;
-            // for(p=0;p<j;p++)
-            // {
-            //   b[p]=text_newDefault(appData()->uid[p],350, 380+30*p, 640, 580+30*p);
-            //   text_display(b[p]);
-            // }
-            // }
-            // for (i = 1; i < j + 1 ; i++)
-            // {
-            //     be[i - 1] = button_event(&b[i]);
-            //     if (be[i - 1] == 1)
-            //     {
-            //         appData()->currentUser = appData()->uid[i];
-            //         break;
-            //     }
-            // }
             digitalClock_getTime();
             // m = Button_event(&b);
             k = bioskey(1);
@@ -448,31 +420,73 @@ int userpage()
             if (ly1 == 1)
             {
                 signal = 1;
-                return;
+                if(s==0)
+                {
+                    return 0;
+                }
+                if(s==1)
+                {
+                    return 1;
+                }
             }
             if (ly2 == 1)
             {
                 signal = 1;
-                return;
+                 if(s==0)
+                {
+                    return 0;
+                }
+                if(s==1)
+                {
+                    return 1;
+                }
             }
             if (ly3 == 1)
             {
                 signal = 1;
-                return;
+                 if(s==0)
+                {
+                    return 0;
+                }
+                if(s==1)
+                {
+                    return 1;
+                }
             }
             if (ly4 == 1)
             {
                 signal = 1;
-                return;
+                 if(s==0)
+                {
+                    return 0;
+                }
+                if(s==1)
+                {
+                    return 1;
+                }
             }
         }
         switch (signal)
         {
         case -1:
-            return 0;
+             if(s==0)
+                {
+                    return 0;
+                }
+                if(s==1)
+                {
+                    return 1;
+                }
             break;
         case 1:
-            return;
+             if(s==0)
+                {
+                    return 0;
+                }
+                if(s==1)
+                {
+                    return 1;
+                }
             break;
         case 2:
         break;
