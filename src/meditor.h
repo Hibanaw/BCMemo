@@ -65,7 +65,10 @@ void memoEditor_save(MemoEditor *me);
 void memoEditor_button_drawAddPicture(Button *b);
 void memoEditor_button_drawAddCheckbox(Button *b);
 void memoEditor_button_drawDrawpad(Button *b);
-
+void memoEditor_button_drawSharebutton(Button *b);
+void memoEditor_button_drawSetbutton(Button *b);
+void memoEditor_button_drawSavebutton(Button *b);
+void memoEditor_button_drawEditbutton(Button *b);
 #include "textbox.h"
 #include "imagebox.h"
 #include "mfile.h"
