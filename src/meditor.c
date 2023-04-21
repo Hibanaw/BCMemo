@@ -80,7 +80,9 @@ int memoEditor_event(MemoEditor *me){
         return 0;
     }
     if(button_event(&me->settingsButton)){
-        mset_page(me);
+        if(mset_page(me)){
+			memoEditor_save(me);
+        }
         memoEditor_updateList(me);
         return 0;
     }
