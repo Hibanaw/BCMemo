@@ -1,3 +1,13 @@
+/**
+ * @file mfile.c
+ * @author wywgwt (2504133124@qq.com), Hibanaw Hu (hibanaw@qq.com)
+ * @brief 
+ * @date 2023-04-06
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "memos.h"
 Memos *memos()
 {
@@ -94,7 +104,7 @@ Memos *memos_getList(char *uid){
 		strncpy(name, ffblk.ff_name, dot - ffblk.ff_name);
 		name[dot - ffblk.ff_name] = '\0';
 		sprintf(path, "data\\%s",ffblk.ff_name);
-		if(auth_check(name, uid)){
+		if(auth_check(name, uid) == 1){
 			fp = fopen(path, "rb");
 			if(fp == NULL) continue;
 			fread(m, sizeof(Memo), 1, fp);
