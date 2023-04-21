@@ -73,6 +73,11 @@ int memoEditor_event(MemoEditor *me){
     int ss;
     int sum = memo_getBlockSum();
     MemoBlock *mb;
+    if(button_event(&me->shareButton)){
+        share_page(me->fileName);
+        memoEditor_updateList(me);
+        return 0;
+    }
     if(button_event(&me->saveButton)){
 		memoEditor_save(me);
     }
@@ -105,6 +110,7 @@ int memoEditor_event(MemoEditor *me){
             if(me->focusedBlock == NULL){
                 mb = memo_newBlock(IMAGE, 0, path);
                 strcpy(mb->lastEditUser, me->uid);
+                me->unSaved = 1;
                 memo_addBlock(mb);
             }
             else{
@@ -112,10 +118,12 @@ int memoEditor_event(MemoEditor *me){
                     strcpy(me->focusedBlock->content, path);
                     me->focusedBlock->type = IMAGE;
                     strcpy(me->focusedBlock->lastEditUser, me->uid);
+                    me->unSaved = 1;
                 }
                 else{
                     mb = memo_newBlock(IMAGE, 0, path);
                     strcpy(mb->lastEditUser, me->uid);
+                    me->unSaved = 1;
                     memo_insertBlock(me->focusedBlock, mb);
                     me->focusedBlock = mb;
                 }
@@ -135,6 +143,7 @@ int memoEditor_event(MemoEditor *me){
             if(me->focusedBlock == NULL){
                 mb = memo_newBlock(IMAGE, 0, path);
                 strcpy(mb->lastEditUser, me->uid);
+                me->unSaved = 1;
                 memo_addBlock(mb);
             }
             else{
@@ -142,11 +151,13 @@ int memoEditor_event(MemoEditor *me){
                     strcpy(me->focusedBlock->content, path);
                     me->focusedBlock->type = IMAGE;
                     strcpy(me->focusedBlock->lastEditUser, me->uid);
+                    me->unSaved = 1;
                 }
                 else{
                     mb = memo_newBlock(IMAGE, 0, path);
                     strcpy(mb->lastEditUser, me->uid);
                     memo_insertBlock(me->focusedBlock, mb);
+                    me->unSaved = 1;
                     me->focusedBlock = mb;
                 }
             }
@@ -160,6 +171,7 @@ int memoEditor_event(MemoEditor *me){
                 return 0;
             mb = memo_newBlock(CHECKBOX, 0, "");
             strcpy(mb->lastEditUser, me->uid);
+            me->unSaved = 1;
             memo_addBlock(mb);
             memoEditor_updateList(me);
             return 0;
@@ -172,6 +184,7 @@ int memoEditor_event(MemoEditor *me){
                 me->focusedBlock->type = CHECKBOX;
             }
             strcpy(me->focusedBlock->lastEditUser, me->uid);
+            me->unSaved = 1;
             memoEditor_updateList(me);
             return 0;
         }
@@ -270,6 +283,7 @@ int memoEditor_event(MemoEditor *me){
                     me->focusedBlockCursorLocation = 0;
                     me->focusedBlock = memo_insertBlock(me->list.memoBlock[i], mb);
                     strcpy(me->focusedBlock->lastEditUser, me->uid);
+                    me->unSaved = 1;
                     if(tb->posY2 > MAXHEIGHT - 100){
                         me->beginMemoBlock = me->beginMemoBlock->next;
                     }
@@ -317,6 +331,7 @@ int memoEditor_event(MemoEditor *me){
                             me->focusedBlock->type = PARAGRAPH;
                             me->focusedBlockCursorLocation = text_getLength(me->focusedBlock->content);
                             strcpy(me->focusedBlock->lastEditUser, me->uid);
+                            me->unSaved = 1;
                             memoEditor_updateList(me);
                             return 0;
                             break;
@@ -326,6 +341,7 @@ int memoEditor_event(MemoEditor *me){
                             me->focusedBlockCursorLocation = 0;
                             me->focusedBlock = memo_insertBlock(me->list.memoBlock[i], mb);
                             strcpy(me->focusedBlock->lastEditUser, me->uid);
+                            me->unSaved = 1;
                             memoEditor_updateList(me);
                             return 0;
                             break;
@@ -362,19 +378,22 @@ int memoEditor_event(MemoEditor *me){
                         me->focusedBlockCursorLocation = 0;
                         me->focusedBlock = memo_insertBlock(me->list.memoBlock[i], mb);
                         strcpy(me->focusedBlock->lastEditUser, me->uid);
+                        me->unSaved = 1;
                         memoEditor_updateList(me);
                         return 0;
                 }
                 if(trigger2 == -1){
                     me->focusedBlock->type = PARAGRAPH;
                     strcpy(me->focusedBlock->lastEditUser, me->uid);
+                    me->unSaved = 1;
                     memoEditor_updateList(me);
                     return 0;
                 }
                 break;
         }
         if(strcmp(lc, me->list.memoBlock[i]->content)){
-            strcpy(me->list.memoBlock[i]->lastEditUser, appData()->currentUser);
+            strcpy(me->list.memoBlock[i]->lastEditUser, me->uid);
+            me->unSaved = 1;
         }
     }
     return 0;
@@ -392,6 +411,7 @@ void memoEditor_updateList(MemoEditor *e){
 	if(memo()->head == NULL){
 		MemoBlock *mb = memo_newBlock(PARAGRAPH, 0, "");
         strcpy(mb->lastEditUser, e->uid);
+		e->unSaved = 1;
 		memo_addBlock(mb);
     }
     if(p == NULL){
@@ -509,7 +529,8 @@ void memoEditor_save(MemoEditor *me){
     char filePath[20];
     sprintf(filePath, "data//%s.MEM", me->fileName);
     memofile_write(filePath, memo());
-    auth_set(me->fileName, memo()->owner, AUTHPRIVATE);
+    auth_set(me->fileName, memo()->owner, me->authType);
+    me->unSaved = 0;
 }
 
 

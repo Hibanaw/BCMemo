@@ -72,4 +72,5 @@ void memoEditor_button_drawDrawpad(Button *b);
 #include "app.h"
 #include "drawpad.h"
 #include "addimage.h"
+#include "share.h"
 #endif
