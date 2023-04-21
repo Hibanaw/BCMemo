@@ -346,3 +346,30 @@ void router_button_drawNewMemoButton(Button *b){
     line((x1+x2)/2, (y1+y2)/2-10, (x1+x2)/2, (y1+y2)/2+10);
     line((x1+x2)/2-10, (y1+y2)/2, (x1+x2)/2+10, (y1+y2)/2);
 }
+void router_button_drawUserButton(Button *b)
+{
+     int x1 = b->posX1+3, x2 = b->posX2-3,
+        y1 = b->posY1+3, y2 = b->posY2-3;
+    int x3,x4,y3,y4;
+    float k=0.8;
+    float r;
+    button_drawWINUI(b);
+     if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.8;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    r=(y4-y3)/2;
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    circle((x3+x4)/2,(y3+y4)/2,r);
+    circle((x3+x4)/2,(y3+y4)/2-(r/4),r/4);
+    arc((x3+x4)/2,(y3+y4)/2+r,30,150,r);
+}

@@ -37,6 +37,7 @@ void router_distrcut();
 void router_refresh(Router *r);
 void router_button_drawExpandButton(Button *b);
 void router_button_drawNewMemoButton(Button *b);
+void router_button_drawUserButton(Button *b);
 #include <bios.h>
 #include "keyboard.h"
 #include "app.h"
