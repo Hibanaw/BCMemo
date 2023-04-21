@@ -68,10 +68,18 @@ void app(){
             case RouterExpand:
                 signal = AppRouterExpand;
                 break;
-			case RouterChangeMemo:
+			case RouterChangeMemo:{
+                int t = exitsave(&me);
+                if(t == 1){
+                    memoEditor_save(&me);
+                }
+                if(t==0){
+                    break;
+                }
                 memoEditor_distruct(&me);
                 me = memoEditor_new(r.memoName, appData()->currentUser);
                 signal = AppRedraw;
+            }
                 break;
             case RouterUserPage:
                 signal = AppUserPage;
@@ -82,14 +90,29 @@ void app(){
             }
         }
         switch(signal){
-            case AppExit:
+            case AppExit:{
+                int t = exitsave(&me);
+                if(t == 1){
+                    memoEditor_save(&me);
+                }
+                if(t==0){
+                    break;
+                }
                 memoEditor_distruct(&me);
                 router_distrcut();
+            }
                 return 0;
                 break;
             case AppRouterExpand:
 				signal = router_expand(&r);
                 if(signal == RouterChangeMemo){
+                    int t = exitsave(&me);
+                    if(t == 1){
+                        memoEditor_save(&me);
+                    }
+                    if(t==0){
+                        break;
+                    }
                     memoEditor_distruct(&me);
                     me = memoEditor_new(r.memoName, appData()->currentUser);
                 }
