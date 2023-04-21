@@ -157,13 +157,18 @@ int share_determine(char *shareCode, char *uid){
         Share s;
         fread(&s, sizeof(Share), 1, fp);
         if(!strcmp(s.code, shareCode)){
-            int t = auth_addWhiteList(s.memoName, uid);
-            if(t == 0){
-                fclose(fp);
-                return 0;
+            if(time(NULL) <= s.expiryTime){
+                int t = auth_addWhiteList(s.memoName, uid);
+                if(t == 0){
+                    fclose(fp);
+                    return 0;
+                }
+                else{
+                    fclose(fp);
+                    return 1;
+                }
             }
             else{
-                fclose(fp);
                 return 1;
             }
         }
