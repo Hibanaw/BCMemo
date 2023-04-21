@@ -68,7 +68,6 @@ void homepage()
         button_draw(&b);
         textinput_drawDefault(&t);
         textinput_drawDefault(&t1);
-        // text_display(tc2);
         ime_draw();
         button_draw(&exitButton);
         mouse_show();
