@@ -21,10 +21,11 @@ int auth_check(char *filename, char *uid){
     char filePath[30];
     FILE *fp;
     Auth a;
+    memset(&a, 0, sizeof(a));
     sprintf(filePath, "data\\auth\\%s.AUT", filename);
     fp = fopen(filePath, "rb");
     if (fp == NULL) {
-        return 1;
+        return -1;
     }
     else {
         fread(&a, sizeof(a), 1, fp);
@@ -43,17 +44,22 @@ int auth_check(char *filename, char *uid){
             }
         }
         if(a.type == AUTHWHITELIST){
+            if(!strcmp(a.owner, uid)){
+                fclose(fp);
+                return 1;
+            }
             while(!feof(fp)){
                 AuthUser user;
-                fread(&user, sizeof(user), 1, fp);
+                memset(user, 0, sizeof(AuthUser));
+                fread(user, 1, sizeof(user), fp);
                 if(!strcmp(user, uid)){
                     fclose(fp);
                     return 1;
                 }
             }
         }
-        return 0;
         fclose(fp);
+        return 0;
     }
 }
 
@@ -65,13 +71,56 @@ int auth_set(char *filename, char * uid, enum AuthType type){
     strcpy(a.owner, uid);
     a.type = type;
     fp = fopen(filePath, "wb");
-    if (fp != NULL) {
-        fwrite(&a, sizeof(a), 1, fp);
-        fclose(fp);
-    }
+    fwrite(&a, sizeof(a), 1, fp);
+    fclose(fp);
     return 0;
 }
 
 int auth_addWhiteList(char *filename, char *uid){
-    
+    char filePath[30];
+    FILE *fp;
+    Auth a;
+    sprintf(filePath, "data\\auth\\%s.AUT", filename);
+    fp = fopen(filePath, "rb+");
+    if(fp == NULL){
+        return -1;
+    }
+    fread(&a, sizeof(Auth), 1, fp);
+    switch(a.type){
+        case AUTHPRIVATE:
+            return -1;
+        case AUTHPUBLIC:
+            return -1;
+        case AUTHWHITELIST:{
+                AuthUser usr;
+                while(!feof(fp)){
+                    memset(usr, 0, sizeof(AuthUser));
+                    fread(&usr, sizeof(AuthUser), 1, fp);
+                    if(!strcmp(usr, uid)){
+                        fclose(fp);
+                        return 1;
+                    }
+                }
+                strcpy(usr, uid);
+                fwrite(usr, 1, sizeof(AuthUser), fp);
+            }
+            break;
+    }
+    fclose(fp);
+    return 0;
+}
+
+Auth auth_get(char *filename){
+    char filePath[30];
+    FILE *fp;
+    Auth a;
+    memset(&a, 0, sizeof(a));
+    sprintf(filePath, "data\\auth\\%s.AUT", filename);
+    fp = fopen(filePath, "rb");
+    if (fp == NULL) {
+        return a;
+    }
+    fread(&a, sizeof(a), 1, fp);
+    fclose(fp);
+    return a;
 }
