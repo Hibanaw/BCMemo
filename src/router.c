@@ -341,24 +341,10 @@ void router_button_drawExpandButton(Button *b){
     int x1 = b->posX1, x2 = b->posX2,
         y1 = b->posY1, y2 = b->posY2;
     int lx1, ly1, lw, lh;
-    setfillstyle(1, hexfffbf0);
-    bar(x1, y1, x2, y2);
-    if(b->status == ButtonSelected || b->status == ButtonFocused){
-        setcolor(hexd4dfff);
-        setlinestyle(0, 1, 2);
-        line(x1 + 5, y1, x2 - 5, y1);
-        line(x1 + 5, y2, x2 - 5, y2);
-        line(x1, y1 + 5, x1, y2 - 5);
-        line(x2, y1 + 5, x2, y2 - 3);
-        arc(x1 + 5, y1 + 5, 90, 180, 5);
-        arc(x1 + 5, y2 - 5, 180, 270, 5);
-        arc(x2 - 5, y1 + 5, 0, 90, 5);
-        arc(x2 - 5, y2 - 5, 270, 360, 5);
-    }
+    button_drawWINUI(b);
     if(b->status == ButtonDefault || b->status == ButtonFocused){
         lw = 25;
         lh = 10;
-        
     }
     else{
         lw = 15;
@@ -376,20 +362,7 @@ void router_button_drawNewMemoButton(Button *b){
     int x1 = b->posX1, x2 = b->posX2,
         y1 = b->posY1, y2 = b->posY2;
     int lx1, ly1, lw, lh;
-    setfillstyle(1, hexfffbf0);
-    bar(x1, y1, x2, y2);
-    if(b->status == ButtonSelected || b->status == ButtonFocused){
-        setcolor(hexd4dfff);
-        setlinestyle(0, 1, 2);
-        line(x1 + 5, y1, x2 - 5, y1);
-        line(x1 + 5, y2, x2 - 5, y2);
-        line(x1, y1 + 5, x1, y2 - 5);
-        line(x2, y1 + 5, x2, y2 - 3);
-        arc(x1 + 5, y1 + 5, 90, 180, 5);
-        arc(x1 + 5, y2 - 5, 180, 270, 5);
-        arc(x2 - 5, y1 + 5, 0, 90, 5);
-        arc(x2 - 5, y2 - 5, 270, 360, 5);
-    }
+    button_drawWINUI(b);
     setcolor(_GRAY);
     setlinestyle(0, 1, 2);
     line((x1+x2)/2, (y1+y2)/2-10, (x1+x2)/2, (y1+y2)/2+10);

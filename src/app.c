@@ -18,7 +18,7 @@ void app(){
     Router r = router_new();
     MemoEditor me;
     appData()->displayLastEditUser = 0;
-     appData()->currentUser=appData()->uid[0];
+    appData()->currentUser=appData()->uid[0];
     me = memoEditor_new(r.memoName, appData()->currentUser);
     appData()->userCount = 1;
     animation_login();
@@ -68,39 +68,76 @@ void app(){
             case RouterExpand:
                 signal = AppRouterExpand;
                 break;
-			case RouterChangeMemo:
+			case RouterChangeMemo:{
+                int t = exitsave(&me);
+                if(t == 1){
+                    memoEditor_save(&me);
+                }
+                if(t==0){
+                    break;
+                }
                 memoEditor_distruct(&me);
                 me = memoEditor_new(r.memoName, appData()->currentUser);
                 signal = AppRedraw;
+            }
                 break;
             case RouterUserPage:
                 signal = AppUserPage;
                 break;
+            case RouterSettingsPage:
+                appData()->displayLastEditUser = !appData()->displayLastEditUser;
+                signal = AppRedraw;
             }
             if(mes == 1){
                 signal = AppRedraw;
             }
         }
         switch(signal){
-            case AppExit:
+            case AppExit:{
+                int t = exitsave(&me);
+                if(t == 1){
+                    memoEditor_save(&me);
+                }
+                if(t==0){
+                    break;
+                }
                 memoEditor_distruct(&me);
                 router_distrcut();
+            }
                 return 0;
                 break;
             case AppRouterExpand:
 				signal = router_expand(&r);
                 if(signal == RouterChangeMemo){
+                    int t = exitsave(&me);
+                    if(t == 1){
+                        memoEditor_save(&me);
+                    }
+                    if(t==0){
+                        break;
+                    }
                     memoEditor_distruct(&me);
                     me = memoEditor_new(r.memoName, appData()->currentUser);
                 }
                 if(signal == RouterUserPage){
-                    userpage();
+                    if(userpage()){
+                        memoEditor_distruct(&me);
+                        r = router_new();
+                        me = memoEditor_new(r.memoName, appData()->currentUser);
+                    }
+                }
+                if(signal == RouterSettingsPage){
+                    appData()->displayLastEditUser = !appData()->displayLastEditUser;
                 }
                 break;
             case AppRedraw:
                 break;
             case AppUserPage:
-                userpage();
+                if(userpage()){
+                    memoEditor_distruct(&me);
+                    r = router_new();
+                    me = memoEditor_new(r.memoName, appData()->currentUser);
+                }
                 break;
         }
     }

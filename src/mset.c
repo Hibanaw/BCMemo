@@ -70,13 +70,13 @@ int mset_page(MemoEditor *me){
         switch (signal)
         {
         case -1:
-            return 0;
+            return -1;
             break;
         
         case 1:
             memo()->level = fl;
             me->authType = fa;
-            return 0;
+            return 1;
             break;
         }
     }

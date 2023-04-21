@@ -144,7 +144,7 @@ Text text_newSmall(char *s, int x, int y){
     t.content = s;
     t.posX = x;
     t.posY = y;
-    t.width = 160;
+    t.width = 0;
     t.hight = 0;
     t.font.fontSize = 16;
     t.font.spacing = 0;

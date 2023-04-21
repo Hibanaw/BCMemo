@@ -44,4 +44,5 @@ void app();
 #include "router.h"
 #include "drawpad.h"
 #include "userpage.h"
+#include "exitsave.h"
 #endif
