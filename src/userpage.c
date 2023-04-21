@@ -1,11 +1,11 @@
 /**
  * @file userpage.c
  * @author wywgwt (2504133124@qq.com)
- * @brief 
+ * @brief
  * @date 2023-04-20
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #include "userpage.h"
 void userpage_button_draw1(Button *b)
@@ -41,22 +41,39 @@ void userpage_button_draw3(Button *b)
     int x1 = b->posX1, y1 = b->posY1,
         x2 = b->posX2, y2 = b->posY2;
     setcolor(_BLACK);
+    setlinestyle(0, 1, 2);
+    button_drawWINUI(b);
+    line(x1, y1, x2, y2);
+    line(x2, y1, x1, y2);
+}
+void userpage_button_draw5(Button *b)
+{
+    int x1 = b->posX1, y1 = b->posY1,
+        x2 = b->posX2, y2 = b->posY2;
+    setcolor(_BLACK);
     setlinestyle(0,1,2);
-    button_drawDefault(b);
-    line(x1,y1,x2,y2);
-    line(x2,y1,x1,y2);
+    // arc((5*x4+3*x3)/8,(6*y4+2*y3)/8,90,180,3*(y4-y3)/8);
+    // arc((5*x4+3*x3)/8,(33*y4-y3)/32,90,157.38,13*(y4-y3)/32);
+    // line((5*x4+3*x3)/8,(5*y3+3*y4)/8,(5*x4+3*x3)/8,(7*y3+y4)/8);
+    // line((5*x4+3*x3)/8,(5*y4+3*y3)/8,(5*x4+3*x3)/8,(7*y4+y3)/8);
+    // line((5*x4+3*x3)/8,(7*y3+y4)/8,(7*x4+x3)/8,(y3+y4)/2);
+    // line((5*x4+3*x3)/8,(7*y4+y3)/8,(7*x4+x3)/8,(y3+y4)/2);
+    line((5*x1+x2)/6,(y1+y2)/2,(5*x2+x1)/6,(y1+y2)/2);
+    line((5*x1+x2)/6,(y1+y2)/2,(5*x1+x2)/6+(x2-x1)/4,(y1+y2)/2-(y2-y1)/4);
+    line((5*x1+x2)/6,(y1+y2)/2,(5*x1+x2)/6+(x2-x1)/4,(y1+y2)/2+(y2-y1)/4);
+
 }
 void userpage_button_draw4(Button *b)
 {
     int x1 = b->posX1, y1 = b->posY1,
         x2 = b->posX2, y2 = b->posY2;
     setcolor(_BLACK);
-    setlinestyle(0,1,2);
-    button_drawDefault(b);
-    line((x2+6*x1)/7,(2*y1+y2)/3,(x1+6*x2)/7,(2*y1+y2)/3);
-    line((x2+6*x1)/7,(2*y2+y1)/3,(x1+6*x2)/7,(2*y2+y1)/3);
-    line((x1+6*x2)/7,(2*y1+y2)/3,(x1+6*x2)/7-(x2-x1)/7,(2*y1+y2)/3-(y2-y1)/4);
-    line((x2+6*x1)/7,(2*y2+y1)/3,(x2+6*x1)/7+(x2-x1)/7,(2*y2+y1)/3+(y2-y1)/4);
+    setlinestyle(0, 1, 2);
+    button_drawWINUI(b);
+    line((x2 + 6 * x1) / 7, (2 * y1 + y2) / 3, (x1 + 6 * x2) / 7, (2 * y1 + y2) / 3);
+    line((x2 + 6 * x1) / 7, (2 * y2 + y1) / 3, (x1 + 6 * x2) / 7, (2 * y2 + y1) / 3);
+    line((x1 + 6 * x2) / 7, (2 * y1 + y2) / 3, (x1 + 6 * x2) / 7 - (x2 - x1) / 7, (2 * y1 + y2) / 3 - (y2 - y1) / 4);
+    line((x2 + 6 * x1) / 7, (2 * y2 + y1) / 3, (x2 + 6 * x1) / 7 + (x2 - x1) / 7, (2 * y2 + y1) / 3 + (y2 - y1) / 4);
 }
 int userpage_deleteuser(int j, int k)
 {
@@ -70,36 +87,39 @@ int userpage_deleteuser(int j, int k)
 } // 删除uid[k],j为有几个用户；
 void userpage_changeuser(int k)
 {
-    char a[20]={0};
-    strcpy(a,appData()->uid[0]);
-    strcpy(appData()->uid[0],appData()->uid[k]);
-    strcpy(appData()->uid[k],a);
-}//将uid【k】切换到首位
+    char a[20] = {0};
+    strcpy(a, appData()->uid[0]);
+    strcpy(appData()->uid[0], appData()->uid[k]);
+    strcpy(appData()->uid[k], a);
+} // 将uid【k】切换到首位
 int userpage_login(int j)
 {
     char textInputBuffer1[50];
     char textInputBuffer2[50];
+    Button c = button_new(340,150,372,182,"",userpage_button_draw5);
+    Button b = button_new(350, 400,
+                            650, 450,
+                            "登 录",
+                            button_drawWithText);
+    TextInput t = textinput_newDefault(
+        "请输入用户名",
+        350, 200,
+        650, 250,
+        textInputBuffer1);
+    TextInput t1 = textinput_newDefault(
+        "请输入密码",
+        350, 300,
+        650, 350,
+        textInputBuffer2);
+    Text tc1, tc2, tc3, tc4, tw, tw1;
     memset(textInputBuffer1, 0, sizeof(textInputBuffer1));
     memset(textInputBuffer2, 0, sizeof(textInputBuffer2));
     while (1)
     {
-        Text tc1, tc2, tc3, tw, tw1;
+        
         int signal = 0;
         int x1, x2, y1, y2, c0, c10;
-        Button b = button_new(350, 400,
-                              650, 450,
-                              "登 录",
-                              button_drawWithText);
-        TextInput t = textinput_newDefault(
-            "请输入用户名",
-            350, 200,
-            650, 250,
-            textInputBuffer1);
-        TextInput t1 = textinput_newDefault(
-            "请输入密码",
-            350, 300,
-            650, 350,
-            textInputBuffer2);
+        
         t1.textbox.type = TextboxPassword;
         t1.textbox.maxLength = 8;
         t.textbox.maxLength = 8;
@@ -107,12 +127,14 @@ int userpage_login(int j)
         tw.font.fontColor = _RED;
         tw1 = text_newDefault("密码过短！", 500, 310, 800, 360);
         tw1.font.fontColor = _RED;
-        tc1 = text_newDefault("账号已存在！", 400, 360, 800, 410);
+        tc1 = text_newDefault("成功登录！", 400, 360, 800, 410);
         tc1.font.fontColor = _RED;
         tc2 = text_newDefault("账号已存在！", 400, 360, 800, 410);
         tc2.font.fontColor = _RED;
         tc3 = text_newDefault("注册成功！", 400, 360, 800, 410);
         tc3.font.fontColor = _RED;
+        tc4 = text_newDefault("用户已存在！", 400, 360, 800, 410);
+        tc4.font.fontColor = _RED;
         // Button b=button_new()
         mouse_hide();
         x1 = 412 - 60 - 20;
@@ -140,13 +162,16 @@ int userpage_login(int j)
         arc(x2 - 6, y1 + 6, 0, 90, 6);
         arc(x2 - 6, y2 - 6, 270, 360, 6);
         button_draw(&b);
-        textinput_drawDefault(&t);
-        textinput_drawDefault(&t1);
+        button_draw(&c);
+        textinput_draw(&t);
+        textinput_draw(&t1);
         mouse_show();
         while (!signal)
         {
-            int k, bs, tbs, tbs1, lgs, ly1, ly2, ly3, ly4;
+            int k, cs,bs, tbs, tbs1, lgs, ly1, ly2, ly3, ly4;
             int ly = 3;
+            int s = 0;
+            int p = 0;
             Text ta1, ta2, ta3, ta4;
             Mouse *m = mouse();
             mouse_update();
@@ -159,6 +184,7 @@ int userpage_login(int j)
             ly4 = mouse_isClickedInBox(0, y2, 1024, 768);
             k = bioskey(1);
             bs = button_event(&b);
+            cs = button_event(&c);
             tbs = textinput_event(&t);
             tbs1 = textinput_event(&t1);
             if (keybord_isESCAPE(k))
@@ -172,7 +198,7 @@ int userpage_login(int j)
                 return;
             }
             if (ly2 == 1)
-            {
+            {   
                 return;
             }
             if (ly3 == 1)
@@ -183,38 +209,66 @@ int userpage_login(int j)
             {
                 return;
             }
-            if(tbs==1)
+            if (tbs == 1)
             {
-                 t1.textbox.status=TextboxSelected;
+                t1.textbox.status = TextboxSelected;
             }
-            if (bs ||  (tbs1 == 1))
+            if(cs==1)
             {
-                    ly = length_judge(t.textbox.content, t1.textbox.content);
-                    if (ly == 3)
+                signal = -1;
+                break;
+            }
+            if (bs || (tbs1 == 1))
+            {
+                ly = length_judge(t.textbox.content, t1.textbox.content);
+                if (ly == 3)
+                {
+                    lgs = user_login(t.textbox.content, t1.textbox.content, 0);
+                    switch (lgs)
                     {
-                        lgs = user_login(t.textbox.content, t1.textbox.content, 0);
-                        switch (lgs)
+                    case 4:
+
+                        for (p = 0; p < j; p++)
                         {
-                        case 4:
-                            text_display(tc1);
-                            delay(1000);
-                            break;
-                            return 0;
-                        case 5:
-                            text_display(tc2);
-                            delay(1000);
-                            break;
-                        case 6:
-                            text_display(tc3);
-                            user_login(t.textbox.content, t1.textbox.content, 1);
-                            strcpy(appData()->uid[j], t.textbox.content);
-                            delay(1000);
-                            signal = 1;
-                            return 1;
-                            break;
+                            if (strcmp(appData()->uid[p], t.textbox.content) == 0)
+                            {
+                                // text_display(tc4);
+                                // delay(1000);
+                                // signal = 2;
+                                // break;
+                                s++;
+                            }
                         }
+                        if(s!=0)
+                        {
+                            text_display(tc4);
+                                delay(1000);
+                                signal = 2;
+                                break;
+                        }
+                        else{
+                        strcpy(appData()->uid[j], t.textbox.content);
+                        text_display(tc1);
+                        delay(1000);
+                        return 1;
+                        break;
+                        }
+
+                    case 5:
+                        text_display(tc2);
+                        delay(1000);
+                        break;
+                    case 6:
+                        text_display(tc3);
+                        user_login(t.textbox.content, t1.textbox.content, 1);
+                        strcpy(appData()->uid[j], t.textbox.content);
+                        delay(1000);
+                        signal = 1;
+                        return 1;
                         break;
                     }
+                    break;
+                }
             }
             switch (ly)
             {
@@ -249,27 +303,27 @@ int userpage_login(int j)
             break;
         case -1:
             debug(DEBUG, "EXIT.");
-            return;
+            return 0;
             break;
         }
     }
 }
 
-/// @brief 
-/// @return 
+/// @brief
+/// @return
 int userpage()
 {
     char textInputBuffer[50];
     int n = 1;
-    int s=0;
+    int s = 0;
     memset(textInputBuffer, 0, sizeof(textInputBuffer));
     while (1)
-    { 
-        int j=appData()->userCount;
+    {
+        int j = appData()->userCount;
         int buttonCount = 1;
         int signal = 0;
         int p;
-        int j1 =0;
+        int j1 = 0;
         int p1 = -1;
         int x1, x2, y1, y2, c0, c10;
         int y3 = 410;
@@ -320,18 +374,21 @@ int userpage()
             c = button_new(340, y3, 690, y3 + 30, " ", userpage_button_draw2);
             button_draw(&c);
         }
-        for(p=0;p<5;p++)
+        for (p = 0; p < 5; p++)
         {
-                b[p] = text_newDefault(appData()->uid[p], 350, 380 + 30 * p, 640, 580 + 30 * p);
-                d[p] = button_new(650, 385 + 30 * p, 670, 405 + 30 * p, "", userpage_button_draw3);
-                e[p] =button_new(610, 385 + 30 * p, 630, 405 + 30 * p, "",userpage_button_draw4);
-                text_display(b[p]);
+            b[p] = text_newDefault(appData()->uid[p], 350, 380 + 30 * p, 640, 580 + 30 * p);
+            d[p] = button_new(650, 385 + 30 * p, 670, 405 + 30 * p, "", userpage_button_draw3);
+            e[p] = button_new(610, 385 + 30 * p, 630, 405 + 30 * p, "", userpage_button_draw4);
         }
         for(p=0;p<j;p++)
         {
-             setfillstyle(1,_LIGHTGRAY);
-                    bar(650, 385 + 30 * p, 670, 405 + 30 * p);
-                      bar(610, 385 + 30 * p, 630, 405 + 30 * p);
+            text_display(b[p]);
+        }
+        for (p = 0; p < j; p++)
+        {
+            setfillstyle(1, _LIGHTGRAY);
+            bar(650, 385 + 30 * p, 670, 405 + 30 * p);
+            bar(610, 385 + 30 * p, 630, 405 + 30 * p);
         }
         mouse_show();
         digitalClock_getTime();
@@ -373,7 +430,7 @@ int userpage()
                     appData()->userCount++;
                     break;
                 }
-                // break;
+                break;
             }
             // for (p = 0; p < j; p++)
             // {
@@ -381,27 +438,27 @@ int userpage()
             //     d[p] = button_new(650, 385 + 30 * p, 670, 405 + 30 * p, "", userpage_button_draw3);
             //     text_display(b[p]);
             // }
-            for (p = 0; (p < j)&&(j!=1); p++)
+            for (p = 0; (p < j) && (j != 1); p++)
             {
                 if (button_event(d + p))
                 {
                     p1 = p;
                     j1 = userpage_deleteuser(j, p1);
                     j = j1;
-                    signal =2;
+                    signal = 2;
                 }
                 // else
                 // {
                 //     setfillstyle(1,_LIGHTGRAY);
                 //     bar(650, 385 + 30 * p, 670, 405 + 30 * p);
                 // }
-                if(button_event(e+p))
-                 {
-                     p1=p;
-                     userpage_changeuser(p1);
-                     s=1;
-                     signal =2;
-                 }
+                if (button_event(e + p))
+                {
+                    p1 = p;
+                    userpage_changeuser(p1);
+                    s = 1;
+                    signal = 2;
+                }
                 //  else
                 //  {
                 //      setfillstyle(1,_LIGHTGRAY);
@@ -420,11 +477,11 @@ int userpage()
             if (ly1 == 1)
             {
                 signal = 1;
-                if(s==0)
+                if (s == 0)
                 {
                     return 0;
                 }
-                if(s==1)
+                if (s == 1)
                 {
                     return 1;
                 }
@@ -432,11 +489,11 @@ int userpage()
             if (ly2 == 1)
             {
                 signal = 1;
-                 if(s==0)
+                if (s == 0)
                 {
                     return 0;
                 }
-                if(s==1)
+                if (s == 1)
                 {
                     return 1;
                 }
@@ -444,11 +501,11 @@ int userpage()
             if (ly3 == 1)
             {
                 signal = 1;
-                 if(s==0)
+                if (s == 0)
                 {
                     return 0;
                 }
-                if(s==1)
+                if (s == 1)
                 {
                     return 1;
                 }
@@ -456,11 +513,11 @@ int userpage()
             if (ly4 == 1)
             {
                 signal = 1;
-                 if(s==0)
+                if (s == 0)
                 {
                     return 0;
                 }
-                if(s==1)
+                if (s == 1)
                 {
                     return 1;
                 }
@@ -469,27 +526,27 @@ int userpage()
         switch (signal)
         {
         case -1:
-             if(s==0)
-                {
-                    return 0;
-                }
-                if(s==1)
-                {
-                    return 1;
-                }
+            if (s == 0)
+            {
+                return 0;
+            }
+            if (s == 1)
+            {
+                return 1;
+            }
             break;
         case 1:
-             if(s==0)
-                {
-                    return 0;
-                }
-                if(s==1)
-                {
-                    return 1;
-                }
+            if (s == 0)
+            {
+                return 0;
+            }
+            if (s == 1)
+            {
+                return 1;
+            }
             break;
         case 2:
-        break;
+            break;
             // case 2:
             //     strcpy(appData()->uid[button_num], t1.textbox.content);
             //     // isEditing =0;

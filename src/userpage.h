@@ -37,6 +37,9 @@ int userpage_deleteuser(int j,int k);
 void userpage_button_draw1(Button *b);
 void userpage_button_draw2(Button *b);
 void userpage_button_draw3(Button *b);
+void userpage_button_draw4(Button *b);
+void userpage_button_draw5(Button *b);
+
 //userpage_addUser()
 
 //userpage_deleteUser()
