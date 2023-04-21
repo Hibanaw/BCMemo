@@ -13,11 +13,6 @@
 void imageBox_draw(ImageBox *ib){
     char *path = ib->content;
     int x1 = ib->posX1, y1 = ib->posY1, x2 = ib->posX2, y2 = ib->posY2;
-    // if(x2 - x1 > 600){
-    //     path = "";
-    //     x2 = x1 + 64;
-    //     y2 = y1 + 64;
-    // }
     if(ib->status == -1){
         int w, h;
         float k = 1;
