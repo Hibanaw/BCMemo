@@ -34,13 +34,6 @@ int hzinput(int x,int y, char *s)
 	{
 		bioskey(0);
 		image=ime()->buffer;
-		if(image==NULL)
-		{
-			closegraph();
-			printf("%x", image);
-			getch();
-			exit(1);
-		}
 		barx1=x;       //计算输入法位置  离所输入距离较近且不溢出屏幕
 		barx2=x+200;
 		bary1=y;
