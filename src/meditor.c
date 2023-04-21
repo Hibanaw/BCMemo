@@ -602,9 +602,139 @@ void memoEditor_button_drawDrawpad(Button *b)
     y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
     setcolor(_BLACK);
     setlinestyle(0,1,2);
-    line((4*x3+x4)/5,(y3+y4)/2,(x3+x4)/2,(4*y3+y4)/5);
-    line((x3+x4)/2,(4*y3+y4)/5,(x3+x4)/2,(y3+y4)/2);
-    line((x3+x4)/2,(y3+y4)/2,(2*x4+x3)/3,(6*y3+4*y4)/10);
-    line((2*x4+x3)/3,(6*y3+4*y4)/10,(4*x3+6*x4)/10,(3*y4+2*y3)/5);
-    line((4*x3+6*x4)/10,(3*y4+2*y3)/5,(4*x4+x3)/5,(3*y4+2*y3)/5);
+    line((4*x3+x4)/5,(y3+2*y4)/3,(x3+2*x4)/3,(4*y3+y4)/5);
+    line((x3+2*x4)/3,(4*y3+y4)/5,(x3+x4)/2,(2*y3+3*y4)/5);
+    line((x3+x4)/2,(2*y3+3*y4)/5,(2*x4+x3)/3,(3*y3+4*y4)/7);
+    line((2*x4+x3)/3,(3*y3+4*y4)/7,(3*x3+7*x4)/10,(4*y4+1*y3)/5);
+    line((3*x3+7*x4)/10,(4*y4+1*y3)/5,(9*x4+x3)/10,(4*y4+1*y3)/5);
+}
+void memoEditor_button_drawSharebutton(Button *b)
+{
+   int x1 = b->posX1+2, y1 = b->posY1+3,
+        x2 = b->posX2-4, y2 = b->posY2-3;
+    float k=0.8;
+    int x3,x4,y3,y4;
+    button_drawWINUI(b);
+      if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.8;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    arc((5*x4+3*x3)/8,(6*x4+2*x3)/8,90,180,3*(y4-y3)/8);
+    arc((5*x4+3*x3)/8,(33*y4-y1)/32,90,157.38,13*(y4-y3)/32);
+    line((5*x4+3*x3)/8,(5*y3+3*y4)/8,(5*x4+3*x3)/8,(7*y3+y4)/8);
+    line((5*x4+3*x3)/8,(5*y4+3*y3)/8,(5*x4+3*x3)/8,(7*y4+y3)/8);
+    line((5*x4+3*x3)/8,(7*y3+y4)/8,(7*x4+x3)/8,(y3+y4)/2);
+    line((5*x4+3*x3)/8,(7*y4+y3)/8,(7*x4+x3)/8,(y3+y4)/2);
+}
+void memoEditor_button_drawSetbutton(Button *b)
+{
+     int x1 = b->posX1+3, y1 = b->posY1+3,
+        x2 = b->posX2-3, y2 = b->posY2-3;
+    float k=0.8;
+    float r;
+    int x3, x4, y3, y4, m;
+    button_drawWINUI(b);
+     if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.8;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    r=(y4-y3)/(2*20);
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    arc((x3+x4)/2, (y3+y4)/2, 20, 40, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 80, 100, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 140, 160, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 200, 220, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 260, 280, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 320, 340, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 50, 70, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 110, 130, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 170, 190, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 230, 250, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 290, 310, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 350, 370, 12*r);
+    // line()
+    // arc(375,(y3+y4)/2,)
+}
+void memoEditor_button_drawEditbutton(Button *b)
+{
+     int x1 = b->posX1+3, y1 = b->posY1+3,
+        x2 = b->posX2-3, y2 = b->posY2-3;
+    float k=0.8;
+    int x3, x4, y3, y4, m;
+    button_drawWINUI(b);
+     if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.8;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    line((3*x4+x3)/4,(5*y3+y4)/6,(5*x4+x3)/6,(3*y3+y4)/4);
+    line((5*x4+x3)/6,(3*y3+y4)/4,(3*x3+x4)/4,(5*y4+y3)/6);
+    line((3*x3+x4)/4,(5*y4+y3)/6,(7*x3+x4)/8,(7*y4+y3)/8);
+    line((7*x3+x4)/8,(7*y4+y3)/8,(5*x3+x4)/6,(3*y4+y3)/4);
+    line((5*x3+x4)/6,(3*y4+y3)/4,(3*x4+x3)/4,(5*y3+y4)/6);
+    arc((2*x3+x4)/3+(y4-y3)/15,(4*y4+y3)/5,0,180,(y4-y3)/10);
+    arc((2*x3+x4)/3+2*(y4-y3)/10+(y4-y3)/15,(4*y4+y3)/5,180,360,(y4-y3)/10);
+    arc((2*x3+x4)/3+2*2*(y4-y3)/10+(y4-y3)/15,(4*y4+y3)/5,0,180,(y4-y3)/10);
+    arc((2*x3+x4)/3+3*2*(y4-y3)/10+(y4-y3)/15,(4*y4+y3)/5,180,360,(y4-y3)/10);
+}
+void memoEditor_button_drawSavebutton(Button *b)
+{
+     int x1 = b->posX1+3, y1 = b->posY1+3,
+        x2 = b->posX2-3, y2 = b->posY2-3;
+    float k=0.8;
+    int x3, x4, y3, y4, m;
+    button_drawWINUI(b);
+     if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.8;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    line(x3,y3,x4,y3);
+    line(x4,y3,x4,y4);
+    line(x4,y4,(4*x3+x4)/5,y4);
+    line((4*x3+x4)/5,y4,x3,(4*y4+y3)/5);
+    line(x3,(4*y4+y3)/5,x3,y3);
+    line((7*x3+3*x4)/10,y4,(7*x3+3*x4)/10,(2*y4+y3)/3);
+    line((7*x3+3*x4)/10,(2*y4+y3)/3,(7*x3+3*x4)/10+2*(x4-x3)/5,(2*y4+y3)/3);
+    line((7*x3+3*x4)/10+2*(x4-x3)/5,(2*y4+y3)/3,(7*x3+3*x4)/10+2*(x4-x3)/5,y4);
+    line((4*x3+x4)/5,y3,(4*x3+x4)/5,(2*y3+y4)/3);
+    line((4*x3+x4)/5,(2*y3+y4)/3,(4*x4+x3)/5,(2*y3+y4)/3);
+    line((4*x4+x3)/5,(2*y3+y4)/3,(4*x4+x3)/5,y3);
 }
