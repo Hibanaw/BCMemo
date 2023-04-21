@@ -15,7 +15,8 @@ Router router_new(){
     memset(&r, 0, sizeof(r));
     r.expandButton      = button_new(10, 35, 65, 65, "", router_button_drawExpandButton);
     r.newMemoButton     = button_new(20, 600, 55, 635, "", router_button_drawNewMemoButton);
-    r.userButton        = button_new(20, 650, 55, 685, "", button_drawWINUI);
+    r.userButton        = button_new(20, 650, 55, 685, "", router_button_drawUserButton);
+    r.setButton         = button_new(20, 700, 55, 735, "", router_button_drawSetButton);
 	sprintf(r.memoName, "%06ld", time(NULL)%1000000);
     router_refresh(&r);
     return r;
@@ -25,6 +26,7 @@ void router_draw(Router *r){
 	button_draw(&r->expandButton);
     button_draw(&r->newMemoButton);
     button_draw(&r->userButton);
+    button_draw(&r->setButton);
 }
 
 int router_expand(Router *r){
@@ -33,16 +35,23 @@ int router_expand(Router *r){
     char *jumpPath;
     int i;
     int lc = 0;
-    ScrollBar sb = scrollBar_new(333, 100, 435);
+    ScrollBar sb = scrollBar_new(333, 85, 435);
     sb.bgColor = hexfffbf0;
     router_refresh(r);
     while(1){
         int signal = 0;
         int exitflag = 0;
+        char shareCode[30];
+        Button cb = button_new(300, 35, 330,65, "", button_drawWINUI);
+        TextInput ti = textinput_newDefault("·ÖÏíÂë",85, 35, 290, 65, shareCode);
+        ti.textbox.posY1 = 40;
+        ti.textbox.posY2 = 60;
+        ti.textbox.maxLength = 6;
+        ti.textbox.font.fontSize = 16;
         sb.ithItem = memos_getNum(r->topMemo);
         sb.sumItem = memos_getSum();
         for(i = 0, p = r->topMemo; i < 6 && p != NULL; i++, p = p->next){
-            mb[i] = button_new(10, 100+75*i , 330, 160+75*i , p, router_button_drawMemoList);
+            mb[i] = button_new(10, 80+75*i , 330, 140+75*i , p, router_button_drawMemoList);
         }
         ep = memos_preMemo(p);
         lc = i;
@@ -57,10 +66,13 @@ int router_expand(Router *r){
         button_draw(&r->expandButton);
         button_draw(&r->newMemoButton);
         button_draw(&r->userButton);
+        button_draw(&r->setButton);
+        button_draw(&cb);
         for(i = 0; i < lc; i++){
             button_draw(mb+i);
         }
         scrollBar_draw(&sb);
+        textinput_draw(&ti);
         mouse_show();
         digitalClock_getTime();
         while(!signal){
@@ -69,12 +81,19 @@ int router_expand(Router *r){
             keybord_eat();
             mouse_update();
             digitalClock_getTime();
+            textinput_event(&ti);
             for(i = 0; i < lc; i++){
                 int k;
                 k = button_event(mb+i);
                 if(k){
                     jumpPath = ((Memo *)((mb+i)->content))->fileName;
                     signal = 3;
+                }
+            }
+            if(button_event(&cb)){
+                int t = share_determine(ti.textbox.content, appData()->currentUser);
+                if(t == 0){
+                    signal = 6;
                 }
             }
             if(button_event(&r->expandButton)){
@@ -85,6 +104,9 @@ int router_expand(Router *r){
             }
             if(button_event(&r->userButton)){
                 signal = 5;
+            }
+            if(button_event(&r->setButton)){
+                signal = 7;
             }
             if(exitflag == 1 && mouse_isClickedInBox(350, 0, MAXWIDTH, MAXHEIGHT) == 2){
                 signal = 1;
@@ -138,6 +160,11 @@ int router_expand(Router *r){
         case 5:
             return RouterUserPage;
             break;
+        case 6: 
+            router_refresh(r);
+            break;
+        case 7:
+            return RouterSettingsPage;
         }
     }
 }
@@ -153,6 +180,9 @@ int router_event(Router *r){
     if(button_event(&r->userButton)){
         return RouterUserPage;
     }
+    if(button_event(&r->setButton)){
+        return RouterSettingsPage;
+    }
     return 0;
 }
 
@@ -166,6 +196,7 @@ void router_getWidgetList(Router *r){
 
 void router_button_drawMemoList(Button *b){
     int c0, c1, ct;
+    int c3[] = {hex559f00, hexffdf00, hexd40000};
     int x1 = b->posX1, y1 = b->posY1,
         x2 = b->posX2, y2 = b->posY2;
     char *name = ((Memo *)(b->content))->fileName;
@@ -280,6 +311,14 @@ void router_button_drawMemoList(Button *b){
         text_display(t);
         text_display(t2);
     }
+    setcolor(ct);
+    setlinestyle(0, 1, 2);
+    circle(x1+(y2-y1)/2, (y2+y1)/2, (y2-y1-20)/2);
+    setcolor(c3[((Memo *)(b->content))->level%3]);
+    setfillstyle(1, c3[((Memo *)(b->content))->level%3]);
+    pieslice(x1+(y2-y1)/2, (y2+y1)/2,0, 360, (y2-y1-30)/2);
+    setcolor(ct);
+    circle(x1+(y2-y1)/2, (y2+y1)/2, (y2-y1-30)/2);
 }
 
 void router_distrcut(){
@@ -358,8 +397,8 @@ void router_button_drawNewMemoButton(Button *b){
 }
 void router_button_drawUserButton(Button *b)
 {
-     int x1 = b->posX1+3, x2 = b->posX2-3,
-        y1 = b->posY1+3, y2 = b->posY2-3;
+     int x1 = b->posX1+4, x2 = b->posX2-3,
+        y1 = b->posY1+4, y2 = b->posY2-3;
     int x3,x4,y3,y4;
     float k=0.8;
     float r;
@@ -382,4 +421,43 @@ void router_button_drawUserButton(Button *b)
     circle((x3+x4)/2,(y3+y4)/2,r);
     circle((x3+x4)/2,(y3+y4)/2-(r/4),r/4);
     arc((x3+x4)/2,(y3+y4)/2+r,30,150,r);
+}
+
+void router_button_drawSetButton(Button *b)
+{
+    int x1 = b->posX1+6, y1 = b->posY1+6,
+        x2 = b->posX2-5, y2 = b->posY2-5;
+    float k=0.8;
+    float r;
+    int x3, x4, y3, y4, m;
+    button_drawWINUI(b);
+    if (b->status != ButtonSelected)
+    {
+        k = 1;
+    }
+    else
+    {
+        k = 0.8;
+    }
+    x3 = (x1 + x2) / 2 - (x2 - x1) * k / 2;
+    x4 = (x1 + x2) / 2 + (x2 - x1) * k / 2;
+    y3 = (y1 + y2) / 2 - (y2 - y1) * k / 2;
+    y4 = (y1 + y2) / 2 + (y2 - y1) * k / 2;
+    r=(float)(y4-y3)/(2*20);
+    setcolor(_BLACK);
+    setlinestyle(0,1,2);
+    arc((x3+x4)/2, (y3+y4)/2, 20, 40, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 80, 100, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 140, 160, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 200, 220, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 260, 280, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 320, 340, 20*r);
+    arc((x3+x4)/2, (y3+y4)/2, 50, 70, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 110, 130, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 170, 190, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 230, 250, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 290, 310, 12*r);
+    arc((x3+x4)/2, (y3+y4)/2, 350, 370, 12*r);
+    // line()
+    // arc(375,(y3+y4)/2,)
 }
