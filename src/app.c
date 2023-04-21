@@ -84,6 +84,9 @@ void app(){
             case RouterUserPage:
                 signal = AppUserPage;
                 break;
+            case RouterSettingsPage:
+                appData()->displayLastEditUser = !appData()->displayLastEditUser;
+                signal = AppRedraw;
             }
             if(mes == 1){
                 signal = AppRedraw;
@@ -122,6 +125,9 @@ void app(){
                         r = router_new();
                         me = memoEditor_new(r.memoName, appData()->currentUser);
                     }
+                }
+                if(signal == RouterSettingsPage){
+                    appData()->displayLastEditUser = !appData()->displayLastEditUser;
                 }
                 break;
             case AppRedraw:
