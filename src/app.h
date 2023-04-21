@@ -16,7 +16,8 @@ enum{
     AppRouterExpand = 1,
     AppExit,
     AppRedraw,
-    AppChangeMemo
+    AppChangeMemo,
+    AppUserPage
 };
 
 typedef struct
@@ -42,4 +43,5 @@ void app();
 #include "meditor.h"
 #include "router.h"
 #include "drawpad.h"
+#include "userpage.h"
 #endif

@@ -13,8 +13,9 @@
 Router router_new(){
 	Router r;
     memset(&r, 0, sizeof(r));
-    r.expandButton = button_new(10, 35, 65, 65, "", router_button_drawExpandButton);
-    r.newMemoButton = button_new(20, 600, 55, 635, "", router_button_drawNewMemoButton);
+    r.expandButton      = button_new(10, 35, 65, 65, "", router_button_drawExpandButton);
+    r.newMemoButton     = button_new(20, 600, 55, 635, "", router_button_drawNewMemoButton);
+    r.userButton        = button_new(20, 650, 55, 685, "", button_drawWINUI);
 	sprintf(r.memoName, "%06ld", time(NULL)%1000000);
     router_refresh(&r);
     return r;
@@ -23,6 +24,7 @@ Router router_new(){
 void router_draw(Router *r){
 	button_draw(&r->expandButton);
     button_draw(&r->newMemoButton);
+    button_draw(&r->userButton);
 }
 
 int router_expand(Router *r){
@@ -54,6 +56,7 @@ int router_expand(Router *r){
         line(350, 0, 350, MAXHEIGHT);
         button_draw(&r->expandButton);
         button_draw(&r->newMemoButton);
+        button_draw(&r->userButton);
         for(i = 0; i < lc; i++){
             button_draw(mb+i);
         }
@@ -79,6 +82,9 @@ int router_expand(Router *r){
             }
             if(button_event(&r->newMemoButton)){
                 signal = 2;
+            }
+            if(button_event(&r->userButton)){
+                signal = 5;
             }
             if(exitflag == 1 && mouse_isClickedInBox(350, 0, MAXWIDTH, MAXHEIGHT) == 2){
                 signal = 1;
@@ -129,7 +135,8 @@ int router_expand(Router *r){
             }
         case 4:
             break;
-        default:
+        case 5:
+            return RouterUserPage;
             break;
         }
     }
@@ -142,6 +149,9 @@ int router_event(Router *r){
     if(button_event(&r->newMemoButton)){
         sprintf(r->memoName, "%06ld", time(NULL)%1000000);
         return RouterChangeMemo;
+    }
+    if(button_event(&r->userButton)){
+        return RouterUserPage;
     }
     return 0;
 }
