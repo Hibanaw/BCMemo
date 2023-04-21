@@ -31,8 +31,10 @@ typedef struct
 }ShareRadioBoxArea;
 
 void share_page(char *memoName);
+int share_add(char *memoName, char *shareCodeBuffer, time_t expireTime);
+int share_determine(char *shareCode, char *uid);
 
-ShareRadioBoxArea share_newRadioBoxArea(char *buffer);
+share_newRadioBoxArea(ShareRadioBoxArea *ra, char *buffer);
 void share_drawRadioBoxArea(ShareRadioBoxArea *sr);
 int share_radioBoxAreaEvent(ShareRadioBoxArea *sr);
 
@@ -40,4 +42,5 @@ int share_radioBoxAreaEvent(ShareRadioBoxArea *sr);
 #include "mouse.h"
 #include "keyboard.h"
 #include "digclock.h"
+#include "auth.h"
 #endif
