@@ -56,9 +56,9 @@ int user_login(char *p, char *q, int k)
         int k;
         int signal = 0;
         Userdata a;
-        if ((fp = fopen("res\\user.dat", "rb+")) == NULL)
+        if ((fp = fopen("data\\user.dat", "rb+")) == NULL)
         {
-            fp = fopen("res\\user.dat", "wb+");
+            fp = fopen("data\\user.dat", "wb+");
         }
         rewind(fp);
         while (1)
@@ -96,9 +96,9 @@ int user_login(char *p, char *q, int k)
     {
         FILE *fp;
         Userdata a;
-        if ((fp = fopen("res\\user.dat", "ab+")) == NULL)
+        if ((fp = fopen("data\\user.dat", "ab+")) == NULL)
         {
-            fp=fopen("res\\user.dat","wb+");
+            fp=fopen("data\\user.dat","wb+");
         }
         fseek(fp, 0, 2);
         strcpy(a.account, p);

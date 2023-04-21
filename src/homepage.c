@@ -98,10 +98,12 @@ void homepage()
                 signal = -1;
                 break;
             }
-            if (bs || ((tbs == 1) && (tbs1 == 1)))
+            if(tbs==1)
             {
-                if (bs)
-                {
+                t1.textbox.status=TextboxSelected;
+            }
+            if (bs || (tbs1 == 1))
+            {
                     ly = length_judge(t.textbox.content, t1.textbox.content);
                     if (ly == 3)
                     {
@@ -132,7 +134,6 @@ void homepage()
                         }
                         
                     }
-                }
             }
             switch (ly)
             {
